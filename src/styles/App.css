@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+@media only print {
+  .no-print {
+    display: none;
+  }
+  @page {
+    margin: 0;
+  }
+  #main-title {
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+}
