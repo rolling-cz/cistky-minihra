@@ -11,6 +11,7 @@ import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import {validateRegion} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import Armies from "./Armies";
+import ArmyAuditLog from "./ArmyAuditLog";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -181,6 +182,11 @@ export default class GameContainer extends React.Component {
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
                                            disabledRegions={disabledRegions}/>
+                    </Tab>
+                    <Tab eventKey="army" title="Svodka pro armádu">
+                        <ArmyAuditLog definitions={definitions}
+                                      auditLog={this.state.newState.auditLog}
+                                      disabledRegions={disabledRegions}/>
                     </Tab>
                 </Tabs>
 

@@ -1,12 +1,9 @@
 import React from "react";
 import {
-    effectivnessToWord,
-    resourceToWord4thCase,
-    resourceToWord2ndCase,
-    aggregateByRegion
+    aggregateByRegion, inflectGroups
 } from "../services/AuditLogUtils";
 
-export default class PolitbyroAuditLog extends React.Component {
+export default class ArmyAuditLog extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,29 +25,14 @@ export default class PolitbyroAuditLog extends React.Component {
         let message;
 
         switch(log.type) {
-            case "production":
-                message = `${effectivnessToWord(log.effectiveness)} produkce ${resourceToWord2ndCase(log.resource)}`;
-                break;
-            case "starvation":
-                message = "Hladomor";
-                break;
             case "rebellion":
-                message = "Nepokoje";
-                break;
-            case "construction":
-                message = `Výstavba výrobních zařízení na ${resourceToWord4thCase(log.resource)}`;
-                break;
-            case "repair":
-                message = `Oprava výrobních zařízení na ${resourceToWord4thCase(log.resource)}.`;
-                break;
-            case "damage":
-                message = `Poškozené výrobní zařízení na ${resourceToWord4thCase(log.resource)} povstalci`;
+                message = `Nepokoje - ${log.number} ${inflectGroups(log.number)} zrádců`;
                 break;
             case "victory":
-                message = "Úspěšně potlačené povstání";
+                message = `Úspěšně potlačené povstání. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
             case "defeat":
-                message = "Neúspěšně potlačené povstání";
+                message = `Neúspěšně potlačené povstání. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
             default:
                 return ""
@@ -74,7 +56,7 @@ export default class PolitbyroAuditLog extends React.Component {
                         </div>
                         <div className="col-md-6 text-left">
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                                return PolitbyroAuditLog.renderOneLog(log, i)
+                                return ArmyAuditLog.renderOneLog(log, i)
                             })}
                         </div>
                     </div>
