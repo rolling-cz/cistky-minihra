@@ -38,10 +38,9 @@ function evaluateRegion(auditLog, defs, region) {
 
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
 
-    // TODO process armies
+    const activeRebels = processArmies(auditLog, defs, region);
 
     // rebels from previous act
-    const activeRebels = region.rebels;
     let rebelNegativeBonus = 1 - (activeRebels * defs.coefficients.rebellion.effectPerRebel) / 100;
     damageProductionSites(auditLog, defs, region, activeRebels);
 
@@ -110,6 +109,47 @@ function evaluateRegion(auditLog, defs, region) {
     defs.coefficients.resources.types.forEach(resourceType => {
         repairProductionSite(auditLog, region, resourceType);
     });
+}
+
+function processArmies(auditLog, defs, region) {
+    let activeRebels = region.rebels;
+
+    // attack
+    if (region.soldiers.attacking > 0 && activeRebels > 0) {
+        const soldiersPower = region.soldiers.attacking
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
+            * defs.coefficients.army.soldiersOverRebels;
+        const rebelsPower = activeRebels
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
+
+        const soldiersWon = soldiersPower >= rebelsPower;
+        let soldiersWounded = 0;
+        let rebelsWounded = 0;
+        if (soldiersWon) {
+            soldiersWounded = Math.ceil(region.soldiers.attacking * defs.coefficients.army.wounded.soldiers.win);
+            rebelsWounded = Math.ceil(activeRebels * defs.coefficients.army.wounded.rebels.defeat);
+        } else {
+            soldiersWounded = Math.ceil(region.soldiers.attacking * defs.coefficients.army.wounded.soldiers.defeat);
+            rebelsWounded = Math.ceil(activeRebels * defs.coefficients.army.wounded.rebels.win);
+        }
+
+        activeRebels -= rebelsWounded;
+        auditLog.push({
+            "type": soldiersWon ? "victory" : "defeat",
+            "region": region.name,
+            "soldiersWounded": soldiersWounded,
+            "rebelsWounded": rebelsWounded
+        })
+    }
+
+    // patrolling
+    if (region.soldiers.patrolling > activeRebels) {
+        activeRebels = 0
+    } else {
+        activeRebels -= region.soldiers.patrolling
+    }
+
+    return activeRebels;
 }
 
 function damageProductionSites(auditLog, defs, region, activeRebels) {

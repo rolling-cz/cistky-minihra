@@ -33,6 +33,10 @@ module.exports.getInitialState = () => {
                 "wheat": 0,
                 "steal": 0,
                 "fuel": 0
+            },
+            "soldiers": {
+                "patrolling": 0,
+                "attacking": 0
             }
         })
     });
@@ -105,6 +109,23 @@ function getDefinitions() {
                     "min": 75,
                     "max": 110
                 }
+            },
+            "army": {
+                "attackPower": {
+                    "min": 75,
+                    "max": 125
+                },
+                "wounded": {
+                    "soldiers": {
+                        "win": 0.1,
+                        "defeat": 0.3
+                    },
+                    "rebels": {
+                        "win": 0.25,
+                        "defeat": 0.6
+                    }
+                },
+                "soldiersOverRebels": 1.2
             }
         },
         "regions": [

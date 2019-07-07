@@ -112,7 +112,7 @@ export default class DetailedAuditLog extends React.Component {
                 break;
             case "rebellion":
                 logType = "Nepokoje";
-                logDescription = `Nepokoje ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} zrádců.`;
+                logDescription = `Zaznamenali jsme ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} zrádců.`;
                 break;
             case "construction":
                 logType = "Výstavba výrobních zařízení";
@@ -137,6 +137,14 @@ export default class DetailedAuditLog extends React.Component {
             case "transportIn":
                 logType = "Příchozí transport";
                 logDescription = `Dorazil transport čítající ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                break;
+            case "victory":
+                logType = "Potlačení povstání";
+                logDescription = `Úspěšné potlačení vzpoury, naše ztráty ${log.soldiersWounded} ${DetailedAuditLog.inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${DetailedAuditLog.inflectGroups(log.rebelsWounded)} povstalců.`;
+                break;
+            case "defeat":
+                logType = "Potlačení povstání";
+                logDescription = `Ostudná porážka od rebelů, naše ztráty ${log.soldiersWounded} ${DetailedAuditLog.inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${DetailedAuditLog.inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
             default:
                 logType = "UNKNOWN";

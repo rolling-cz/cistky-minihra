@@ -66,8 +66,8 @@ export default class Region extends React.Component {
                 </div>
                 <div className="col-md-2 text-left">
                     Rebelové: {this.state.currentState.rebels} <br />
-                    Patrolující jednotky:<br />
-                    Útočící jednotky<br />
+                    Patrolující jed.: <input id="soldiers.patrolling" type="text" size="1" value={this.state.currentState.soldiers.patrolling} onChange={this.handleChange.bind(this)} /><br />
+                    Útočící jed: <input id="soldiers.attacking" type="text" size="1" value={this.state.currentState.soldiers.attacking} onChange={this.handleChange.bind(this)} />
                 </div>
             </div>
         )

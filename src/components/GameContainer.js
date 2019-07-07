@@ -64,16 +64,31 @@ export default class GameContainer extends React.Component {
         this.state.history.push(this.state.currentState);
 
         const newState = JSON.parse(JSON.stringify(this.state.newState));
-        // TODO prepareStateForNextAct(newState);
-        newState.auditLog = [];
+        this.prepareStateForNextAct(newState);
+
 
         this.setState({currentState: newState, newState: null});
     }
 
-    renderForm() {
+    prepareStateForNextAct(newState) {
         const definitions = getDefinitions();
 
-        // TODO add armies
+        newState.auditLog = [];
+        newState.transports = [];
+
+        newState.regions.forEach(region => {
+            definitions.coefficients.resources.types.forEach(resourceType => {
+                region.constructing[resourceType] = 0;
+                region.repairing[resourceType] = 0;
+                region.population[resourceType] = 0;
+            });
+            region.food = 0;
+            region.soldiers.attacking = 0;
+        })
+    }
+
+    renderForm() {
+        const definitions = getDefinitions();
 
         return (
             <div>
