@@ -5,7 +5,7 @@ module.exports.getInitialState = () => {
         regionsDto.push({
             "name": region.name,
             "population": {
-                "total": calculateAbsoluteValue(defs.coefficients.resources.start.population, region.start.population),
+                "total": calculateAbsoluteValue(defs.coefficients.population.start, region.start.population),
                 "wheat": 0,
                 "steal": 0,
                 "fuel": 0
@@ -52,8 +52,8 @@ function getDefinitions() {
     return {
         "coefficients": {
             "resources": {
+                "types": ["wheat", "steal", "fuel"],
                 "start": {
-                    "population": 8,
                     "wheat": 5,
                     "steal": 2,
                     "fuel": 2
@@ -85,11 +85,19 @@ function getDefinitions() {
                     "rebellionSize": 2
                 }
             ],
+            "population": {
+                "start": 8,
+                "bornProbabilityPerPop": 5,
+                "numberOfBirthed": 1
+            },
             "rebellion": {
                 "effectPerRebel": 10,
                 "riskPerStarvedPop": 10,
                 "rebelPerStarvedPop": 0.2,
-                "minPopulation": 2
+                "minPopulation": 2,
+                "probabilityToDamagePerRebel": 30,
+                "numberOfDamagePerRebel": 0.25
+
             },
             "random": {
                 "production": {

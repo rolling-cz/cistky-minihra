@@ -41,6 +41,7 @@ export default class GameContainer extends React.Component {
         this.state.history.push(this.state.currentState);
 
         const newState = JSON.parse(JSON.stringify(this.state.newState));
+        // TODO prepareStateForNextAct(newState);
         newState.auditLog = [];
 
         this.setState({currentState: newState, newState: null});
@@ -48,6 +49,9 @@ export default class GameContainer extends React.Component {
 
     renderForm() {
         const definitions = getDefinitions();
+
+        // TODO add armies
+        // TODO disable regions
 
         return (
             <div>

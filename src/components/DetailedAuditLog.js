@@ -27,7 +27,7 @@ export default class DetailedAuditLog extends React.Component {
         return logsByRegions
     }
 
-    static resourceToWord(resource) {
+    static resourceToWord4thCase(resource) {
         switch(resource) {
             case "wheat":
                 return "pšenice";
@@ -35,6 +35,19 @@ export default class DetailedAuditLog extends React.Component {
                 return "ocele";
             case "fuel":
                 return "paliva";
+            default:
+                return resource;
+        }
+    }
+
+    static resourceToWord1stCase(resource) {
+        switch(resource) {
+            case "wheat":
+                return "pšenici";
+            case "steal":
+                return "ocel";
+            case "fuel":
+                return "palivo";
             default:
                 return resource;
         }
@@ -60,6 +73,30 @@ export default class DetailedAuditLog extends React.Component {
         }
     }
 
+    static inflectProductionSites(number) {
+        if (number === 1) {
+            return "produkční závod"
+        } else if (number === 2 || number === 3 || number === 4) {
+            return "produkční závody"
+        } else {
+            return "produkčních závodů"
+        }
+    }
+
+    static effectivnessToWord(number) {
+        if (number < 0.4) {
+            return "příšerná"
+        } else if (number < 0.8) {
+            return "špatná"
+        } else if (number < 1.1) {
+            return "průměrná"
+        } else if (number < 1.4) {
+            return "velice dobrá"
+        } else {
+            return "úžasná"
+        }
+    }
+
     static renderOneLog(log, i) {
         let logType;
         let logDescription;
@@ -67,7 +104,7 @@ export default class DetailedAuditLog extends React.Component {
         switch(log.type) {
             case "production":
                 logType = "Produkce";
-                logDescription = `Vyprodukováno ${log.number} ${DetailedAuditLog.inflectResources(log.number)} ${DetailedAuditLog.resourceToWord(log.resource)}. Efektivnost byla ${log.effectiveness * 100}%.`;
+                logDescription = `Vyprodukovali jsme ${log.number} ${DetailedAuditLog.inflectResources(log.number)} ${DetailedAuditLog.resourceToWord4thCase(log.resource)}. Efektivita byla ${DetailedAuditLog.effectivnessToWord(log.effectiveness)}.`;
                 break;
             case "starvation":
                 logType = "Hladomor";
@@ -75,7 +112,23 @@ export default class DetailedAuditLog extends React.Component {
                 break;
             case "rebellion":
                 logType = "Nepokoje";
-                logDescription = `Vzbouřilo se ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} zrádců.`;
+                logDescription = `Nepokoje ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} zrádců.`;
+                break;
+            case "construction":
+                logType = "Výstavba výrobních zařízení";
+                logDescription = `Dokončili jsme ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
+                break;
+            case "repair":
+                logType = "Oprava výrobních zařízení";
+                logDescription = `Opravili jsme ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
+                break;
+            case "natality":
+                logType = "Noví pracovníci";
+                logDescription = `Máme navíc ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů schopných práce.`;
+                break;
+            case "damage":
+                logType = "Poškozené výrobní zařízení";
+                logDescription = `Povstalci poškodili ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
                 break;
             default:
                 logType = "UNKNOWN";
@@ -84,7 +137,7 @@ export default class DetailedAuditLog extends React.Component {
 
         return (
             <div className="row" key={i}>
-                <div className="col-md-2 font-weight-bold">
+                <div className="col-md-4 font-weight-bold">
                     {logType}
                 </div>
                 <div className="col-md-8">
@@ -103,6 +156,7 @@ export default class DetailedAuditLog extends React.Component {
                         {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                             return DetailedAuditLog.renderOneLog(log, i)
                         })}
+                        <hr />
                     </div>
                 )
             })

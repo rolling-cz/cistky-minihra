@@ -17,9 +17,9 @@ function evaluateRegion(auditLog, defs, region) {
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
 
     // rebels from previous act
-    let rebelNegativeBonus = 1 - (region.rebels * defs.coefficients.rebellion.effectPerRebel) / 100;
-
-    // TODO damaging production sites
+    const activeRebels = region.rebels;
+    let rebelNegativeBonus = 1 - (activeRebels * defs.coefficients.rebellion.effectPerRebel) / 100;
+    damageProductionSites(auditLog, defs, region, activeRebels);
 
     // production coef
     const fearLevel = defs.coefficients.fearLevels.find(fear => fear.level === region.fearLevel);
@@ -30,9 +30,9 @@ function evaluateRegion(auditLog, defs, region) {
     }
 
     // production
-    produceResources(auditLog, defs, regionDef, region, productionCoef,"wheat");
-    produceResources(auditLog, defs, regionDef, region, productionCoef,"steal");
-    produceResources(auditLog, defs, regionDef, region, productionCoef,"fuel");
+    defs.coefficients.resources.types.forEach(resourceType => {
+        produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType);
+    });
 
     // food consumption
     let starved = 0;
@@ -47,7 +47,18 @@ function evaluateRegion(auditLog, defs, region) {
         })
     }
 
-    // TODO new population
+    if (starved === 0) {
+        const probability = region.population.total * defs.coefficients.population.bornProbabilityPerPop;
+        if (getRandom(0, 100) < probability) {
+            const newPop = defs.coefficients.population.numberOfBirthed;
+            region.population.total += newPop;
+            auditLog.push({
+                "type": "natality",
+                "region": regionDef.name,
+                "number": newPop
+            })
+        }
+    }
 
     // new rebellion
     const rebellionRisk = fearLevel.rebellionRisk + starved * defs.coefficients.rebellion.riskPerStarvedPop;
@@ -68,9 +79,57 @@ function evaluateRegion(auditLog, defs, region) {
         })
     }
 
-    // TODO construction
+    defs.coefficients.resources.types.forEach(resourceType => {
+        constructProductionSite(auditLog, region, resourceType);
+    });
 
-    // TODO repairing
+    defs.coefficients.resources.types.forEach(resourceType => {
+        repairProductionSite(auditLog, region, resourceType);
+    });
+}
+
+function damageProductionSites(auditLog, defs, region, activeRebels) {
+    if (activeRebels > 0) {
+        const probabilityOfDamage = activeRebels * defs.coefficients.rebellion.probabilityToDamagePerRebel;
+        const damagedSites = {};
+        defs.coefficients.resources.types.forEach(resourceType => {
+            damagedSites[resourceType] = 0;
+        });
+
+        if (getRandom(0, 100) < probabilityOfDamage) {
+            const numberOfDamaged = Math.ceil(activeRebels * defs.coefficients.rebellion.numberOfDamagePerRebel);
+            for (let i = 0; i < numberOfDamaged; i++) {
+                // find functional production site types
+                const existedSites = [];
+                defs.coefficients.resources.types.forEach(resourceType => {
+                    if (region.productionSites[resourceType] > 0) {
+                        existedSites.push(resourceType);
+                    }
+                });
+                if (existedSites.length < 1) {
+                    // no functional factories
+                    break;
+                }
+
+                const damagedTypeKey = Math.round(getRandom(0, existedSites.length - 1));
+                const damagedType = existedSites[damagedTypeKey];
+                region.productionSites[damagedType]--;
+                region.damaged[damagedType]++;
+                damagedSites[damagedType]++;
+            }
+        }
+
+        defs.coefficients.resources.types.forEach(resourceType => {
+            if(damagedSites[resourceType] > 0) {
+               auditLog.push({
+                   "type": "damage",
+                   "region": region.name,
+                   "resource": resourceType,
+                   "number": damagedSites[resourceType]
+               })
+            }
+        });
+    }
 }
 
 function produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType) {
@@ -90,6 +149,33 @@ function produceResources(auditLog, defs, regionDef, region, productionCoef, res
             "resource": resourceType,
             "number": produced,
             "effectiveness": Math.round(resourceCoef * 100) / 100
+        })
+    }
+}
+
+function constructProductionSite(auditLog, region, resourceType) {
+    if (region.constructing[resourceType] > 0) {
+        region.productionSites[resourceType] += region.constructing[resourceType];
+
+        auditLog.push({
+            "type": "construction",
+            "region": region.name,
+            "resource": resourceType,
+            "number": region.constructing[resourceType]
+        })
+    }
+}
+
+function repairProductionSite(auditLog, region, resourceType) {
+    if (region.repairing[resourceType] > 0) {
+        region.productionSites[resourceType] += region.repairing[resourceType];
+        region.damaged[resourceType] -= region.repairing[resourceType];
+
+        auditLog.push({
+            "type": "repair",
+            "region": region.name,
+            "resource": resourceType,
+            "number": region.repairing[resourceType]
         })
     }
 }
