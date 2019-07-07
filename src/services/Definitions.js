@@ -4,6 +4,7 @@ module.exports.getInitialState = () => {
     defs.regions.forEach(region => {
         regionsDto.push({
             "name": region.name,
+            "enabled": region.priority < 3,
             "population": {
                 "total": calculateAbsoluteValue(defs.coefficients.population.start, region.start.population),
                 "wheat": 0,

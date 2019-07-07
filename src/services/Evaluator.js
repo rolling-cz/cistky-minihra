@@ -32,6 +32,10 @@ function finishTransport(auditLog, transport, regions) {
 }
 
 function evaluateRegion(auditLog, defs, region) {
+    if (!region.enabled) {
+        return;
+    }
+
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
 
     // TODO process armies

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import {evaluateAct} from "../services/Evaluator";
 import DetailedAuditLog from "./DetailedAuditLog";
 import TransportList from "./Transports";
+import RegionList from "./RegionList";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -28,6 +29,13 @@ export default class GameContainer extends React.Component {
             region[id] = value;
         }
 
+        this.setState({currentState: newState})
+    }
+
+    toggleRegion(name) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        const region = newState.regions.find(region => region.name === name);
+        region.enabled = !region.enabled;
         this.setState({currentState: newState})
     }
 
@@ -66,55 +74,16 @@ export default class GameContainer extends React.Component {
         const definitions = getDefinitions();
 
         // TODO add armies
-        // TODO disable regions
 
         return (
             <div>
                 <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}.dějství</h3>
 
-                <div className="row">
-                    <div className="col-md-2 font-weight-bold">
-                        Název
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Populace
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Útlak
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Jídlo
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Pšenice
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Ocel
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Palivo
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Poškozené
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Výstavba
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Oprava
-                    </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Rebelové
-                    </div>
-                </div>
-                {
-                    this.state.currentState.regions.map((regionState, i) => {
-                        return <Region definition={definitions.regions.find(region => region.name === regionState.name)}
-                                       currentState={regionState}
-                                       updateHandler={this.updateRegion.bind(this)}
-                                       key={i} />
-                    })
-                }
+                <RegionList definitions={definitions}
+                            currentState={this.state.currentState}
+                            updateHandler={this.updateRegion.bind(this)}
+                            toggleRegion={this.toggleRegion.bind(this)}
+                />
 
                 <TransportList defs={definitions}
                                transports={this.state.currentState.transports}

@@ -28,7 +28,7 @@ export default class TransportList extends React.Component {
         return (
             <div className="mt-3">
                 <h3>Seznam transportů mezi regiony</h3>
-                <div className="row">
+                <div className="row justify-content-md-center">
                     <div className="col-md-3 font-weight-bold">
                         Zdrojový region
                     </div>
@@ -43,7 +43,7 @@ export default class TransportList extends React.Component {
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row justify-content-md-center">
                     <div className="col-md-3">
                         <select className="browser-default custom-select"
                                 value={this.state.newTransportSource}
