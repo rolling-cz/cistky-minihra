@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+div .invalid {
+  background-color: #f5c6cb;
+}
+
+div .odd-row {
+  background-color: #cdcdcd;
+}
+
 @media only print {
   .no-print {
     display: none;

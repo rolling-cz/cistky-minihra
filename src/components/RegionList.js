@@ -56,6 +56,7 @@ export default class RegionList extends React.Component {
     }
 
     render() {
+        let order = 0;
         return (
             <div className="mt-3">
                 <div className="row justify-content-md-center">
@@ -83,7 +84,8 @@ export default class RegionList extends React.Component {
                                 currentState={regionState}
                                 updateHandler={this.state.updateHandler}
                                 toggleRegion={this.state.toggleRegion}
-                                key={i}/>
+                                key={i}
+                                order={order++}/>
                         } else {
                             return "";
                         }

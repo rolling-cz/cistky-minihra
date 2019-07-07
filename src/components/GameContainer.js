@@ -8,6 +8,8 @@ import RegionList from "./RegionList";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
+import {validateRegion} from "../services/Validator";
+import Alert from "react-bootstrap/Alert";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -17,7 +19,8 @@ export default class GameContainer extends React.Component {
             currentState: getInitialState(),
             newState: null,
             history: [],
-            logTab: "detail"
+            logTab: "detail",
+            error: null
         }
     }
 
@@ -32,7 +35,12 @@ export default class GameContainer extends React.Component {
             region[id] = value;
         }
 
-        this.setState({currentState: newState})
+        const error = validateRegion(getDefinitions(), region, newState.transports);
+        if (!error) {
+            this.setState({currentState: newState, error: null})
+        } else {
+            this.setState({error: error})
+        }
     }
 
     toggleRegion(name) {
@@ -45,7 +53,14 @@ export default class GameContainer extends React.Component {
     addTransport(sourceRegion, targetRegion, number) {
         const newState = JSON.parse(JSON.stringify(this.state.currentState));
         newState.transports.push({sourceRegion: sourceRegion, targetRegion: targetRegion, number});
-        this.setState({currentState: newState})
+
+        const region = newState.regions.find(region => region.name === sourceRegion);
+        const error = validateRegion(getDefinitions(), region, newState.transports);
+        if (!error) {
+            this.setState({currentState: newState, error: null})
+        } else {
+            this.setState({error: error})
+        }
     }
 
     cancelTransport(transportKey) {
@@ -57,8 +72,6 @@ export default class GameContainer extends React.Component {
     }
 
     evaluate() {
-        // TODO validations
-
         const newState = evaluateAct(getDefinitions(), this.state.currentState);
         this.setState({newState: newState});
     }
@@ -90,12 +103,23 @@ export default class GameContainer extends React.Component {
         })
     }
 
+    renderError() {
+        if (this.state.error) {
+            return (
+                <Alert variant="danger" onClose={() => this.setState({error: null})} dismissible>
+                    {this.state.error}
+                </Alert>
+            )
+        }
+    }
+
     renderForm() {
         const definitions = getDefinitions();
 
         return (
             <div>
                 <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}. dějství</h3>
+                {this.renderError()}
 
                 <RegionList definitions={definitions}
                             currentState={this.state.currentState}
@@ -155,7 +179,7 @@ export default class GameContainer extends React.Component {
 
     render() {
         return (
-            <div className="container mt-2">
+            <div className={`container mt-2 ${this.state.error ? "invalid" : ""}`}>
                 {this.state.newState ? this.renderEvaluation() : this.renderForm()}
             </div>
         )

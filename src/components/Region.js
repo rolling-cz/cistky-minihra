@@ -10,23 +10,33 @@ export default class Region extends React.Component {
             currentState: props.currentState,
             previousState: props.previousState,
             updateHandler: props.updateHandler,
-            toggleRegion: props.toggleRegion
+            toggleRegion: props.toggleRegion,
+            order: props.order
         }
     }
 
     componentWillReceiveProps(props) {
-        this.setState({currentState: props.currentState, previousState: props.previousState})
+        this.setState({currentState: props.currentState, previousState: props.previousState, order: props.order})
     }
 
     handleChange(event) {
-        const value = parseInt(event.target.value);
+        let value = parseInt(event.target.value);
+        if (isNaN(value)) {
+            value = 0;
+        }
+
+        if (value < 0) {
+            value = 0;
+        }
+
         const id = event.target.id;
         this.state.updateHandler(this.state.definition.name, id, value);
     }
 
     render() {
+        const rowClass = this.state.order%2 === 1 ? '' : 'odd-row';
         return (
-            <div className="row mt-2 justify-content-md-center">
+            <div className={`row mt-2 justify-content-md-center ${rowClass}`}>
                 <div className="col-md-2 font-weight-bold">
                     {this.state.definition.name} <br />
                     <Button variant="dark" onClick={() => this.state.toggleRegion(this.state.definition.name)} className="mr-1">

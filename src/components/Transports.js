@@ -78,7 +78,7 @@ export default class TransportList extends React.Component {
 
                 {this.state.transports.map((transport, i) =>{
                     return (
-                        <div className="row mt-1" key={i}>
+                        <div className="row mt-1 justify-content-md-center" key={i}>
                             <div className="col-md-3">
                                 {transport.sourceRegion}
                             </div>
