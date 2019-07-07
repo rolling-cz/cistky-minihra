@@ -4,6 +4,7 @@ import Region from "./Region";
 import Button from "react-bootstrap/Button";
 import {evaluateAct} from "../services/Evaluator";
 import DetailedAuditLog from "./DetailedAuditLog";
+import TransportList from "./Transports";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -28,6 +29,20 @@ export default class GameContainer extends React.Component {
         }
 
         this.setState({currentState: newState})
+    }
+
+    addTransport(sourceRegion, targetRegion, number) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.transports.push({sourceRegion: sourceRegion, targetRegion: targetRegion, number});
+        this.setState({currentState: newState})
+    }
+
+    cancelTransport(transportKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        if (newState.transports.length > transportKey && transportKey >= 0 ) {
+            newState.transports.splice(transportKey, 1);
+            this.setState({currentState: newState})
+        }
     }
 
     evaluate() {
@@ -55,6 +70,8 @@ export default class GameContainer extends React.Component {
 
         return (
             <div>
+                <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}.dějství</h3>
+
                 <div className="row">
                     <div className="col-md-2 font-weight-bold">
                         Název
@@ -99,6 +116,11 @@ export default class GameContainer extends React.Component {
                     })
                 }
 
+                <TransportList defs={definitions}
+                               transports={this.state.currentState.transports}
+                               addTransport={this.addTransport.bind(this)}
+                               cancelTransport={this.cancelTransport.bind(this)}/>
+
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
                         Vyhodnotit dějství
@@ -110,6 +132,8 @@ export default class GameContainer extends React.Component {
 
     renderEvaluation() {
         const definitions = getDefinitions();
+
+        // TODO politbyro audit log
 
         return (
             <div>
@@ -129,7 +153,6 @@ export default class GameContainer extends React.Component {
     render() {
         return (
             <div className="container mt-2">
-                <h2>Vyhodnocovač minihry</h2>
                 {this.state.newState ? this.renderEvaluation() : this.renderForm()}
             </div>
         )

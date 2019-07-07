@@ -1,20 +1,40 @@
 module.exports.evaluateAct = (definitions, state) => {
     const newState = JSON.parse(JSON.stringify(state));
 
-    // TODO process armies
+    newState.transports.forEach(transport => startTransport(newState.auditLog, transport, newState.regions));
 
-    // TODO start transports
-
-    // process regions
     newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region));
 
-    // TODO finish transports
-
+    newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
     return newState
 };
 
+function startTransport(auditLog, transport, regions) {
+    const sourceRegion = regions.find(region => region.name === transport.sourceRegion);
+    sourceRegion.population.total -= transport.number;
+
+    auditLog.push({
+        "type": "transportOut",
+        "region": sourceRegion.name,
+        "number": transport.number
+    })
+}
+
+function finishTransport(auditLog, transport, regions) {
+    const targetRegion = regions.find(region => region.name === transport.targetRegion);
+    targetRegion.population.total += transport.number;
+
+    auditLog.push({
+        "type": "transportIn",
+        "region": targetRegion.name,
+        "number": transport.number
+    })
+}
+
 function evaluateRegion(auditLog, defs, region) {
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
+
+    // TODO process armies
 
     // rebels from previous act
     const activeRebels = region.rebels;

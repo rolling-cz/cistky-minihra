@@ -87,7 +87,7 @@ function getDefinitions() {
             ],
             "population": {
                 "start": 8,
-                "bornProbabilityPerPop": 5,
+                "bornProbabilityPerPop": 3,
                 "numberOfBirthed": 1
             },
             "rebellion": {

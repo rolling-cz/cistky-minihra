@@ -130,6 +130,14 @@ export default class DetailedAuditLog extends React.Component {
                 logType = "Poškozené výrobní zařízení";
                 logDescription = `Povstalci poškodili ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
                 break;
+            case "transportOut":
+                logType = "Odchozí transport";
+                logDescription = `Odešel transport čítající ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                break;
+            case "transportIn":
+                logType = "Příchozí transport";
+                logDescription = `Dorazil transport čítající ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                break;
             default:
                 logType = "UNKNOWN";
                 logDescription = JSON.stringify(log);
