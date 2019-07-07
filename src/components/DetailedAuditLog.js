@@ -1,4 +1,11 @@
 import React from "react";
+import {
+    effectivnessToWord,
+    inflectGroups,
+    inflectProductionSites,
+    inflectResources,
+    resourceToWord4thCase, resourceToWord2ndCase, aggregateByRegion
+} from "../services/AuditLogUtils";
 
 export default class DetailedAuditLog extends React.Component {
     constructor(props) {
@@ -6,145 +13,66 @@ export default class DetailedAuditLog extends React.Component {
 
         this.state = {
             definitions: props.definitions,
-            auditLogPerRegion: this.aggregateByRegion(props.definitions, props.auditLog)
+            disabledRegions: props.disabledRegions,
+            auditLogPerRegion: aggregateByRegion(props.definitions, props.auditLog)
         }
     }
 
     componentWillReceiveProps(props) {
-        this.setState({auditLogPerRegion: this.aggregateByRegion(this.state.definitions, props.auditLog)})
+        this.setState({
+            auditLogPerRegion: aggregateByRegion(this.state.definitions, props.auditLog),
+            disabledRegions: props.disabledRegions
+        })
     }
 
-    aggregateByRegion(definitions, auditLog) {
-        const logsByRegions = {};
-        definitions.regions.forEach(region => logsByRegions[region.name] = []);
-
-        auditLog.forEach(log => {
-            if (log.region) {
-                logsByRegions[log.region].push(log)
-            }
-        });
-
-        return logsByRegions
-    }
-
-    static resourceToWord4thCase(resource) {
-        switch(resource) {
-            case "wheat":
-                return "pšenice";
-            case "steal":
-                return "ocele";
-            case "fuel":
-                return "paliva";
-            default:
-                return resource;
-        }
-    }
-
-    static resourceToWord1stCase(resource) {
-        switch(resource) {
-            case "wheat":
-                return "pšenici";
-            case "steal":
-                return "ocel";
-            case "fuel":
-                return "palivo";
-            default:
-                return resource;
-        }
-    }
-
-    static inflectResources(number) {
-        if (number === 1) {
-            return "jednotka"
-        } else if (number === 2 || number === 3 || number === 4) {
-            return "jednotky"
-        } else {
-            return "jednotek"
-        }
-    }
-
-    static inflectGroups(number) {
-        if (number === 1) {
-            return "skupina"
-        } else if (number === 2 || number === 3 || number === 4) {
-            return "skupiny"
-        } else {
-            return "skupin"
-        }
-    }
-
-    static inflectProductionSites(number) {
-        if (number === 1) {
-            return "produkční závod"
-        } else if (number === 2 || number === 3 || number === 4) {
-            return "produkční závody"
-        } else {
-            return "produkčních závodů"
-        }
-    }
-
-    static effectivnessToWord(number) {
-        if (number < 0.4) {
-            return "příšerná"
-        } else if (number < 0.8) {
-            return "špatná"
-        } else if (number < 1.1) {
-            return "průměrná"
-        } else if (number < 1.4) {
-            return "velice dobrá"
-        } else {
-            return "úžasná"
-        }
-    }
-
-    static renderOneLog(log, i) {
+     static renderOneLog(log, i) {
         let logType;
         let logDescription;
 
         switch(log.type) {
             case "production":
                 logType = "Produkce";
-                logDescription = `Vyprodukovali jsme ${log.number} ${DetailedAuditLog.inflectResources(log.number)} ${DetailedAuditLog.resourceToWord4thCase(log.resource)}. Efektivita byla ${DetailedAuditLog.effectivnessToWord(log.effectiveness)}.`;
+                logDescription = `Vyprodukovali jsme ${log.number} ${inflectResources(log.number)} ${resourceToWord2ndCase(log.resource)}. Efektivita byla ${effectivnessToWord(log.effectiveness)}.`;
                 break;
             case "starvation":
                 logType = "Hladomor";
-                logDescription = `Zemřelo ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                logDescription = `Zemřelo ${log.number} ${inflectGroups(log.number)} soudruhů.`;
                 break;
             case "rebellion":
                 logType = "Nepokoje";
-                logDescription = `Zaznamenali jsme ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} zrádců.`;
+                logDescription = `Zaznamenali jsme ${log.number} ${inflectGroups(log.number)} zrádců.`;
                 break;
             case "construction":
                 logType = "Výstavba výrobních zařízení";
-                logDescription = `Dokončili jsme ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
+                logDescription = `Dokončili jsme ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
                 break;
             case "repair":
                 logType = "Oprava výrobních zařízení";
-                logDescription = `Opravili jsme ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
+                logDescription = `Opravili jsme ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
                 break;
             case "natality":
                 logType = "Noví pracovníci";
-                logDescription = `Máme navíc ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů schopných práce.`;
+                logDescription = `Máme navíc ${log.number} ${inflectGroups(log.number)} soudruhů schopných práce.`;
                 break;
             case "damage":
                 logType = "Poškozené výrobní zařízení";
-                logDescription = `Povstalci poškodili ${log.number} ${DetailedAuditLog.inflectProductionSites(log.number)} na ${DetailedAuditLog.resourceToWord1stCase(log.resource)}.`;
+                logDescription = `Povstalci poškodili ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
                 break;
             case "transportOut":
                 logType = "Odchozí transport";
-                logDescription = `Odešel transport čítající ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                logDescription = `Odešel transport čítající ${log.number} ${inflectGroups(log.number)} soudruhů.`;
                 break;
             case "transportIn":
                 logType = "Příchozí transport";
-                logDescription = `Dorazil transport čítající ${log.number} ${DetailedAuditLog.inflectGroups(log.number)} soudruhů.`;
+                logDescription = `Dorazil transport čítající ${log.number} ${inflectGroups(log.number)} soudruhů.`;
                 break;
             case "victory":
                 logType = "Potlačení povstání";
-                logDescription = `Úspěšné potlačení vzpoury, naše ztráty ${log.soldiersWounded} ${DetailedAuditLog.inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${DetailedAuditLog.inflectGroups(log.rebelsWounded)} povstalců.`;
+                logDescription = `Úspěšné potlačení vzpoury, naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
             case "defeat":
                 logType = "Potlačení povstání";
-                logDescription = `Ostudná porážka od rebelů, naše ztráty ${log.soldiersWounded} ${DetailedAuditLog.inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${DetailedAuditLog.inflectGroups(log.rebelsWounded)} povstalců.`;
+                logDescription = `Ostudná porážka od rebelů, naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
             default:
                 logType = "UNKNOWN";
@@ -152,11 +80,11 @@ export default class DetailedAuditLog extends React.Component {
         }
 
         return (
-            <div className="row" key={i}>
+            <div className="row justify-content-md-center" key={i}>
                 <div className="col-md-4 font-weight-bold">
                     {logType}
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-8 text-left">
                     {logDescription}
                 </div>
             </div>
@@ -164,8 +92,9 @@ export default class DetailedAuditLog extends React.Component {
     }
 
     render() {
-        return (
-            this.state.definitions.regions.map((regionDef, i) => {
+        return this.state.definitions.regions
+            .filter(region => !this.state.disabledRegions.includes(region.name))
+            .map((regionDef, i) => {
                 return (
                     <div key={i} className="mt-2">
                         <h3>Region {regionDef.name}</h3>
@@ -176,6 +105,5 @@ export default class DetailedAuditLog extends React.Component {
                     </div>
                 )
             })
-        )
     }
 }

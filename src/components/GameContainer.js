@@ -1,11 +1,13 @@
 import React from "react";
 import {getInitialState, getDefinitions} from "../services/Definitions";
-import Region from "./Region";
 import Button from "react-bootstrap/Button";
 import {evaluateAct} from "../services/Evaluator";
 import DetailedAuditLog from "./DetailedAuditLog";
 import TransportList from "./Transports";
 import RegionList from "./RegionList";
+import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
+import PolitbyroAuditLog from "./PolitbyroAuditLog";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -14,7 +16,8 @@ export default class GameContainer extends React.Component {
         this.state = {
             currentState: getInitialState(),
             newState: null,
-            history: []
+            history: [],
+            logTab: "detail"
         }
     }
 
@@ -92,7 +95,7 @@ export default class GameContainer extends React.Component {
 
         return (
             <div>
-                <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}.dějství</h3>
+                <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}. dějství</h3>
 
                 <RegionList definitions={definitions}
                             currentState={this.state.currentState}
@@ -116,12 +119,28 @@ export default class GameContainer extends React.Component {
 
     renderEvaluation() {
         const definitions = getDefinitions();
-
-        // TODO politbyro audit log
+        const disabledRegions = this.state.newState.regions.filter(region => !region.enabled).map(region => region.name);
 
         return (
             <div>
-                <DetailedAuditLog definitions={definitions} auditLog={this.state.newState.auditLog} />
+                <h3 id="main-title">Výsledky hospodářství za {this.state.history.length + 1}. dějství</h3>
+                <Tabs
+                    id="log-tabs"
+                    activeKey={this.state.logTab}
+                    onSelect={key => this.setState({ logTab: key })}
+                >
+                    <Tab eventKey="detail" title="Kompletní info">
+                        <DetailedAuditLog definitions={definitions}
+                                          auditLog={this.state.newState.auditLog}
+                                          disabledRegions={disabledRegions}/>
+                    </Tab>
+                    <Tab eventKey="politbyro" title="Svodka pro Politbyro">
+                        <PolitbyroAuditLog definitions={definitions}
+                                           auditLog={this.state.newState.auditLog}
+                                           disabledRegions={disabledRegions}/>
+                    </Tab>
+                </Tabs>
+
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.applyEvaluation.bind(this)} className="mr-2">
                         Potvrdit vyhodnocení
