@@ -125,7 +125,37 @@ function getDefinitions() {
                         "defeat": 0.6
                     }
                 },
-                "soldiersOverRebels": 1.2
+                "soldiersOverRebels": 1.2,
+                "actions": {
+                    "maintenance": {
+                        "id": "maintenance",
+                        "name": "Údržba",
+                        "wheat": 0.25,
+                        "steal": 0,
+                        "fuel": 0
+                    },
+                    "conscripting": {
+                        "id": "conscripting",
+                        "name": "Zbrojení",
+                        "wheat": 1,
+                        "steal": 2,
+                        "fuel": 0
+                    },
+                    "fight": {
+                        "id": "fight",
+                        "name": "Boj",
+                        "wheat": 0.5,
+                        "steal": 0.5,
+                        "fuel": 1
+                    },
+                    "movement": {
+                        "id": "movement",
+                        "name": "Pohyb",
+                        "wheat": 0.25,
+                        "steal": 0,
+                        "fuel": 0.5
+                    }
+                }
             }
         },
         "regions": [

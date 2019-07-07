@@ -10,6 +10,7 @@ import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import {validateRegion} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
+import Armies from "./Armies";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -20,6 +21,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "detail",
+            formTab: "regions",
             error: null
         }
     }
@@ -115,9 +117,26 @@ export default class GameContainer extends React.Component {
 
     renderForm() {
         const definitions = getDefinitions();
-
         return (
-            <div>
+            <Tabs
+                id="form-tabs"
+                activeKey={this.state.formTab}
+                onSelect={key => this.setState({ formTab: key })}
+            >
+                <Tab eventKey="regions" title="Regiony">
+                    {this.renderRegions(definitions)}
+                </Tab>
+                <Tab eventKey="army" title="Armáda">
+                    <Armies defs={definitions}/>
+                </Tab>
+            </Tabs>
+
+        )
+    }
+
+    renderRegions(definitions) {
+        return (
+            <div className="mt-4">
                 <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}. dějství</h3>
                 {this.renderError()}
 
