@@ -11,13 +11,15 @@ module.exports.evaluateAct = (definitions, state) => {
 
 function startTransport(auditLog, transport, regions) {
     const sourceRegion = regions.find(region => region.name === transport.sourceRegion);
-    sourceRegion.population.total -= transport.number;
+    if (sourceRegion) {
+        sourceRegion.population.total -= transport.number;
 
-    auditLog.push({
-        "type": "transportOut",
-        "region": sourceRegion.name,
-        "number": transport.number
-    })
+        auditLog.push({
+            "type": "transportOut",
+            "region": sourceRegion.name,
+            "number": transport.number
+        })
+    }
 }
 
 function finishTransport(auditLog, transport, regions) {

@@ -48,6 +48,7 @@ export default class TransportList extends React.Component {
                         <select className="browser-default custom-select"
                                 value={this.state.newTransportSource}
                                 onChange={(e) => this.setState({newTransportSource: e.target.value})}>
+                            <option value="Zahraničí" >Zahraničí</option>
                             {this.state.defs.regions.map((region, i) => {
                                 return (<option value={region.name} key={i}>{region.name}</option>)
                             })}

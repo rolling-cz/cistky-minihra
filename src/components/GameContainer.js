@@ -58,11 +58,15 @@ export default class GameContainer extends React.Component {
         newState.transports.push({sourceRegion: sourceRegion, targetRegion: targetRegion, number});
 
         const region = newState.regions.find(region => region.name === sourceRegion);
-        const error = validateRegion(getDefinitions(), region, newState.transports);
-        if (!error) {
-            this.setState({currentState: newState, error: null})
+        if (region) {
+            const error = validateRegion(getDefinitions(), region, newState.transports);
+            if (!error) {
+                this.setState({currentState: newState, error: null})
+            } else {
+                this.setState({error: error})
+            }
         } else {
-            this.setState({error: error})
+            this.setState({currentState: newState, error: null})
         }
     }
 
