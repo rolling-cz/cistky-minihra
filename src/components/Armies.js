@@ -10,7 +10,8 @@ export default class Armies extends React.Component {
                 maintenance: 0,
                 conscripting: 0,
                 fight: 0,
-                movement: 0
+                movement: 0,
+                patrolling: 0
             }
         }
     }
@@ -69,6 +70,7 @@ export default class Armies extends React.Component {
         costs.push(this.calculateCosts(this.state.defs.coefficients.army.actions.conscripting));
         costs.push(this.calculateCosts(this.state.defs.coefficients.army.actions.fight));
         costs.push(this.calculateCosts(this.state.defs.coefficients.army.actions.movement));
+        costs.push(this.calculateCosts(this.state.defs.coefficients.army.actions.patrolling));
 
         const totalCosts = {};
         this.state.defs.coefficients.resources.types.forEach(resourceType => {
@@ -81,7 +83,8 @@ export default class Armies extends React.Component {
         const units = this.state.actions.maintenance
             + this.state.actions.conscripting
             + this.state.actions.fight
-            + this.state.actions.movement;
+            + this.state.actions.movement
+            + this.state.actions.patrolling;
 
         return (
             <div className="row justify-content-md-center mt-2">
@@ -129,6 +132,7 @@ export default class Armies extends React.Component {
                 {this.renderAction(this.state.defs.coefficients.army.actions.conscripting)}
                 {this.renderAction(this.state.defs.coefficients.army.actions.fight)}
                 {this.renderAction(this.state.defs.coefficients.army.actions.movement)}
+                {this.renderAction(this.state.defs.coefficients.army.actions.patrolling)}
                 {this.renderSum()}
             </div>
         )

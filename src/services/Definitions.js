@@ -92,7 +92,7 @@ function getDefinitions() {
             ],
             "population": {
                 "start": 8,
-                "bornProbabilityPerPop": 3,
+                "bornProbabilityPerPop": 6,
                 "numberOfBirthed": 1
             },
             "rebellion": {
@@ -154,6 +154,13 @@ function getDefinitions() {
                         "wheat": 0.25,
                         "steal": 0,
                         "fuel": 0.5
+                    },
+                    "patrolling": {
+                        "id": "patrolling",
+                        "name": "Hlídkování",
+                        "wheat": 0.5,
+                        "steal": 0,
+                        "fuel": 0.25
                     }
                 }
             }
