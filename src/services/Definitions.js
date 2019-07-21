@@ -73,26 +73,26 @@ function getDefinitions() {
             "fearLevels": [
                 {
                     "level": 1,
-                    "production": 100,
+                    "production": 90,
                     "rebellionRisk": 5,
                     "rebellionSize": 1
                 },
                 {
                     "level": 2,
-                    "production": 115,
+                    "production": 105,
                     "rebellionRisk": 15,
                     "rebellionSize": 1
                 },
                 {
                     "level": 3,
-                    "production": 130,
+                    "production": 120,
                     "rebellionRisk": 40,
                     "rebellionSize": 2
                 }
             ],
             "population": {
                 "start": 8,
-                "bornProbabilityPerPop": 6,
+                "bornProbabilityPerPop": 5,
                 "numberOfBirthed": 1
             },
             "rebellion": {
