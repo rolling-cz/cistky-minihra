@@ -195,35 +195,7 @@ function getDefinitions() {
                     "fuel": 100
                 }
             },{
-                "name": "Kavkaz",
-                "priority": 2,
-                "start": {
-                    "population": 50,
-                    "wheat": 50,
-                    "steal": 100,
-                    "fuel": 100
-                },
-                "richness": {
-                    "wheat": 100,
-                    "steal": 70,
-                    "fuel": 70
-                }
-            },{
-                "name": "Kazašská republika",
-                "priority": 3,
-                "start": {
-                    "population": 80,
-                    "wheat": 70,
-                    "steal": 50,
-                    "fuel": 0
-                },
-                "richness": {
-                    "wheat": 100,
-                    "steal": 100,
-                    "fuel": 0
-                }
-            },{
-                "name": "Krym",
+                "name": "Jih",
                 "priority": 3,
                 "start": {
                     "population": 100,
@@ -237,7 +209,49 @@ function getDefinitions() {
                     "fuel": 0
                 }
             },{
-                "name": "Leningradská oblast",
+                "name": "Jihozápad",
+                "priority": 1,
+                "start": {
+                    "population": 80,
+                    "wheat": 160,
+                    "steal": 0,
+                    "fuel": 100
+                },
+                "richness": {
+                    "wheat": 150,
+                    "steal": 0,
+                    "fuel": 100
+                }
+            },{
+                "name": "Jižní Kavkaz",
+                "priority": 2,
+                "start": {
+                    "population": 50,
+                    "wheat": 50,
+                    "steal": 100,
+                    "fuel": 100
+                },
+                "richness": {
+                    "wheat": 100,
+                    "steal": 70,
+                    "fuel": 70
+                }
+            },{
+                "name": "Kazachstán",
+                "priority": 3,
+                "start": {
+                    "population": 80,
+                    "wheat": 70,
+                    "steal": 50,
+                    "fuel": 0
+                },
+                "richness": {
+                    "wheat": 100,
+                    "steal": 100,
+                    "fuel": 0
+                }
+            },{
+                "name": "Severozápad",
                 "priority": 2,
                 "start": {
                     "population": 120,
@@ -251,7 +265,7 @@ function getDefinitions() {
                     "fuel": 0
                 }
             },{
-                "name": "Moskevská oblast",
+                "name": "Střed",
                 "priority": 1,
                 "start": {
                     "population": 150,
@@ -265,7 +279,7 @@ function getDefinitions() {
                     "fuel": 70
                 }
             },{
-                "name": "Rostov",
+                "name": "Střední černozem",
                 "priority": 3,
                 "start": {
                     "population": 100,
@@ -277,48 +291,6 @@ function getDefinitions() {
                     "wheat": 120,
                     "steal": 100,
                     "fuel": 0
-                }
-            },{
-                "name": "Sibiř",
-                "priority": 1,
-                "start": {
-                    "population": 50,
-                    "wheat": 10,
-                    "steal": 100,
-                    "fuel": 100
-                },
-                "richness": {
-                    "wheat": 20,
-                    "steal": 120,
-                    "fuel": 125
-                }
-            },{
-                "name": "Stalingradská oblast",
-                "priority": 2,
-                "start": {
-                    "population": 120,
-                    "wheat": 40,
-                    "steal": 100,
-                    "fuel": 50
-                },
-                "richness": {
-                    "wheat": 100,
-                    "steal": 100,
-                    "fuel": 70
-                }
-            },{
-                "name": "Ukrajina",
-                "priority": 1,
-                "start": {
-                    "population": 80,
-                    "wheat": 160,
-                    "steal": 0,
-                    "fuel": 100
-                },
-                "richness": {
-                    "wheat": 150,
-                    "steal": 0,
-                    "fuel": 100
                 }
             },{
                 "name": "Ural",
@@ -333,6 +305,34 @@ function getDefinitions() {
                     "wheat": 50,
                     "steal": 200,
                     "fuel": 0
+                }
+            },{
+                "name": "Volha",
+                "priority": 2,
+                "start": {
+                    "population": 120,
+                    "wheat": 40,
+                    "steal": 100,
+                    "fuel": 50
+                },
+                "richness": {
+                    "wheat": 100,
+                    "steal": 100,
+                    "fuel": 70
+                }
+            },{
+                "name": "Východní Sibiř",
+                "priority": 1,
+                "start": {
+                    "population": 50,
+                    "wheat": 10,
+                    "steal": 100,
+                    "fuel": 100
+                },
+                "richness": {
+                    "wheat": 20,
+                    "steal": 120,
+                    "fuel": 125
                 }
             }
         ]
