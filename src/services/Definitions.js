@@ -64,9 +64,9 @@ function getDefinitions() {
                     "fuel": 2
                 },
                 "income": {
-                    "wheat": 2,
-                    "steal": 1,
-                    "fuel": 2
+                    "wheat": 2.4,
+                    "steal": 1.2,
+                    "fuel": 2.4
                 },
                 "minProduction": 0.2
             },
