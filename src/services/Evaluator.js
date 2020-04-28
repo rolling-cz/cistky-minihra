@@ -40,6 +40,8 @@ function evaluateRegion(auditLog, defs, region) {
 
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
 
+    processRecruiting(auditLog, region);
+
     const activeRebels = processArmies(auditLog, defs, region);
 
     // rebels from previous act
@@ -50,6 +52,7 @@ function evaluateRegion(auditLog, defs, region) {
     const fearLevel = defs.coefficients.fearLevels.find(fear => fear.level === region.fearLevel);
     let productionCoef = fearLevel.production / 100;
     productionCoef *= rebelNegativeBonus;
+    productionCoef *= 1 + (defs.coefficients.monuments.productivity * region.monuments.finished) / 100;
     if (productionCoef < defs.coefficients.resources.minProduction) {
         productionCoef = defs.coefficients.resources.minProduction
     }
@@ -108,9 +111,33 @@ function evaluateRegion(auditLog, defs, region) {
         constructProductionSite(auditLog, region, resourceType);
     });
 
+    processBuildingMonuments(auditLog, region);
+
     defs.coefficients.resources.types.forEach(resourceType => {
         repairProductionSite(auditLog, region, resourceType);
     });
+}
+
+function processBuildingMonuments(auditLog, region) {
+    if (region.monuments.building > 0) {
+        region.monuments.finished += region.monuments.building;
+        auditLog.push({
+           "type": "monuments",
+           "region": region.name,
+           "number": region.monuments.building
+       })
+    }
+}
+
+function processRecruiting(auditLog, region) {
+    if (region.population.recruiting > 0) {
+        region.population.total -= region.population.recruiting;
+        auditLog.push({
+           "type": "recruiting",
+           "region": region.name,
+           "number": region.population.recruiting
+       })
+    }
 }
 
 function processArmies(auditLog, defs, region) {

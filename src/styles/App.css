@@ -10,6 +10,10 @@ div .odd-row {
   background-color: #cdcdcd;
 }
 
+input[type=text] {
+    width: 30px;
+}
+
 @media only print {
   .no-print {
     display: none;

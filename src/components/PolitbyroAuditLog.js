@@ -52,6 +52,12 @@ export default class PolitbyroAuditLog extends React.Component {
             case "defeat":
                 message = "Neúspěšně potlačené povstání";
                 break;
+            case "monuments":
+                message = "Výstavba monumentu";
+                break;
+            case "recruiting":
+                message = "Poskytnutí soudruhů pro armádu";
+                break;
             default:
                 return ""
         }

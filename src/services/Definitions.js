@@ -9,12 +9,17 @@ module.exports.getInitialState = () => {
                 "total": calculateAbsoluteValue(defs.coefficients.population.start, region.start.population),
                 "wheat": 0,
                 "steal": 0,
-                "fuel": 0
+                "fuel": 0,
+                "recruiting": 0
             },
             "productionSites": {
                 "wheat": calculateAbsoluteValue(defs.coefficients.resources.start.wheat, region.start.wheat),
                 "steal": calculateAbsoluteValue(defs.coefficients.resources.start.steal, region.start.steal),
                 "fuel": calculateAbsoluteValue(defs.coefficients.resources.start.fuel, region.start.fuel)
+            },
+            "monuments": {
+                "finished": 0,
+                "building": 0
             },
             "fearLevel": 1,
             "rebels": 0,
@@ -69,6 +74,10 @@ function getDefinitions() {
                     "fuel": 2.4
                 },
                 "minProduction": 0.2
+            },
+            "monuments": {
+                "productivity": 5,
+                "building": 1,
             },
             "fearLevels": [
                 {

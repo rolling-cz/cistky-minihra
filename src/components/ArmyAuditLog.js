@@ -34,6 +34,9 @@ export default class ArmyAuditLog extends React.Component {
             case "defeat":
                 message = `Neúspěšně potlačené povstání. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
+            case "recruiting":
+                message = `Poskytli ${log.number} ${inflectGroups(log.number)} soudruhů pro nábor do armády.`;
+                break;
             default:
                 return ""
         }

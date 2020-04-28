@@ -43,7 +43,7 @@ export default class Region extends React.Component {
                         Deaktivovat
                     </Button>
                 </div>
-                <div className="col-md-3 text-left">
+                <div className="col-md-2 text-left">
                     Populace celkem: {this.state.currentState.population.total} <br />
                     Útlak:
                     <select id="fearLevel" value={this.state.currentState.fearLevel}  onChange={this.handleChange.bind(this)}>
@@ -51,7 +51,7 @@ export default class Region extends React.Component {
                         <option value="2">Střední</option>
                         <option value="3">Vysoký</option>
                     </select> <br />
-                    Dedikované jídlo: <input id="food" type="text" size="3" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} /> <br />
+                    Poskytnuté jídlo: <input id="food" type="text" size="3" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Pšenice:
@@ -61,18 +61,23 @@ export default class Region extends React.Component {
                     {this.state.currentState.productionSites.steal} <br />
                     Palivo: <input id="population.fuel" type="text" size="2" value={this.state.currentState.population.fuel} onChange={this.handleChange.bind(this)} /> /
                     {this.state.currentState.productionSites.fuel} <br />
+                    Naverbovat: <input id="population.recruiting" type="text" size="3" value={this.state.currentState.population.recruiting} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Poškozené: {this.state.currentState.damaged.wheat}/{this.state.currentState.damaged.steal}/{this.state.currentState.damaged.fuel} <br />
-                    Budované
+                    Budované <br />
                     <input id="constructing.wheat" type="text" size="1" value={this.state.currentState.constructing.wheat} onChange={this.handleChange.bind(this)} />
                     <input id="constructing.steal" type="text" size="1" value={this.state.currentState.constructing.steal} onChange={this.handleChange.bind(this)} />
                     <input id="constructing.fuel" type="text" size="1" value={this.state.currentState.constructing.fuel} onChange={this.handleChange.bind(this)} />
                     <br />
-                    Opravované
+                    Opravované <br />
                     <input id="repairing.wheat" type="text" size="1" value={this.state.currentState.repairing.wheat} onChange={this.handleChange.bind(this)} />
                     <input id="repairing.steal" type="text" size="1" value={this.state.currentState.repairing.steal} onChange={this.handleChange.bind(this)} />
                     <input id="repairing.fuel" type="text" size="1" value={this.state.currentState.repairing.fuel} onChange={this.handleChange.bind(this)} />
+                </div>
+                <div className="col-md-2 text-left">
+                    Dokončeno: {this.state.currentState.monuments.finished} <br />
+                    Postavit: <input id="monuments.building" type="text" size="1" value={this.state.currentState.monuments.building} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Rebelové: {this.state.currentState.rebels} <br />

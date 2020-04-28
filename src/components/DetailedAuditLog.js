@@ -74,6 +74,14 @@ export default class DetailedAuditLog extends React.Component {
                 logType = "Potlačení povstání";
                 logDescription = `Ostudná porážka od rebelů, naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
+            case "monuments":
+                logType = "Výstavba monumentu";
+                logDescription = `Dokončili jsme stavbu ${log.number} monumentu.`;
+                break;
+            case "recruiting":
+                logType = "Nábor armády";
+                logDescription = `Poskytli jsme ${log.number} ${inflectGroups(log.number)} soudruhů pro nábor do armády.`;
+                break;
             default:
                 return ""
         }

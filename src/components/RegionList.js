@@ -63,7 +63,7 @@ export default class RegionList extends React.Component {
                     <div className="col-md-2 font-weight-bold">
                         Název
                     </div>
-                    <div className="col-md-3 font-weight-bold">
+                    <div className="col-md-2 font-weight-bold">
                         Populace
                     </div>
                     <div className="col-md-2 font-weight-bold">
@@ -71,6 +71,9 @@ export default class RegionList extends React.Component {
                     </div>
                     <div className="col-md-2 font-weight-bold">
                         Produkcní zařízení
+                    </div>
+                    <div className="col-md-2 font-weight-bold">
+                        Monumenty
                     </div>
                     <div className="col-md-2 font-weight-bold">
                         Jednotky

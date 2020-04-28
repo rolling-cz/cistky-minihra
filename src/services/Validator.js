@@ -7,6 +7,9 @@ module.exports.validateRegion = (defs, region, transports) => {
         totalWorkers += region.population[resourceType];
     });
 
+    // population - recruiting
+    totalWorkers += region.population["recruiting"];
+
     // population - transports
     let totalTransports = transports
         .filter(transport => transport.sourceRegion === region.name)
@@ -30,6 +33,11 @@ module.exports.validateRegion = (defs, region, transports) => {
             error = `Není tolik poškozených zařízení na produkci ${resourceType}.`;
         }
     });
+
+    // monuments max building
+    if (region.monuments.building > defs.coefficients.monuments.building) {
+        return `V jednu chvíli lze stavět pouze ${defs.coefficients.monuments.building} monument.`;
+    }
 
     return error;
 };
