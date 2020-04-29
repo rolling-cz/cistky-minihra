@@ -11,6 +11,7 @@ import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import {validateRegion} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import Armies from "./Armies";
+import ConfigTab from "./ConfigTab";
 import ArmyAuditLog from "./ArmyAuditLog";
 
 export default class GameContainer extends React.Component {
@@ -19,6 +20,7 @@ export default class GameContainer extends React.Component {
 
         this.state = {
             currentState: getInitialState(),
+            definitions: getDefinitions(),
             newState: null,
             history: [],
             logTab: "detail",
@@ -38,7 +40,7 @@ export default class GameContainer extends React.Component {
             region[id] = value;
         }
 
-        const error = validateRegion(getDefinitions(), region, newState.transports);
+        const error = validateRegion(this.state.definitions, region, newState.transports);
         if (!error) {
             this.setState({currentState: newState, error: null})
         } else {
@@ -59,7 +61,7 @@ export default class GameContainer extends React.Component {
 
         const region = newState.regions.find(region => region.name === sourceRegion);
         if (region) {
-            const error = validateRegion(getDefinitions(), region, newState.transports);
+            const error = validateRegion(this.state.definitions, region, newState.transports);
             if (!error) {
                 this.setState({currentState: newState, error: null})
             } else {
@@ -68,6 +70,10 @@ export default class GameContainer extends React.Component {
         } else {
             this.setState({currentState: newState, error: null})
         }
+    }
+
+    updateConfig(newDef) {
+        this.setState({definitions: newDef})
     }
 
     cancelTransport(transportKey) {
@@ -79,7 +85,7 @@ export default class GameContainer extends React.Component {
     }
 
     evaluate() {
-        const newState = evaluateAct(getDefinitions(), this.state.currentState);
+        const newState = evaluateAct(this.state.definitions, this.state.currentState);
         this.setState({newState: newState});
     }
 
@@ -94,7 +100,7 @@ export default class GameContainer extends React.Component {
     }
 
     prepareStateForNextAct(newState) {
-        const definitions = getDefinitions();
+        const definitions = this.state.definitions;
 
         newState.auditLog = [];
         newState.transports = [];
@@ -121,7 +127,6 @@ export default class GameContainer extends React.Component {
     }
 
     renderForm() {
-        const definitions = getDefinitions();
         return (
             <Tabs
                 id="form-tabs"
@@ -129,10 +134,16 @@ export default class GameContainer extends React.Component {
                 onSelect={key => this.setState({ formTab: key })}
             >
                 <Tab eventKey="regions" title="Regiony">
-                    {this.renderRegions(definitions)}
+                    {this.renderRegions(this.state.definitions)}
                 </Tab>
                 <Tab eventKey="army" title="Armáda">
-                    <Armies defs={definitions}/>
+                    <Armies defs={this.state.definitions}/>
+                </Tab>
+                <Tab eventKey="config" title="Konfigurace">
+                    <ConfigTab
+                        defs={this.state.definitions}
+                        updateHandler={this.updateConfig.bind(this)}
+                        originalDefs={getDefinitions()}/>
                 </Tab>
             </Tabs>
 
@@ -166,7 +177,7 @@ export default class GameContainer extends React.Component {
     }
 
     renderEvaluation() {
-        const definitions = getDefinitions();
+        const definitions = this.state.definitions;
         const disabledRegions = this.state.newState.regions.filter(region => !region.enabled).map(region => region.name);
 
         return (
