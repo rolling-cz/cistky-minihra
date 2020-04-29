@@ -13,6 +13,7 @@ import Alert from "react-bootstrap/Alert";
 import Armies from "./Armies";
 import ConfigTab from "./ConfigTab";
 import ArmyAuditLog from "./ArmyAuditLog";
+import Ranking from "../services/Ranking";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -179,7 +180,7 @@ export default class GameContainer extends React.Component {
     renderEvaluation() {
         const definitions = this.state.definitions;
         const disabledRegions = this.state.newState.regions.filter(region => !region.enabled).map(region => region.name);
-
+        const ranking = new Ranking(definitions, disabledRegions, this.state.newState.auditLog);
         return (
             <div>
                 <h3 id="main-title">Výsledky hospodářství za {this.state.history.length + 1}. dějství</h3>
@@ -191,12 +192,14 @@ export default class GameContainer extends React.Component {
                     <Tab eventKey="detail" title="Kompletní info">
                         <DetailedAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
-                                          disabledRegions={disabledRegions}/>
+                                          disabledRegions={disabledRegions}
+                                          ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="politbyro" title="Svodka pro Politbyro">
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
-                                           disabledRegions={disabledRegions}/>
+                                           disabledRegions={disabledRegions}
+                                           ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="army" title="Svodka pro armádu">
                         <ArmyAuditLog definitions={definitions}

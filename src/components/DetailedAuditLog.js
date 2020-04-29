@@ -25,7 +25,20 @@ export default class DetailedAuditLog extends React.Component {
         })
     }
 
-     static renderOneLog(log, i) {
+    static renderRank(rankPoints, i) {
+        return (
+            <div className="row justify-content-md-center">
+                <div className="col-md-4 font-weight-bold">
+                    Ocenění
+                </div>
+                <div className="col-md-8 text-left">
+                    {rankPoints}
+                </div>
+            </div>
+        )
+    }
+
+    static renderOneLog(log, i) {
         let logType;
         let logDescription;
 
@@ -105,6 +118,7 @@ export default class DetailedAuditLog extends React.Component {
                 return (
                     <div key={i} className="mt-2">
                         <h3>Region {regionDef.name}</h3>
+                        {DetailedAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                         {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                             return DetailedAuditLog.renderOneLog(log, i)
                         })}

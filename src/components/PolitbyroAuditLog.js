@@ -24,6 +24,18 @@ export default class PolitbyroAuditLog extends React.Component {
         })
     }
 
+    static renderRank(rankPoints, i) {
+        if (rankPoints != 0) {
+            return (
+                <div>
+                    Ocenění {rankPoints}
+                </div>
+            )
+        } else {
+            return "";
+        }
+    }
+
     static renderOneLog(log, i) {
         let message;
 
@@ -79,6 +91,7 @@ export default class PolitbyroAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
+                            {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                                 return PolitbyroAuditLog.renderOneLog(log, i)
                             })}

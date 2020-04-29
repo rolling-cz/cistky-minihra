@@ -75,6 +75,56 @@ function getDefinitions() {
                 },
                 "minProduction": 0.2
             },
+            "ranking": {
+                "production": {
+                    "min": 1,
+                    "wheat": 6,
+                    "steal": 8,
+                    "fuel": 8
+                },
+                "starvation": -5,
+                "rebellion": -10,
+                "construction": {
+                    "wheat": 10,
+                    "steal": 12,
+                    "fuel": 12
+                },
+                "repair": {
+                    "wheat": 6,
+                    "steal": 8,
+                    "fuel": 8
+                },
+                "natality": 4,
+                "damage": {
+                    "wheat": -5,
+                    "steal": -7,
+                    "fuel": -7
+                },
+                "transport": {
+                    "out": 3,
+                    "in": 1
+                },
+                "monument": 20,
+                "recruiting": 5,
+                "points": {
+                    "best": {
+                        "rank": 2,
+                        "number": 1
+                    },
+                    "good": {
+                        "rank": 1,
+                        "percent": 0.4
+                    },
+                    "bad": {
+                        "rank": -1,
+                        "percent": 0.1
+                    },
+                    "worst": {
+                        "rank": -2,
+                        "number": 1
+                    },
+                }
+            },
             "monuments": {
                 "productivity": 5,
                 "building": 1,
