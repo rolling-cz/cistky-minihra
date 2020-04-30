@@ -8,6 +8,8 @@ import RegionList from "./RegionList";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
+import RegionsSummaryAuditLog from "./RegionsSummaryAuditLog";
+import RegionsAdminsAuditLog from "./RegionsAdminsAuditLog";
 import {validateRegion} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import Armies from "./Armies";
@@ -24,7 +26,7 @@ export default class GameContainer extends React.Component {
             definitions: getDefinitions(),
             newState: null,
             history: [],
-            logTab: "detail",
+            logTab: "regionsComplete",
             formTab: "regions",
             error: null
         }
@@ -189,19 +191,31 @@ export default class GameContainer extends React.Component {
                     activeKey={this.state.logTab}
                     onSelect={key => this.setState({ logTab: key })}
                 >
-                    <Tab eventKey="detail" title="Kompletní info">
+                    <Tab eventKey="regionsComplete" title="Regiony kompletní">
                         <DetailedAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="politbyro" title="Svodka pro Politbyro">
+                    <Tab eventKey="regionsSummary" title="Regiony shrnutí">
+                        <RegionsSummaryAuditLog definitions={definitions}
+                                          auditLog={this.state.newState.auditLog}
+                                          disabledRegions={disabledRegions}
+                                          ranking={ranking}/>
+                    </Tab>
+                    <Tab eventKey="regionsAdmins" title="Regiony orgové">
+                        <RegionsAdminsAuditLog definitions={definitions}
+                                          auditLog={this.state.newState.auditLog}
+                                          disabledRegions={disabledRegions}
+                                          ranking={ranking}/>
+                    </Tab>
+                    <Tab eventKey="politbyro" title="Politbyro">
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
                                            disabledRegions={disabledRegions}
                                            ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="army" title="Svodka pro armádu">
+                    <Tab eventKey="army" title="Armáda">
                         <ArmyAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledRegions={disabledRegions}/>

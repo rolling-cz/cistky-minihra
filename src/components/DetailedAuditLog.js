@@ -4,7 +4,10 @@ import {
     inflectGroups,
     inflectProductionSites,
     inflectResources,
-    resourceToWord4thCase, resourceToWord2ndCase, aggregateByRegion
+    resourceToWord4thCase,
+    resourceToWord2ndCase,
+    aggregateByRegion,
+    rankingToWord
 } from "../services/AuditLogUtils";
 
 export default class DetailedAuditLog extends React.Component {
@@ -29,10 +32,10 @@ export default class DetailedAuditLog extends React.Component {
         return (
             <div className="row justify-content-md-center">
                 <div className="col-md-4 font-weight-bold">
-                    Ocenění
+                    Hodnocení
                 </div>
                 <div className="col-md-8 text-left">
-                    {rankPoints}
+                    {rankingToWord(rankPoints)}
                 </div>
             </div>
         )

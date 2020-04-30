@@ -7,7 +7,7 @@ import {
     rankingToWord
 } from "../services/AuditLogUtils";
 
-export default class PolitbyroAuditLog extends React.Component {
+export default class RegionsSummaryAuditLog extends React.Component {
     constructor(props) {
         super(props);
 
@@ -26,15 +26,11 @@ export default class PolitbyroAuditLog extends React.Component {
     }
 
     static renderRank(rankPoints, i) {
-        if (rankPoints !== 0) {
-            return (
-                <div>
-                    {rankingToWord(rankPoints)}
-                </div>
-            )
-        } else {
-            return "";
-        }
+        return (
+            <div>
+                {rankingToWord(rankPoints)}
+            </div>
+        )
     }
 
     static renderOneLog(log, i) {
@@ -92,9 +88,9 @@ export default class PolitbyroAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
-                            {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
+                            {RegionsSummaryAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                                return PolitbyroAuditLog.renderOneLog(log, i)
+                                return RegionsSummaryAuditLog.renderOneLog(log, i)
                             })}
                         </div>
                     </div>

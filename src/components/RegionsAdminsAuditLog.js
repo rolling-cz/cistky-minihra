@@ -1,13 +1,12 @@
 import React from "react";
 import {
-    effectivnessToWord,
+    inflectProductionSites,
     resourceToWord4thCase,
-    resourceToWord2ndCase,
     aggregateByRegion,
-    rankingToWord
+    inflectGroups4thCase
 } from "../services/AuditLogUtils";
 
-export default class PolitbyroAuditLog extends React.Component {
+export default class RegionsAdminsAuditLog extends React.Component {
     constructor(props) {
         super(props);
 
@@ -26,12 +25,18 @@ export default class PolitbyroAuditLog extends React.Component {
     }
 
     static renderRank(rankPoints, i) {
-        if (rankPoints !== 0) {
+        if (rankPoints > 0) {
             return (
                 <div>
-                    {rankingToWord(rankPoints)}
+                    Přidat {rankPoints} bod(y) ocenění.
                 </div>
             )
+        } else if (rankPoints < 0) {
+           return (
+               <div>
+                   Odebrat {Math.abs(rankPoints)} bod(y) ocenění.
+               </div>
+           )
         } else {
             return "";
         }
@@ -41,35 +46,26 @@ export default class PolitbyroAuditLog extends React.Component {
         let message;
 
         switch(log.type) {
-            case "production":
-                message = `${effectivnessToWord(log.effectiveness)} produkce ${resourceToWord2ndCase(log.resource)}`;
-                break;
             case "starvation":
-                message = "Hladomor";
+                message = `Odebrat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů kvůli hladomoru.`;
                 break;
             case "rebellion":
-                message = "Nepokoje";
+                message = `Odebrat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů kvůlu rebélii.`;
                 break;
             case "construction":
-                message = `Výstavba výrobních zařízení na ${resourceToWord4thCase(log.resource)}`;
+                message = `Postavit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
                 break;
             case "repair":
-                message = `Oprava výrobních zařízení na ${resourceToWord4thCase(log.resource)}.`;
+                message = `Opravit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                break;
+            case "natality":
+                message = `Přidat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů.`;
                 break;
             case "damage":
-                message = `Poškozené výrobní zařízení na ${resourceToWord4thCase(log.resource)} povstalci`;
-                break;
-            case "victory":
-                message = "Úspěšně potlačené povstání";
-                break;
-            case "defeat":
-                message = "Neúspěšně potlačené povstání";
+                message = `Poškodit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
                 break;
             case "monuments":
-                message = "Výstavba monumentu";
-                break;
-            case "recruiting":
-                message = "Poskytnutí soudruhů pro armádu";
+                message = `Postavit ${log.number} monument.`;
                 break;
             default:
                 return ""
@@ -92,9 +88,9 @@ export default class PolitbyroAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
-                            {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
+                            {RegionsAdminsAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                                return PolitbyroAuditLog.renderOneLog(log, i)
+                                return RegionsAdminsAuditLog.renderOneLog(log, i)
                             })}
                         </div>
                     </div>

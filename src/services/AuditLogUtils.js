@@ -44,6 +44,16 @@ module.exports.inflectGroups = (number) => {
     }
 };
 
+module.exports.inflectGroups4thCase = (number) => {
+    if (number === 1) {
+        return "skupinu"
+    } else if (number === 2 || number === 3 || number === 4) {
+        return "skupiny"
+    } else {
+        return "skupin"
+    }
+};
+
 module.exports.inflectProductionSites = (number) => {
     if (number === 1) {
         return "produkční závod"
@@ -67,6 +77,21 @@ module.exports.effectivnessToWord = (number) => {
         return "úžasná"
     }
 };
+
+module.exports.rankingToWord = (number) => {
+    switch (number) {
+        case 2:
+            return "Excelentní vedení";
+        case 1:
+            return "Dobré vedení";
+        case -1:
+            return "Špatné vedení";
+        case -2:
+            return "Otřesné vedení";
+        default:
+            return "Standardní vedení";
+    }
+}
 
 module.exports.aggregateByRegion = (definitions, auditLog) => {
     const logsByRegions = {};
