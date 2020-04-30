@@ -12,7 +12,7 @@ import RegionsSummaryAuditLog from "./RegionsSummaryAuditLog";
 import RegionsAdminsAuditLog from "./RegionsAdminsAuditLog";
 import {validateRegion} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
-import Armies from "./Armies";
+import ArmyCosts from "./ArmyCosts";
 import ConfigTab from "./ConfigTab";
 import ArmyAuditLog from "./ArmyAuditLog";
 import Ranking from "../services/Ranking";
@@ -139,8 +139,8 @@ export default class GameContainer extends React.Component {
                 <Tab eventKey="regions" title="Regiony">
                     {this.renderRegions(this.state.definitions)}
                 </Tab>
-                <Tab eventKey="army" title="Armáda">
-                    <Armies defs={this.state.definitions}/>
+                <Tab eventKey="armyCosts" title="Armáda náklady">
+                    <ArmyCosts defs={this.state.definitions}/>
                 </Tab>
                 <Tab eventKey="config" title="Konfigurace">
                     <ConfigTab

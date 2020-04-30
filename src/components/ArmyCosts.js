@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class Armies extends React.Component {
+export default class ArmyCosts extends React.Component {
     constructor(props) {
         super(props);
 
