@@ -28,7 +28,7 @@ export default class PolitbyroAuditLog extends React.Component {
         })
     }
 
-    static renderRegionRank(rankPoints, i) {
+    static renderRank(rankPoints, i) {
         if (rankPoints !== 0) {
             return (
                 <div>
@@ -116,7 +116,7 @@ export default class PolitbyroAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
-                            {PolitbyroAuditLog.renderRegionRank(this.props.ranking.getRegionRank(regionDef.name))}
+                            {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                                 return PolitbyroAuditLog.renderOneRegionLog(log, i)
                             })}
@@ -136,6 +136,7 @@ export default class PolitbyroAuditLog extends React.Component {
                             {armyDef.name} armáda
                         </div>
                         <div className="col-md-6 text-left">
+                            {PolitbyroAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                             {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
                                 return PolitbyroAuditLog.renderOneArmyLog(log, i)
                             })}

@@ -269,7 +269,7 @@ export default class GameContainer extends React.Component {
         const definitions = this.state.definitions;
         const disabledRegions = this.state.newState.regions.filter(region => !region.enabled).map(region => region.name);
         const disabledArmies = this.state.newState.armies.filter(army => !army.enabled).map(army => army.name);
-        const ranking = new Ranking(definitions, disabledRegions, this.state.newState.auditLog);
+        const ranking = new Ranking(definitions, disabledRegions, disabledArmies, this.state.newState.auditLog);
         return (
             <div>
                 <h3 id="main-title">Výsledky hospodářství za {this.state.history.length + 1}. dějství</h3>
@@ -306,7 +306,8 @@ export default class GameContainer extends React.Component {
                     <Tab eventKey="army" title="Armáda">
                         <ArmyAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
-                                      disabledArmies={disabledArmies}/>
+                                      disabledArmies={disabledArmies}
+                                      ranking={ranking}/>
                     </Tab>
                 </Tabs>
 

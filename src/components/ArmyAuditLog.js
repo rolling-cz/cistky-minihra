@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    aggregateByRegion, aggregateByArmy, inflectGroups
+    aggregateByRegion, aggregateByArmy, inflectGroups, rankingToWord
 } from "../services/AuditLogUtils";
 
 export default class ArmyAuditLog extends React.Component {
@@ -22,6 +22,14 @@ export default class ArmyAuditLog extends React.Component {
         })
     }
 
+    static renderRank(rankPoints, i) {
+        return (
+            <div>
+                {rankingToWord(rankPoints)}
+            </div>
+        )
+    }
+
     renderArmyLogs() {
         return this.state.definitions.armies
                     .filter(army => !this.state.disabledArmies.includes(army.name))
@@ -32,6 +40,7 @@ export default class ArmyAuditLog extends React.Component {
                                     {armyDef.name} armáda
                                 </div>
                                 <div className="col-md-6 text-left">
+                                    {ArmyAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                                     {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
                                         return ArmyAuditLog.renderArmyLog(log, i)
                                     })}
@@ -57,6 +66,8 @@ export default class ArmyAuditLog extends React.Component {
                                 </div>
                             </div>
                         )
+                    } else {
+                        return ""
                     }
                 })
     }

@@ -133,6 +133,15 @@ function getDefinitions() {
                         "rank": -2,
                         "number": 1
                     },
+                },
+                "army": {
+                    "recruiting": 5,
+                    "starvation": -4,
+                    "victory": 5,
+                    "defeat": -3,
+                    "killed": 3,
+                    "lost": -2,
+                    "patrol": 2
                 }
             },
             "monuments": {

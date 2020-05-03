@@ -220,10 +220,25 @@ function processPatrolSuppress(auditLog, defs, region, armies, commands) {
 
     // patrolling
     const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
+    let blocked = 0;
     if (patrolling > activeRebels) {
-        activeRebels = 0
+        blocked = activeRebels;
+        activeRebels = 0;
     } else {
-        activeRebels -= patrolling
+        blocked = patrolling;
+        activeRebels -= patrolling;
+    }
+
+    if (blocked > 0) {
+        const percent = blocked/patrolling;
+        return commands
+                .filter(command => command.region === region.name && command.type === 'patrol')
+                .forEach(command => auditLog.push({
+                    "type": "patrol",
+                    "region": region.name,
+                    "army": command.army,
+                    "number": Math.ceil(command.soldiers * percent)
+                }));
     }
 
     return activeRebels;
