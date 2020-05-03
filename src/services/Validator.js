@@ -41,3 +41,30 @@ module.exports.validateRegion = (defs, region, transports) => {
 
     return error;
 };
+
+module.exports.validateArmy = (defs, army, commands) => {
+    let error = null;
+
+    let totalSoldiers = commands
+        .filter(command => command.army === army.name)
+        .reduce((totalSoldiers, command) => totalSoldiers + command.soldiers, 0);
+
+    if (totalSoldiers > army.soldiers) {
+        return `${army.name} armáda má rozkazy pro více vojáků (${totalSoldiers}) než kolik jich má (${army.soldiers}).`
+    }
+
+    const suppressingAtRegions = {};
+    commands.forEach(command => {
+        if (command.type === 'suppress') {
+            if (!suppressingAtRegions[command.region]) {
+                suppressingAtRegions[command.region] = command.army;
+            } else if (suppressingAtRegions[command.region] !== command.army) {
+                error = `V regionu ${command.region} už potlačuje povstání jiná armáda.`;
+            } else {
+                // NOOP the same army -> ok
+            }
+        }
+    })
+
+    return error;
+}

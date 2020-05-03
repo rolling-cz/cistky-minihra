@@ -93,6 +93,17 @@ module.exports.rankingToWord = (number) => {
     }
 }
 
+module.exports.commandTypeToWord = (type) => {
+    switch (type) {
+        case "patrol":
+            return "Hlídkovat";
+        case "suppress":
+            return "Potlačit povstání";
+        default:
+            return "Neznámý typ rozkazu: " + type;
+    }
+}
+
 module.exports.aggregateByRegion = (definitions, auditLog) => {
     const logsByRegions = {};
     definitions.regions.forEach(region => logsByRegions[region.name] = []);
@@ -105,3 +116,17 @@ module.exports.aggregateByRegion = (definitions, auditLog) => {
 
     return logsByRegions
 };
+
+module.exports.aggregateByArmy = (definitions, auditLog) => {
+    const logsByArmies = {};
+    definitions.armies.forEach(army => logsByArmies[army.name] = []);
+
+    auditLog.forEach(log => {
+        if (log.army) {
+            logsByArmies[log.army].push(log)
+        }
+    });
+
+    return logsByArmies
+};
+

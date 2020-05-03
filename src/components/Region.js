@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import {sumSoldiersInRegion} from "../services/Evaluator";
 
 export default class Region extends React.Component {
     constructor(props) {
@@ -8,6 +9,7 @@ export default class Region extends React.Component {
         this.state = {
             definition: props.definition,
             currentState: props.currentState,
+            commands: props.commands,
             previousState: props.previousState,
             updateHandler: props.updateHandler,
             toggleRegion: props.toggleRegion,
@@ -16,7 +18,7 @@ export default class Region extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({currentState: props.currentState, previousState: props.previousState, order: props.order})
+        this.setState({currentState: props.currentState, previousState: props.previousState, order: props.order, commands: props.commands})
     }
 
     handleChange(event) {
@@ -81,8 +83,8 @@ export default class Region extends React.Component {
                 </div>
                 <div className="col-md-2 text-left">
                     Rebelové: {this.state.currentState.rebels} <br />
-                    Patrolující jed.: <input id="soldiers.patrolling" type="text" size="1" value={this.state.currentState.soldiers.patrolling} onChange={this.handleChange.bind(this)} /><br />
-                    Útočící jed: <input id="soldiers.attacking" type="text" size="1" value={this.state.currentState.soldiers.attacking} onChange={this.handleChange.bind(this)} />
+                    Patrolující jed.: {sumSoldiersInRegion(this.state.definition.name, 'patrol', this.state.commands)} <br />
+                    Potlačující jed: {sumSoldiersInRegion(this.state.definition.name, 'suppress', this.state.commands)}
                 </div>
             </div>
         )

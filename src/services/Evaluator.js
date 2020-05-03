@@ -3,11 +3,26 @@ module.exports.evaluateAct = (definitions, state) => {
 
     newState.transports.forEach(transport => startTransport(newState.auditLog, transport, newState.regions));
 
-    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region));
+    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands));
 
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
+
+    newState.armies.forEach(army => evaluateArmy(newState.auditLog, definitions, army));
     return newState
 };
+
+module.exports.sumSoldiersInRegion = sumSoldiersInRegion;
+function sumSoldiersInRegion(regionName, commandType, commands) {
+    return commands
+       .filter(command => command.region === regionName && command.type === commandType)
+       .reduce((totalSoldiers, command) => totalSoldiers + command.soldiers, 0);
+}
+
+function findArmyWithCommand (regionName, commandType, commands) {
+    return commands
+        .filter(command => command.region === regionName && command.type === commandType)
+        .map(command => command.army)
+    }
 
 function startTransport(auditLog, transport, regions) {
     const sourceRegion = regions.find(region => region.name === transport.sourceRegion);
@@ -33,7 +48,33 @@ function finishTransport(auditLog, transport, regions) {
     })
 }
 
-function evaluateRegion(auditLog, defs, region) {
+function evaluateArmy(auditLog, defs, army) {
+    if (!army.enabled) {
+        return;
+    }
+
+    const food = army.soldiers * defs.coefficients.army.costs.wheat;
+    if (food > army.food) {
+        const starved = (food - army.food) / defs.coefficients.army.costs.wheat;
+        army.soldiers -= starved;
+        auditLog.push({
+            "type": "armyStarvation",
+            "army": army.name,
+            "number": starved
+        })
+    }
+
+    if (army.recruiting > 0) {
+        army.soldiers += army.recruiting;
+        auditLog.push({
+            "type": "armyRecruiting",
+            "army": army.name,
+            "number": army.recruiting
+        })
+    }
+}
+
+function evaluateRegion(auditLog, defs, region, armies, commands) {
     if (!region.enabled) {
         return;
     }
@@ -42,7 +83,7 @@ function evaluateRegion(auditLog, defs, region) {
 
     processRecruiting(auditLog, region);
 
-    const activeRebels = processArmies(auditLog, defs, region);
+    const activeRebels = processPatrolSuppress(auditLog, defs, region, armies, commands);
 
     // rebels from previous act
     let rebelNegativeBonus = 1 - (activeRebels * defs.coefficients.rebellion.effectPerRebel) / 100;
@@ -140,12 +181,13 @@ function processRecruiting(auditLog, region) {
     }
 }
 
-function processArmies(auditLog, defs, region) {
+function processPatrolSuppress(auditLog, defs, region, armies, commands) {
     let activeRebels = region.rebels;
+    const attacking = sumSoldiersInRegion(region.name, 'suppress', commands);
 
     // attack
-    if (region.soldiers.attacking > 0 && activeRebels > 0) {
-        const soldiersPower = region.soldiers.attacking
+    if (attacking > 0 && activeRebels > 0) {
+        const soldiersPower = attacking
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
             * defs.coefficients.army.soldiersOverRebels;
         const rebelsPower = activeRebels
@@ -155,27 +197,33 @@ function processArmies(auditLog, defs, region) {
         let soldiersWounded = 0;
         let rebelsWounded = 0;
         if (soldiersWon) {
-            soldiersWounded = Math.ceil(region.soldiers.attacking * defs.coefficients.army.wounded.soldiers.win);
+            soldiersWounded = Math.ceil(attacking * defs.coefficients.army.wounded.soldiers.win);
             rebelsWounded = Math.ceil(activeRebels * defs.coefficients.army.wounded.rebels.defeat);
         } else {
-            soldiersWounded = Math.ceil(region.soldiers.attacking * defs.coefficients.army.wounded.soldiers.defeat);
+            soldiersWounded = Math.ceil(attacking * defs.coefficients.army.wounded.soldiers.defeat);
             rebelsWounded = Math.ceil(activeRebels * defs.coefficients.army.wounded.rebels.win);
         }
+
+        const armyNames = findArmyWithCommand(region.name, 'suppress', commands);
+        const army = armies.find(armyState => armyState.name === armyNames[0]);
+        army.soldiers -= soldiersWounded;
 
         activeRebels -= rebelsWounded;
         auditLog.push({
             "type": soldiersWon ? "victory" : "defeat",
             "region": region.name,
+            "army": army.name,
             "soldiersWounded": soldiersWounded,
             "rebelsWounded": rebelsWounded
         })
     }
 
     // patrolling
-    if (region.soldiers.patrolling > activeRebels) {
+    const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
+    if (patrolling > activeRebels) {
         activeRebels = 0
     } else {
-        activeRebels -= region.soldiers.patrolling
+        activeRebels -= patrolling
     }
 
     return activeRebels;

@@ -10,11 +10,13 @@ import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import RegionsSummaryAuditLog from "./RegionsSummaryAuditLog";
 import RegionsAdminsAuditLog from "./RegionsAdminsAuditLog";
-import {validateRegion} from "../services/Validator";
+import {validateRegion, validateArmy} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import ArmyCosts from "./ArmyCosts";
 import ConfigTab from "./ConfigTab";
 import ArmyAuditLog from "./ArmyAuditLog";
+import ArmyList from "./ArmyList";
+import CommandList from "./CommandList";
 import Ranking from "../services/Ranking";
 
 export default class GameContainer extends React.Component {
@@ -27,7 +29,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "regions",
+            formTab: "armies",
             error: null
         }
     }
@@ -87,6 +89,52 @@ export default class GameContainer extends React.Component {
         }
     }
 
+    updateArmy(name, id, value) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        const army = newState.armies.find(army => army.name === name);
+
+        if (id.includes(".")) {
+          const ids = id.split(".");
+          army[ids[0]][ids[1]] = value;
+        } else {
+          army[id] = value;
+        }
+
+        this.setState({currentState: newState, error: null})
+    }
+
+    toggleArmy(name) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        const army = newState.armies.find(army => army.name === name);
+        army.enabled = !army.enabled;
+        this.setState({currentState: newState})
+    }
+
+    addCommand(armyName, regionName, type, soldiers) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.commands.push({army: armyName, region: regionName, type: type, soldiers: soldiers});
+
+        const army = newState.armies.find(armyState => armyState.name === armyName);
+        if (army) {
+          const error = validateArmy(this.state.definitions, army, newState.commands);
+          if (!error) {
+              this.setState({currentState: newState, error: null})
+          } else {
+              this.setState({error: error})
+          }
+        } else {
+          this.setState({currentState: newState, error: null})
+        }
+    }
+
+    cancelCommand(commandKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        if (newState.commands.length > commandKey && commandKey >= 0 ) {
+            newState.commands.splice(commandKey, 1);
+            this.setState({currentState: newState})
+        }
+    }
+
     evaluate() {
         const newState = evaluateAct(this.state.definitions, this.state.currentState);
         this.setState({newState: newState});
@@ -107,6 +155,7 @@ export default class GameContainer extends React.Component {
 
         newState.auditLog = [];
         newState.transports = [];
+        newState.commands = [];
 
         newState.regions.forEach(region => {
             definitions.coefficients.resources.types.forEach(resourceType => {
@@ -114,8 +163,14 @@ export default class GameContainer extends React.Component {
                 region.repairing[resourceType] = 0;
                 region.population[resourceType] = 0;
             });
+            region.population.recruiting = 0;
+            region.monuments.building = 0;
             region.food = 0;
-            region.soldiers.attacking = 0;
+        })
+
+        newState.armies.forEach(army => {
+            army.food = 0;
+            army.recruiting = 0;
         })
     }
 
@@ -136,8 +191,11 @@ export default class GameContainer extends React.Component {
                 activeKey={this.state.formTab}
                 onSelect={key => this.setState({ formTab: key })}
             >
-                <Tab eventKey="regions" title="Regiony">
+                <Tab eventKey="regions" title="Regiony plán">
                     {this.renderRegions(this.state.definitions)}
+                </Tab>
+                <Tab eventKey="armies" title="Armáda plán">
+                    {this.renderArmies(this.state.definitions)}
                 </Tab>
                 <Tab eventKey="armyCosts" title="Armáda náklady">
                     <ArmyCosts defs={this.state.definitions}/>
@@ -166,6 +224,7 @@ export default class GameContainer extends React.Component {
                 />
 
                 <TransportList defs={definitions}
+                               currentState={this.state.currentState}
                                transports={this.state.currentState.transports}
                                addTransport={this.addTransport.bind(this)}
                                cancelTransport={this.cancelTransport.bind(this)}/>
@@ -179,9 +238,37 @@ export default class GameContainer extends React.Component {
         )
     }
 
+    renderArmies(definitions) {
+        return (
+            <div className="mt-4">
+                <h3 id="main-title">Plán armád pro {this.state.history.length + 1}. dějství</h3>
+                {this.renderError()}
+
+                <ArmyList definitions={definitions}
+                            currentState={this.state.currentState}
+                            updateHandler={this.updateArmy.bind(this)}
+                            toggleArmy={this.toggleArmy.bind(this)}
+                />
+
+                <CommandList defs={definitions}
+                              currentState={this.state.currentState}
+                              commands={this.state.currentState.commands}
+                              addCommand={this.addCommand.bind(this)}
+                              cancelCommand={this.cancelCommand.bind(this)}/>
+
+                <div className="mt-3 no-print">
+                    <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
+                        Vyhodnotit dějství
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
     renderEvaluation() {
         const definitions = this.state.definitions;
         const disabledRegions = this.state.newState.regions.filter(region => !region.enabled).map(region => region.name);
+        const disabledArmies = this.state.newState.armies.filter(army => !army.enabled).map(army => army.name);
         const ranking = new Ranking(definitions, disabledRegions, this.state.newState.auditLog);
         return (
             <div>
@@ -213,12 +300,13 @@ export default class GameContainer extends React.Component {
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
                                            disabledRegions={disabledRegions}
+                                           disabledArmies={disabledArmies}
                                            ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="army" title="Armáda">
                         <ArmyAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
-                                      disabledRegions={disabledRegions}/>
+                                      disabledArmies={disabledArmies}/>
                     </Tab>
                 </Tabs>
 

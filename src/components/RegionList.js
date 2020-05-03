@@ -85,6 +85,7 @@ export default class RegionList extends React.Component {
                             return <Region
                                 definition={this.state.definitions.regions.find(region => region.name === regionState.name)}
                                 currentState={regionState}
+                                commands={this.state.currentState.commands}
                                 updateHandler={this.state.updateHandler}
                                 toggleRegion={this.state.toggleRegion}
                                 key={i}

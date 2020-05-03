@@ -7,6 +7,7 @@ export default class TransportList extends React.Component {
 
         this.state = {
             defs: props.defs,
+            currentState: props.currentState,
             transports: props.transports,
             addTransport: props.addTransport,
             cancelTransport: props.cancelTransport,
@@ -17,13 +18,16 @@ export default class TransportList extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({transports: props.transports})
+        this.setState({transports: props.transports, currentState: props.currentState})
     }
 
     render() {
-        const regionNames = {};
-        this.state.defs.regions.forEach(region => {
-            regionNames[region.name] = region.name;
+        const regionNames = [];
+        this.state.currentState.regions.map((regionState, i) => {
+            if (regionState.enabled) {
+                regionNames.push(regionState.name);
+            }
+            return 0
         });
         return (
             <div className="mt-3">
@@ -49,8 +53,8 @@ export default class TransportList extends React.Component {
                                 value={this.state.newTransportSource}
                                 onChange={(e) => this.setState({newTransportSource: e.target.value})}>
                             <option value="Zahraničí" >Zahraničí</option>
-                            {this.state.defs.regions.map((region, i) => {
-                                return (<option value={region.name} key={i}>{region.name}</option>)
+                            {regionNames.map((region, i) => {
+                                return (<option value={region} key={i}>{region}</option>)
                             })}
                         </select>
                     </div>
@@ -58,8 +62,8 @@ export default class TransportList extends React.Component {
                         <select className="browser-default custom-select"
                                 value={this.state.newTransportTarget}
                                 onChange={(e) => this.setState({newTransportTarget: e.target.value})}>
-                            {this.state.defs.regions.map((region, i) => {
-                                return (<option value={region.name} key={i}>{region.name}</option>)
+                            {regionNames.map((region, i) => {
+                                return (<option value={region} key={i}>{region}</option>)
                             })}
                         </select>
                     </div>

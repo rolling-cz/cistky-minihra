@@ -38,17 +38,27 @@ module.exports.getInitialState = () => {
                 "wheat": 0,
                 "steal": 0,
                 "fuel": 0
-            },
-            "soldiers": {
-                "patrolling": 0,
-                "attacking": 0
             }
         })
     });
 
+    const armiesDto = [];
+    defs.armies.forEach(army => {
+            armiesDto.push({
+                "name": army.name,
+                "enabled": true,
+                "soldiers": army.soldiers,
+                "recruiting": 0,
+                "food": 0,
+                "mission": null
+            })
+        });
+
     return {
         regions: regionsDto,
         transports: [],
+        armies: armiesDto,
+        commands: [],
         auditLog: []
     }
 };
@@ -181,10 +191,18 @@ function getDefinitions() {
                     },
                     "rebels": {
                         "win": 0.25,
-                        "defeat": 0.6
+                        "defeat": 0.8
                     }
                 },
                 "soldiersOverRebels": 1.2,
+                "commands": {
+                    "types": ["patrol", "suppress"]
+                },
+                "costs": {
+                    "wheat": 0.25,
+                    "steal": 0.5,
+                    "fuel": 0.5
+                },
                 "actions": {
                     "maintenance": {
                         "id": "maintenance",
@@ -394,6 +412,32 @@ function getDefinitions() {
                     "fuel": 125
                 }
             }
+        ],
+        "armies": [
+            {
+                "name": "Modrá",
+                "soldiers": 6
+            },
+            {
+                "name": "Bílá",
+                "soldiers": 6
+            },
+            {
+                "name": "Hnědá",
+                "soldiers": 6
+            },
+            {
+                "name": "Černá",
+                "soldiers": 6
+            },
+            {
+                "name": "Žlutá",
+                "soldiers": 6
+            },
+            {
+                "name": "Šedivá",
+                "soldiers": 6
+            },
         ]
     }
 }
