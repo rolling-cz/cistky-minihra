@@ -27,7 +27,7 @@ export default class Army extends React.Component {
             value = 0;
         }
 
-        const id = event.target.id;
+        const id = event.target.name;
         this.props.updateHandler(this.state.definition.name, id, value);
     }
 
@@ -45,10 +45,10 @@ export default class Army extends React.Component {
                     {this.state.currentState.soldiers}
                 </div>
                 <div className="col-md-1 text-left">
-                    <input id="food" type="text" size="2" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} />
+                    <input name="food" type="text" size="2" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-1 text-left">
-                    <input id="recruiting" type="text" size="2" value={this.state.currentState.recruiting} onChange={this.handleChange.bind(this)} />
+                    <input name="recruiting" type="text" size="2" value={this.state.currentState.recruiting} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-1 text-left">
                     mise

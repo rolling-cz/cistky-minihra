@@ -31,7 +31,7 @@ export default class Region extends React.Component {
             value = 0;
         }
 
-        const id = event.target.id;
+        const id = event.target.name;
         this.state.updateHandler(this.state.definition.name, id, value);
     }
 
@@ -48,38 +48,38 @@ export default class Region extends React.Component {
                 <div className="col-md-2 text-left">
                     Populace celkem: {this.state.currentState.population.total} <br />
                     Útlak:
-                    <select id="fearLevel" value={this.state.currentState.fearLevel}  onChange={this.handleChange.bind(this)}>
+                    <select name="fearLevel" value={this.state.currentState.fearLevel}  onChange={this.handleChange.bind(this)}>
                         <option value="1">Nízký</option>
                         <option value="2">Střední</option>
                         <option value="3">Vysoký</option>
                     </select> <br />
-                    Poskytnuté jídlo: <input id="food" type="text" size="3" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} />
+                    Poskytnuté jídlo: <input name="food" type="text" size="3" value={this.state.currentState.food} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Pšenice:
-                    <input id="population.wheat" type="text" size="2" value={this.state.currentState.population.wheat} onChange={this.handleChange.bind(this)} /> /
+                    <input name="population.wheat" type="text" size="2" value={this.state.currentState.population.wheat} onChange={this.handleChange.bind(this)} /> /
                     {this.state.currentState.productionSites.wheat}<br />
-                    Ocel: <input id="population.steal" type="text" size="2" value={this.state.currentState.population.steal} onChange={this.handleChange.bind(this)} /> /
+                    Ocel: <input name="population.steal" type="text" size="2" value={this.state.currentState.population.steal} onChange={this.handleChange.bind(this)} /> /
                     {this.state.currentState.productionSites.steal} <br />
-                    Palivo: <input id="population.fuel" type="text" size="2" value={this.state.currentState.population.fuel} onChange={this.handleChange.bind(this)} /> /
+                    Palivo: <input name="population.fuel" type="text" size="2" value={this.state.currentState.population.fuel} onChange={this.handleChange.bind(this)} /> /
                     {this.state.currentState.productionSites.fuel} <br />
-                    Naverbovat: <input id="population.recruiting" type="text" size="3" value={this.state.currentState.population.recruiting} onChange={this.handleChange.bind(this)} />
+                    Naverbovat: <input name="population.recruiting" type="text" size="3" value={this.state.currentState.population.recruiting} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Poškozené: {this.state.currentState.damaged.wheat}/{this.state.currentState.damaged.steal}/{this.state.currentState.damaged.fuel} <br />
                     Budované <br />
-                    <input id="constructing.wheat" type="text" size="1" value={this.state.currentState.constructing.wheat} onChange={this.handleChange.bind(this)} />
-                    <input id="constructing.steal" type="text" size="1" value={this.state.currentState.constructing.steal} onChange={this.handleChange.bind(this)} />
-                    <input id="constructing.fuel" type="text" size="1" value={this.state.currentState.constructing.fuel} onChange={this.handleChange.bind(this)} />
+                    <input name="constructing.wheat" type="text" size="1" value={this.state.currentState.constructing.wheat} onChange={this.handleChange.bind(this)} />
+                    <input name="constructing.steal" type="text" size="1" value={this.state.currentState.constructing.steal} onChange={this.handleChange.bind(this)} />
+                    <input name="constructing.fuel" type="text" size="1" value={this.state.currentState.constructing.fuel} onChange={this.handleChange.bind(this)} />
                     <br />
                     Opravované <br />
-                    <input id="repairing.wheat" type="text" size="1" value={this.state.currentState.repairing.wheat} onChange={this.handleChange.bind(this)} />
-                    <input id="repairing.steal" type="text" size="1" value={this.state.currentState.repairing.steal} onChange={this.handleChange.bind(this)} />
-                    <input id="repairing.fuel" type="text" size="1" value={this.state.currentState.repairing.fuel} onChange={this.handleChange.bind(this)} />
+                    <input name="repairing.wheat" type="text" size="1" value={this.state.currentState.repairing.wheat} onChange={this.handleChange.bind(this)} />
+                    <input name="repairing.steal" type="text" size="1" value={this.state.currentState.repairing.steal} onChange={this.handleChange.bind(this)} />
+                    <input name="repairing.fuel" type="text" size="1" value={this.state.currentState.repairing.fuel} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Dokončeno: {this.state.currentState.monuments.finished} <br />
-                    Postavit: <input id="monuments.building" type="text" size="1" value={this.state.currentState.monuments.building} onChange={this.handleChange.bind(this)} />
+                    Postavit: <input name="monuments.building" type="text" size="1" value={this.state.currentState.monuments.building} onChange={this.handleChange.bind(this)} />
                 </div>
                 <div className="col-md-2 text-left">
                     Rebelové: {this.state.currentState.rebels} <br />

@@ -29,7 +29,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "armies",
+            formTab: "regions",
             error: null
         }
     }
