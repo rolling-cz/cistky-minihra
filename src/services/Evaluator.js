@@ -75,6 +75,8 @@ function evaluateArmy(auditLog, defs, army) {
 }
 
 function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations) {
+    processLiberationAttempt(auditLog, defs, region, armies, commands, occupations);
+
     if (!region.enabled) {
         return;
     }
@@ -163,6 +165,69 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
     defs.coefficients.resources.types.forEach(resourceType => {
         repairProductionSite(auditLog, region, resourceType);
     });
+}
+
+function processLiberationAttempt(auditLog, defs, region, armies, commands, occupations) {
+    const occupation = occupations.find(oc => oc.region === region.name);
+    if (!occupation) {
+        return;
+    }
+
+    const liberationSoldiers = sumSoldiersInRegion(region.name, 'liberate', commands);
+    if (liberationSoldiers === 0) {
+        return;
+    }
+
+    const soldiersPower = liberationSoldiers
+        * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
+        * defs.coefficients.army.soldiersOverEnemies;
+    const enemyPower = occupation.soldiers
+        * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
+
+    const soldiersWon = soldiersPower >= enemyPower;
+    const soldiersWoundedCoefficient = soldiersWon
+        ? defs.coefficients.army.wounded.soldiers.win
+        : defs.coefficients.army.wounded.soldiers.defeat;
+    const enemiesWoundedCoefficient = soldiersWon
+        ? defs.coefficients.army.wounded.enemies.defeat
+        : defs.coefficients.army.wounded.enemies.win;
+    const enemiesWounded = Math.ceil(occupation.soldiers * enemiesWoundedCoefficient);
+
+    let withdraw = 0;
+    if (soldiersWon) {
+        occupations = occupations.filter(oc => oc.region !== region.name);
+        withdraw = occupation.soldiers - enemiesWounded;
+    } else {
+        occupation.soldiers -= enemiesWounded;
+    }
+
+    auditLog.push({
+       "type": soldiersWon ? "liberationSuccess" : "liberationFail",
+       "region": region.name,
+       "enemy": occupation.enemy,
+       "withdraw": withdraw,
+       "enemiesWounded": enemiesWounded
+    })
+
+    commands
+        .filter(command => command.region === region.name && command.type === 'liberate')
+        .forEach(command => {
+            const share = command.soldiers / liberationSoldiers;
+            const soldiersWoundedForThisArmy = Math.ceil(command.soldiers * soldiersWoundedCoefficient * share);
+            const enemiesWoundedForThisArmy = Math.ceil(enemiesWounded * share);
+
+            const army = armies.find(army => army.name === command.army);
+            army.soldiers -= soldiersWoundedForThisArmy;
+
+            auditLog.push({
+                "type": soldiersWon ? "liberationArmySuccess" : "liberationArmyLost",
+                "region": region.name,
+                "army": command.army,
+                "enemy": occupation.enemy,
+                "soldiersWounded": soldiersWoundedForThisArmy,
+                "enemiesWounded": enemiesWoundedForThisArmy
+            })
+        });
 }
 
 function processOccupationAttempt(auditLog, defs, region, armies, commands, invasions, occupations) {

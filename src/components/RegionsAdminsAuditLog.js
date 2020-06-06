@@ -70,6 +70,12 @@ export default class RegionsAdminsAuditLog extends React.Component {
             case "occupyAttemptSuccess":
                 message = `Deaktivovat obsazený region.`;
                 break;
+            case "liberationSuccess":
+                message = `Informovat o osvobození regionu.`;
+                break;
+            case "liberationFail":
+                message = `Informovat o nepodařeném pokusu osvobodit region.`;
+                break;
             default:
                 return ""
         }
@@ -83,7 +89,7 @@ export default class RegionsAdminsAuditLog extends React.Component {
 
     render() {
         return this.state.definitions.regions
-            .filter(region => !this.state.disabledRegions.includes(region.name))
+            .filter(region => !this.state.disabledRegions.includes(region.name) || this.state.auditLogPerRegion[region.name].length > 0)
             .map((regionDef, i) => {
                 return (
                     <div key={i} className="row row mt-2 justify-content-md-center">

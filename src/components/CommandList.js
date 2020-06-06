@@ -29,6 +29,7 @@ export default class CommandList extends React.Component {
             }
             return 0
         });
+        this.state.currentState.occupations.forEach(occupation => regionNames.push(occupation.region));
         const armyNames = [];
         this.state.currentState.armies.map((armyState, i) => {
             if (armyState.enabled) {

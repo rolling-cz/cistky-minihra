@@ -88,6 +88,12 @@ export default class ArmyAuditLog extends React.Component {
             case "defeat":
                 message = `Neúspěšně potlačené povstání v regionu ${log.region}. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
                 break;
+            case "liberationArmySuccess":
+                message = `Účast na osvobození regionu ${log.region}. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků`;
+                break;
+            case "liberationArmyLost":
+                message = `Účast na neúspěšném osvbození regionu ${log.region}. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků`;
+                break;
             default:
                 return ""
         }
@@ -106,7 +112,9 @@ export default class ArmyAuditLog extends React.Component {
             log.type === "plunderAttemptFailed" ||
             log.type === "plunderAttemptSuccess" ||
             log.type === "occupyAttemptFailed" ||
-            log.type === "occupyAttemptSuccess"
+            log.type === "occupyAttemptSuccess" ||
+            log.type === "liberationSuccess" ||
+            log.type === "liberationFail"
         ).length > 0
     }
 
@@ -131,6 +139,12 @@ export default class ArmyAuditLog extends React.Component {
                 break;
             case "occupyAttemptSuccess":
                 message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region. Přítomno je ${log.soldiers} ${inflectGroups(log.soldiers)} vojáků.`;
+                break;
+            case "liberationSuccess":
+                message = `Úspěšně osvobozen z područí ${findEnemyNameObject(log.enemy, this.state.definitions).countryName2nd}. ${log.withdraw} ${inflectGroups(log.soldiers)} vojáků se stáhlo zpět.`;
+                break;
+            case "liberationFail":
+                message = `Nezdařený pokus o osvobození. Při pokusu vyřazeno ${log.enemiesWounded} ${inflectGroups(log.enemiesWounded)} vojáků.`;
                 break;
             default:
                 return ""

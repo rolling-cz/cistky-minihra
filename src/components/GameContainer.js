@@ -31,7 +31,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "foreignArmies",
+            formTab: "armies",
             error: null
         }
     }
@@ -118,7 +118,7 @@ export default class GameContainer extends React.Component {
 
         const army = newState.armies.find(armyState => armyState.name === armyName);
         if (army) {
-          const error = validateArmy(this.state.definitions, army, newState.commands);
+          const error = validateArmy(this.state.definitions, army, newState.commands, newState.occupations);
           if (!error) {
               this.setState({currentState: newState, error: null})
           } else {

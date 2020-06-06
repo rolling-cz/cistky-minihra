@@ -147,6 +147,10 @@ export default class Ranking {
                 return Math.ceil(log.contribution * rDef.army.occupyPatrolDefended);
             case "occupyPatrolLost":
                 return Math.ceil(log.contribution * rDef.army.occupyPatrolLost);
+            case "liberationArmySuccess":
+                return rDef.army.victory + log.soldiersWounded * rDef.army.lost + log.enemiesWounded * rDef.army.killed;
+            case "liberationArmyLost":
+                return rDef.army.defeat + log.soldiersWounded * rDef.army.lost + log.enemiesWounded * rDef.army.killed;
             default:
                 return 0
         }

@@ -42,7 +42,7 @@ module.exports.validateRegion = (defs, region, transports) => {
     return error;
 };
 
-module.exports.validateArmy = (defs, army, commands) => {
+module.exports.validateArmy = (defs, army, commands, occupations) => {
     let error = null;
 
     let totalSoldiers = commands
@@ -52,6 +52,12 @@ module.exports.validateArmy = (defs, army, commands) => {
     if (totalSoldiers > army.soldiers) {
         return `${army.name} armáda má rozkazy pro více vojáků (${totalSoldiers}) než kolik jich má (${army.soldiers}).`
     }
+
+    commands.forEach(command => {
+        if (command.type === 'liberate' && !occupations.some(oc => oc.region === command.region)) {
+            error = `Region ${command.region} není obsazen.`;
+        }
+    })
 
     const suppressingAtRegions = {};
     commands.forEach(command => {

@@ -60,7 +60,7 @@ module.exports.getInitialState = () => {
         armies: armiesDto,
         commands: [],
         invasions: [],
-        occupations: [],
+        occupations: [{enemy: "Polsko", region: "Jih", soldiers: 5}],
         auditLog: []
     }
 };
@@ -209,12 +209,16 @@ function getDefinitions() {
                     "rebels": {
                         "win": 0.25,
                         "defeat": 0.8
+                    },
+                    "enemies": {
+                        "win": 0.25,
+                        "defeat": 0.5
                     }
                 },
                 "soldiersOverRebels": 1.2,
                 "soldiersOverEnemies": 1,
                 "commands": {
-                    "types": ["patrol", "suppress"]
+                    "types": ["patrol", "suppress", "liberate"]
                 },
                 "costs": {
                     "wheat": 0.25,
@@ -265,31 +269,37 @@ function getDefinitions() {
                 },
                 "names": [{
                         "countryName": "Polsko",
+                        "countryName2nd": "Polska",
                         "attr": "polský",
                         "people": "Poláci"
                     },
                     {
                         "countryName": "Čína",
+                        "countryName2nd": "Číny",
                         "attr": "čínský",
                         "people": "Číňani"
                     },
                     {
                         "countryName": "Japonsko",
+                        "countryName2nd": "Japonska",
                         "attr": "japonský",
                         "people": "Japonci"
                     },
                     {
                         "countryName": "Turecko",
+                        "countryName2nd": "Turecka",
                         "attr": "turecký",
                         "people": "Turci"
                     },
                     {
                         "countryName": "Finsko",
+                        "countryName2nd": "Finska",
                         "attr": "finský",
                         "people": "Finové"
                     },
                     {
                         "countryName": "Rumunsko",
+                        "countryName2nd": "Rumunska",
                         "attr": "rumunský",
                         "people": "Rumuni"
                     }

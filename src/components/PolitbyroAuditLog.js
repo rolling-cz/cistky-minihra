@@ -82,6 +82,12 @@ export default class PolitbyroAuditLog extends React.Component {
             case "occupyAttemptSuccess":
                 message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region`;
                 break;
+            case "liberationSuccess":
+                message = `Úspěšně osvobozen z područí ${findEnemyNameObject(log.enemy, this.state.definitions).countryName2nd}.`;
+                break;
+            case "liberationFail":
+                message = `Nezdařený pokus o osvobození.`;
+                break;
             default:
                 return ""
         }
@@ -109,6 +115,12 @@ export default class PolitbyroAuditLog extends React.Component {
             case "defeat":
                 message = `Neúspěšně potlačené povstání v regionu ${log.region}`;
                 break;
+            case "liberationArmySuccess":
+                message = `Účast na osvobození regionu ${log.region}`;
+                break;
+            case "liberationArmyLost":
+                message = `Účast na neúspěšném osvbození regionu ${log.region}`;
+                break;
             default:
                 return ""
         }
@@ -122,7 +134,7 @@ export default class PolitbyroAuditLog extends React.Component {
 
     renderRegionLogs() {
         return this.state.definitions.regions
-            .filter(region => !this.state.disabledRegions.includes(region.name))
+            .filter(region => !this.state.disabledRegions.includes(region.name) || this.state.auditLogPerRegion[region.name].length > 0)
             .map((regionDef, i) => {
                 return (
                     <div key={i} className="row row mt-2 justify-content-md-center">
@@ -130,7 +142,7 @@ export default class PolitbyroAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
-                            {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
+                            {!this.state.disabledRegions.includes(regionDef.name) ? PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name)) : ''}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                                 return this.renderOneRegionLog(log, i)
                             })}
