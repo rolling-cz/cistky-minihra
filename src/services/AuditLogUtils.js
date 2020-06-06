@@ -119,6 +119,11 @@ module.exports.findEnemyNameObject = (enemy, defs) => {
     return defs.coefficients.enemy.names.find(nameObj => nameObj.countryName === enemy)
 }
 
+module.exports.capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 module.exports.aggregateByRegion = (definitions, auditLog) => {
     const logsByRegions = {};
     definitions.regions.forEach(region => logsByRegions[region.name] = []);

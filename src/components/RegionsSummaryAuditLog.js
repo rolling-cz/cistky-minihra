@@ -5,7 +5,8 @@ import {
     resourceToWord2ndCase,
     aggregateByRegion,
     rankingToWord,
-    findEnemyNameObject
+    findEnemyNameObject,
+    capitalize
 } from "../services/AuditLogUtils";
 
 export default class RegionsSummaryAuditLog extends React.Component {
@@ -39,7 +40,7 @@ export default class RegionsSummaryAuditLog extends React.Component {
 
         switch(log.type) {
             case "production":
-                message = `${effectivnessToWord(log.effectiveness)} produkce ${resourceToWord2ndCase(log.resource)}`;
+                message = `${capitalize(effectivnessToWord(log.effectiveness))} produkce ${resourceToWord2ndCase(log.resource)}`;
                 break;
             case "starvation":
                 message = "Hladomor";

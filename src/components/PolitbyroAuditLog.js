@@ -6,7 +6,8 @@ import {
     aggregateByRegion,
     aggregateByArmy,
     rankingToWord,
-    findEnemyNameObject
+    findEnemyNameObject,
+    capitalize
 } from "../services/AuditLogUtils";
 
 export default class PolitbyroAuditLog extends React.Component {
@@ -46,7 +47,7 @@ export default class PolitbyroAuditLog extends React.Component {
 
         switch(log.type) {
             case "production":
-                message = `${effectivnessToWord(log.effectiveness)} produkce ${resourceToWord2ndCase(log.resource)}`;
+                message = `${capitalize(effectivnessToWord(log.effectiveness))} produkce ${resourceToWord2ndCase(log.resource)}`;
                 break;
             case "starvation":
                 message = "Hladomor";
