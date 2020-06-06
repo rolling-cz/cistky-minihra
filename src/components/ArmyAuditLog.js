@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    aggregateByRegion, aggregateByArmy, inflectGroups, rankingToWord
+    aggregateByRegion, aggregateByArmy, inflectGroups, rankingToWord, findEnemyNameObject
 } from "../services/AuditLogUtils";
 
 export default class ArmyAuditLog extends React.Component {
@@ -42,7 +42,7 @@ export default class ArmyAuditLog extends React.Component {
                                 <div className="col-md-6 text-left">
                                     {ArmyAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                                     {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
-                                        return ArmyAuditLog.renderArmyLog(log, i)
+                                        return this.renderArmyLog(log, i)
                                     })}
                                 </div>
                             </div>
@@ -61,7 +61,7 @@ export default class ArmyAuditLog extends React.Component {
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                                        return ArmyAuditLog.renderRegionLog(log, i)
+                                        return this.renderRegionLog(log, i)
                                     })}
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ export default class ArmyAuditLog extends React.Component {
                 })
     }
 
-    static renderArmyLog(log, i) {
+    renderArmyLog(log, i) {
         let message;
 
         switch(log.type) {
@@ -100,10 +100,17 @@ export default class ArmyAuditLog extends React.Component {
     }
 
     static containsInterestingLogs(logs) {
-        return logs.filter(log => log.type === "rebellion" || log.type === "recruiting").length > 0
+        return logs.filter(
+            log => log.type === "rebellion" ||
+            log.type === "recruiting" ||
+            log.type === "plunderAttemptFailed" ||
+            log.type === "plunderAttemptSuccess" ||
+            log.type === "occupyAttemptFailed" ||
+            log.type === "occupyAttemptSuccess"
+        ).length > 0
     }
 
-    static renderRegionLog(log, i) {
+    renderRegionLog(log, i) {
         let message;
 
         switch(log.type) {
@@ -112,6 +119,18 @@ export default class ArmyAuditLog extends React.Component {
                 break;
             case "recruiting":
                 message = `Poskytli ${log.number} ${inflectGroups(log.number)} soudruhů pro nábor do armády.`;
+                break;
+            case "plunderAttemptFailed":
+                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění`;
+                break;
+            case "plunderAttemptSuccess":
+                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region`;
+                break;
+            case "occupyAttemptFailed":
+                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení`;
+                break;
+            case "occupyAttemptSuccess":
+                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region. Přítomno je ${log.soldiers} ${inflectGroups(log.soldiers)} vojáků.`;
                 break;
             default:
                 return ""

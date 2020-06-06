@@ -3,7 +3,7 @@ module.exports.evaluateAct = (definitions, state) => {
 
     newState.transports.forEach(transport => startTransport(newState.auditLog, transport, newState.regions));
 
-    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands));
+    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands, newState.invasions, newState.occupations));
 
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
 
@@ -74,12 +74,18 @@ function evaluateArmy(auditLog, defs, army) {
     }
 }
 
-function evaluateRegion(auditLog, defs, region, armies, commands) {
+function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations) {
     if (!region.enabled) {
         return;
     }
 
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
+
+    if (processOccupationAttempt(auditLog, defs, region, armies, commands, invasions, occupations)) {
+        return;
+    }
+
+    const plunderEffect = processPlunderAttempt(auditLog, defs, region, armies, commands, invasions);
 
     processRecruiting(auditLog, region);
 
@@ -100,7 +106,7 @@ function evaluateRegion(auditLog, defs, region, armies, commands) {
 
     // production
     defs.coefficients.resources.types.forEach(resourceType => {
-        produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType);
+        produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType, plunderEffect);
     });
 
     // food consumption
@@ -157,6 +163,91 @@ function evaluateRegion(auditLog, defs, region, armies, commands) {
     defs.coefficients.resources.types.forEach(resourceType => {
         repairProductionSite(auditLog, region, resourceType);
     });
+}
+
+function processOccupationAttempt(auditLog, defs, region, armies, commands, invasions, occupations) {
+
+    const occupyAttempt = invasions.find(invasion => invasion.region === region.name && invasion.type === 'occupy');
+    if (occupyAttempt) {
+        const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
+        const soldiersPower = patrolling
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
+            * defs.coefficients.army.soldiersOverEnemies;
+        const enemyPower = occupyAttempt.soldiers
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
+
+        let defended;
+        if (enemyPower > soldiersPower) {
+            defended = false;
+            occupations.push({enemy: occupyAttempt.enemy, region: occupyAttempt.region, soldiers: occupyAttempt.soldiers});
+        } else {
+            defended = true;
+        }
+
+        auditLog.push({
+           "type": defended ? "occupyAttemptFailed" : "occupyAttemptSuccess",
+           "region": region.name,
+           "enemy": occupyAttempt.enemy,
+           "soldiers": occupyAttempt.soldiers
+        })
+
+        commands
+            .filter(command => command.region === region.name && command.type === 'patrol')
+            .forEach(command =>
+
+                auditLog.push({
+                    "type": defended ? "occupyPatrolDefended" : "occupyPatrolLost",
+                    "region": region.name,
+                    "army": command.army,
+                    "enemy": occupyAttempt.enemy,
+                    "contribution": command.soldiers / patrolling
+                }
+            ));
+        return !defended;
+    } else {
+        return false;
+    }
+}
+
+function processPlunderAttempt(auditLog, defs, region, armies, commands, invasions) {
+
+    let plunderProductionEffect = 1;
+
+    const plunderAttempt = invasions.find(invasion => invasion.region === region.name && invasion.type === 'plunder');
+    if (plunderAttempt) {
+        const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
+        const soldiersPower = patrolling
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
+            * defs.coefficients.army.soldiersOverEnemies;
+        const enemyPower = plunderAttempt.soldiers
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
+
+        let defended;
+        if (enemyPower > soldiersPower) {
+            plunderProductionEffect = defs.coefficients.enemy.plunderEffect;
+            defended = false;
+        } else {
+            defended = true;
+        }
+
+        auditLog.push({
+           "type": defended ? "plunderAttemptFailed" : "plunderAttemptSuccess",
+           "region": region.name,
+           "enemy": plunderAttempt.enemy
+        })
+
+        commands
+            .filter(command => command.region === region.name && command.type === 'patrol')
+            .forEach(command => auditLog.push({
+                "type": defended ? "plunderPatrolDefended" : "plunderPatrolLost",
+                "region": region.name,
+                "army": command.army,
+                "enemy": plunderAttempt.enemy,
+                "contribution": command.soldiers / patrolling
+            }));
+    }
+
+    return plunderProductionEffect;
 }
 
 function processBuildingMonuments(auditLog, region) {
@@ -288,7 +379,7 @@ function damageProductionSites(auditLog, defs, region, activeRebels) {
     }
 }
 
-function produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType) {
+function produceResources(auditLog, defs, regionDef, region, productionCoef, resourceType, plunderEffect) {
     if (region.population[resourceType] > 0) {
         const resourceCoef = productionCoef
             * (getRandom(defs.coefficients.random.production.min, defs.coefficients.random.production.max) / 100)
@@ -297,6 +388,7 @@ function produceResources(auditLog, defs, regionDef, region, productionCoef, res
             defs.coefficients.resources.income[resourceType]
             * region.population[resourceType]
             * resourceCoef
+            * plunderEffect
         );
 
         auditLog.push({

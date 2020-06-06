@@ -24,7 +24,7 @@ export default class Ranking {
     calculateRanksForArmies(disabledArmies) {
         let rankList = [];
         this.defs.armies.filter(army => !disabledArmies.includes(army.name)).forEach(army => {
-            rankList.push({"name": army.name, "points": this.regionPoints[army.name]});
+            rankList.push({"name": army.name, "points": this.armyPoints[army.name]});
         });
         rankList.sort((a, b) => b.points - a.points);
 
@@ -117,6 +117,10 @@ export default class Ranking {
                 return log.number * rDef.monument;
             case "recruiting":
                 return log.number * rDef.recruiting;
+            case "plunderAttemptSuccess":
+                return rDef.plundered;
+            case "occupyAttemptSuccess":
+                return rDef.occupied;
             default:
                 return 0
         }
@@ -135,6 +139,14 @@ export default class Ranking {
                 return log.number * rDef.army.recruiting;
             case "patrol":
                 return log.number * rDef.army.patrol;
+            case "plunderPatrolDefended":
+                return Math.ceil(log.contribution * rDef.army.plunderPatrolDefended);
+            case "plunderPatrolLost":
+                return Math.ceil(log.contribution * rDef.army.plunderPatrolLost);
+            case "occupyPatrolDefended":
+                return Math.ceil(log.contribution * rDef.army.occupyPatrolDefended);
+            case "occupyPatrolLost":
+                return Math.ceil(log.contribution * rDef.army.occupyPatrolLost);
             default:
                 return 0
         }

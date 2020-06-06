@@ -67,6 +67,9 @@ export default class RegionsAdminsAuditLog extends React.Component {
             case "monuments":
                 message = `Postavit ${log.number} monument.`;
                 break;
+            case "occupyAttemptSuccess":
+                message = `Deaktivovat obsazený region.`;
+                break;
             default:
                 return ""
         }

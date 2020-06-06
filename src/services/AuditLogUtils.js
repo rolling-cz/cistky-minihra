@@ -104,6 +104,21 @@ module.exports.commandTypeToWord = (type) => {
     }
 }
 
+module.exports.invasionTypeToWord = (type) => {
+    switch (type) {
+        case "plunder":
+            return "Vyplenit";
+        case "occupy":
+            return "Obsadit";
+        default:
+            return "Neznámý typ rozkazu: " + type;
+    }
+}
+
+module.exports.findEnemyNameObject = (enemy, defs) => {
+    return defs.coefficients.enemy.names.find(nameObj => nameObj.countryName === enemy)
+}
+
 module.exports.aggregateByRegion = (definitions, auditLog) => {
     const logsByRegions = {};
     definitions.regions.forEach(region => logsByRegions[region.name] = []);

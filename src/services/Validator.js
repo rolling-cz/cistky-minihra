@@ -68,3 +68,18 @@ module.exports.validateArmy = (defs, army, commands) => {
 
     return error;
 }
+
+module.exports.validateEnemy = (defs, enemyName, invasions) => {
+    let error = null;
+
+    const regions = {};
+    invasions.forEach(invasion => {
+        if (!regions[invasion.region]) {
+            regions[invasion.region] = 1;
+        } else {
+            error = `V jednom regionu (${invasion.region})) nemůže být více akcí najednou.`;
+        }
+    })
+
+    return error;
+}

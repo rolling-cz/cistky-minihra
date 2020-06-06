@@ -7,7 +7,8 @@ import {
     resourceToWord4thCase,
     resourceToWord2ndCase,
     aggregateByRegion,
-    rankingToWord
+    rankingToWord,
+    findEnemyNameObject
 } from "../services/AuditLogUtils";
 
 export default class DetailedAuditLog extends React.Component {
@@ -41,7 +42,7 @@ export default class DetailedAuditLog extends React.Component {
         )
     }
 
-    static renderOneLog(log, i) {
+    renderOneLog(log, i) {
         let logType;
         let logDescription;
 
@@ -98,6 +99,22 @@ export default class DetailedAuditLog extends React.Component {
                 logType = "Nábor armády";
                 logDescription = `Poskytli jsme ${log.number} ${inflectGroups(log.number)} soudruhů pro nábor do armády.`;
                 break;
+            case "plunderAttemptFailed":
+                logType = "Neúspěšný pokus o vyplenění";
+                logDescription = `Naše armáda úspěšně odrazila ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění.`;
+                break;
+            case "plunderAttemptSuccess":
+                logType = "Vyplenění nepřítelem";
+                logDescription = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region, přišli jsme o většinu produkce.`;
+                break;
+            case "occupyAttemptFailed":
+                logType = "Neúspěšný pokus o obsazení";
+                logDescription = `Naše armáda úspěšně odrazila ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení.`;
+                break;
+            case "occupyAttemptSuccess":
+                logType = "Obsazení nepřítelem";
+                logDescription = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region, přišli jsme o veškerou kontrolu.`;
+                break;
             default:
                 return ""
         }
@@ -123,7 +140,7 @@ export default class DetailedAuditLog extends React.Component {
                         <h3>Region {regionDef.name}</h3>
                         {DetailedAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                         {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                            return DetailedAuditLog.renderOneLog(log, i)
+                            return this.renderOneLog(log, i)
                         })}
                         <hr />
                     </div>

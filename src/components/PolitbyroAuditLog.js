@@ -5,7 +5,8 @@ import {
     resourceToWord2ndCase,
     aggregateByRegion,
     aggregateByArmy,
-    rankingToWord
+    rankingToWord,
+    findEnemyNameObject
 } from "../services/AuditLogUtils";
 
 export default class PolitbyroAuditLog extends React.Component {
@@ -40,7 +41,7 @@ export default class PolitbyroAuditLog extends React.Component {
         }
     }
 
-    static renderOneRegionLog(log, i) {
+    renderOneRegionLog(log, i) {
         let message;
 
         switch(log.type) {
@@ -68,6 +69,18 @@ export default class PolitbyroAuditLog extends React.Component {
             case "recruiting":
                 message = "Poskytnutí soudruhů pro armádu";
                 break;
+            case "plunderAttemptFailed":
+                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění`;
+                break;
+            case "plunderAttemptSuccess":
+                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region`;
+                break;
+            case "occupyAttemptFailed":
+                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení`;
+                break;
+            case "occupyAttemptSuccess":
+                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region`;
+                break;
             default:
                 return ""
         }
@@ -79,7 +92,7 @@ export default class PolitbyroAuditLog extends React.Component {
         )
     }
 
-    static renderOneArmyLog(log, i) {
+    renderOneArmyLog(log, i) {
         let message;
 
         switch(log.type) {
@@ -118,7 +131,7 @@ export default class PolitbyroAuditLog extends React.Component {
                         <div className="col-md-6 text-left">
                             {PolitbyroAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
-                                return PolitbyroAuditLog.renderOneRegionLog(log, i)
+                                return this.renderOneRegionLog(log, i)
                             })}
                         </div>
                     </div>
@@ -138,7 +151,7 @@ export default class PolitbyroAuditLog extends React.Component {
                         <div className="col-md-6 text-left">
                             {PolitbyroAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                             {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
-                                return PolitbyroAuditLog.renderOneArmyLog(log, i)
+                                return this.renderOneArmyLog(log, i)
                             })}
                         </div>
                     </div>

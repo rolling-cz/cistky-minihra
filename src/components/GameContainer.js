@@ -10,12 +10,14 @@ import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import RegionsSummaryAuditLog from "./RegionsSummaryAuditLog";
 import RegionsAdminsAuditLog from "./RegionsAdminsAuditLog";
-import {validateRegion, validateArmy} from "../services/Validator";
+import {validateRegion, validateArmy, validateEnemy} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import ArmyCosts from "./ArmyCosts";
 import ConfigTab from "./ConfigTab";
 import ArmyAuditLog from "./ArmyAuditLog";
 import ArmyList from "./ArmyList";
+import InvasionList from "./InvasionList";
+import OccupationList from "./OccupationList";
 import CommandList from "./CommandList";
 import Ranking from "../services/Ranking";
 
@@ -29,7 +31,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "regions",
+            formTab: "foreignArmies",
             error: null
         }
     }
@@ -135,6 +137,25 @@ export default class GameContainer extends React.Component {
         }
     }
 
+    addInvasion(enemyName, regionName, type, soldiers) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.invasions.push({enemy: enemyName, region: regionName,  type: type, soldiers: soldiers});
+        const error = validateEnemy(this.state.definitions, enemyName, newState.invasions);
+        if (!error) {
+          this.setState({currentState: newState, error: null})
+        } else {
+          this.setState({error: error})
+        }
+    }
+
+    cancelInvasion(invasionKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        if (newState.invasions.length > invasionKey && invasionKey >= 0 ) {
+            newState.invasions.splice(invasionKey, 1);
+            this.setState({currentState: newState})
+        }
+    }
+
     evaluate() {
         const newState = evaluateAct(this.state.definitions, this.state.currentState);
         this.setState({newState: newState});
@@ -156,6 +177,7 @@ export default class GameContainer extends React.Component {
         newState.auditLog = [];
         newState.transports = [];
         newState.commands = [];
+        newState.invasions = [];
 
         newState.regions.forEach(region => {
             definitions.coefficients.resources.types.forEach(resourceType => {
@@ -199,6 +221,9 @@ export default class GameContainer extends React.Component {
                 </Tab>
                 <Tab eventKey="armyCosts" title="Armáda náklady">
                     <ArmyCosts defs={this.state.definitions}/>
+                </Tab>
+                <Tab eventKey="foreignArmies" title="Cizí armády">
+                    {this.renderForeignArmies(this.state.definitions)}
                 </Tab>
                 <Tab eventKey="config" title="Konfigurace">
                     <ConfigTab
@@ -255,6 +280,31 @@ export default class GameContainer extends React.Component {
                               commands={this.state.currentState.commands}
                               addCommand={this.addCommand.bind(this)}
                               cancelCommand={this.cancelCommand.bind(this)}/>
+
+                <div className="mt-3 no-print">
+                    <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
+                        Vyhodnotit dějství
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    renderForeignArmies(definitions) {
+        return (
+            <div className="mt-4">
+                <h3 id="main-title">Plán cizích armád pro {this.state.history.length + 1}. dějství</h3>
+                {this.renderError()}
+
+                <OccupationList defs={definitions}
+                            currentState={this.state.currentState}
+                />
+
+                <InvasionList defs={definitions}
+                            currentState={this.state.currentState}
+                            addInvasion={this.addInvasion.bind(this)}
+                            cancelInvasion={this.cancelInvasion.bind(this)}
+                />
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">

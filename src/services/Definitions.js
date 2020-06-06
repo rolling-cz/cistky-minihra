@@ -59,6 +59,8 @@ module.exports.getInitialState = () => {
         transports: [],
         armies: armiesDto,
         commands: [],
+        invasions: [],
+        occupations: [],
         auditLog: []
     }
 };
@@ -116,6 +118,8 @@ function getDefinitions() {
                 },
                 "monument": 20,
                 "recruiting": 5,
+                "plundered": -5,
+                "occupied": -10,
                 "points": {
                     "best": {
                         "rank": 2,
@@ -141,7 +145,11 @@ function getDefinitions() {
                     "defeat": -3,
                     "killed": 3,
                     "lost": -2,
-                    "patrol": 2
+                    "patrol": 2,
+                    "plunderPatrolDefended": 15,
+                    "plunderPatrolLost": -8,
+                    "occupyPatrolDefended": 18,
+                    "occupyPatrolLost": -20
                 }
             },
             "monuments": {
@@ -204,6 +212,7 @@ function getDefinitions() {
                     }
                 },
                 "soldiersOverRebels": 1.2,
+                "soldiersOverEnemies": 1,
                 "commands": {
                     "types": ["patrol", "suppress"]
                 },
@@ -249,6 +258,43 @@ function getDefinitions() {
                         "fuel": 0.25
                     }
                 }
+            },
+            "enemy": {
+                "invasion": {
+                    "types": ["plunder", "occupy"]
+                },
+                "names": [{
+                        "countryName": "Polsko",
+                        "attr": "polský",
+                        "people": "Poláci"
+                    },
+                    {
+                        "countryName": "Čína",
+                        "attr": "čínský",
+                        "people": "Číňani"
+                    },
+                    {
+                        "countryName": "Japonsko",
+                        "attr": "japonský",
+                        "people": "Japonci"
+                    },
+                    {
+                        "countryName": "Turecko",
+                        "attr": "turecký",
+                        "people": "Turci"
+                    },
+                    {
+                        "countryName": "Finsko",
+                        "attr": "finský",
+                        "people": "Finové"
+                    },
+                    {
+                        "countryName": "Rumunsko",
+                        "attr": "rumunský",
+                        "people": "Rumuni"
+                    }
+                ],
+                "plunderEffect": 0.1
             }
         },
         "regions": [
