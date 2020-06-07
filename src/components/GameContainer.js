@@ -10,6 +10,8 @@ import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
 import RegionsSummaryAuditLog from "./RegionsSummaryAuditLog";
 import RegionsAdminsAuditLog from "./RegionsAdminsAuditLog";
+import ArmyDetailedAuditLog from "./ArmyDetailedAuditLog";
+import ArmyAdminsAuditLog from "./ArmyAdminsAuditLog";
 import {validateRegion, validateArmy, validateEnemy} from "../services/Validator";
 import Alert from "react-bootstrap/Alert";
 import ArmyCosts from "./ArmyCosts";
@@ -387,8 +389,20 @@ export default class GameContainer extends React.Component {
                                            disabledArmies={disabledArmies}
                                            ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="army" title="Armáda">
+                    <Tab eventKey="armyDetail" title="Armáda kompletní">
+                        <ArmyDetailedAuditLog definitions={definitions}
+                                      auditLog={this.state.newState.auditLog}
+                                      disabledArmies={disabledArmies}
+                                      ranking={ranking}/>
+                    </Tab>
+                    <Tab eventKey="armySummary" title="Armáda shrnutí">
                         <ArmyAuditLog definitions={definitions}
+                                      auditLog={this.state.newState.auditLog}
+                                      disabledArmies={disabledArmies}
+                                      ranking={ranking}/>
+                    </Tab>
+                    <Tab eventKey="armyAdmins" title="Armáda orgové">
+                        <ArmyAdminsAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
                                       ranking={ranking}/>

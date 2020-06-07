@@ -7,9 +7,9 @@ module.exports.evaluateAct = (definitions, state) => {
 
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
 
-    newState.armies.forEach(army => evaluateArmy(newState.auditLog, definitions, army));
-
     newState.operations.forEach(operation => evaluateOperation(newState.auditLog, definitions, operation, newState.armies));
+
+    newState.armies.forEach(army => evaluateArmy(newState.auditLog, definitions, army));
     return newState
 };
 
@@ -90,6 +90,8 @@ function evaluateOperation(auditLog, defs, operation, armies) {
         rewards.steal = operationDef.rewards.steal;
         rewards.fuel = operationDef.rewards.fuel;
         rewards.soldiers = operationDef.rewards.soldiers;
+
+        army.soldiers += rewards.soldiers;
 
         addRandomResource(defs, rewards, operationDef.rewards.randomOneResource);
         for (let i = 0; i < operationDef.rewards.randomMultiResource; i++) {

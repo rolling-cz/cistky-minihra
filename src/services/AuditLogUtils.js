@@ -26,7 +26,7 @@ module.exports.resourceToWord4thCase = (resource) => {
 
 module.exports.inflectResources = (number) => {
     if (number === 1) {
-        return "jednotka"
+        return "jednotku"
     } else if (number === 2 || number === 3 || number === 4) {
         return "jednotky"
     } else {
