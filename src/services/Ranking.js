@@ -151,6 +151,10 @@ export default class Ranking {
                 return rDef.army.victory + log.soldiersWounded * rDef.army.lost + log.enemiesWounded * rDef.army.killed;
             case "liberationArmyLost":
                 return rDef.army.defeat + log.soldiersWounded * rDef.army.lost + log.enemiesWounded * rDef.army.killed;
+            case "operationSuccess":
+                return rDef.army.operationSuccess * log.difficulty + log.soldiersWounded * rDef.army.lost;
+            case "operationFail":
+                return rDef.army.operationFail * log.difficulty + log.soldiersWounded * rDef.army.lost;
             default:
                 return 0
         }

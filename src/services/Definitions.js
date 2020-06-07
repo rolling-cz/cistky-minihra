@@ -60,7 +60,8 @@ module.exports.getInitialState = () => {
         armies: armiesDto,
         commands: [],
         invasions: [],
-        occupations: [{enemy: "Polsko", region: "Jih", soldiers: 5}],
+        occupations: [],
+        operations: [],
         auditLog: []
     }
 };
@@ -149,7 +150,9 @@ function getDefinitions() {
                     "plunderPatrolDefended": 15,
                     "plunderPatrolLost": -8,
                     "occupyPatrolDefended": 18,
-                    "occupyPatrolLost": -20
+                    "occupyPatrolLost": -20,
+                    "operationSuccess": 8,
+                    "operationFail": -3
                 }
             },
             "monuments": {
@@ -503,6 +506,36 @@ function getDefinitions() {
                 "name": "Šedivá",
                 "soldiers": 6
             },
+        ],
+        "operations": [
+            {
+                "name": "Vojenská přehlídka",
+                "consumeSoldiers": false,
+                "difficulty": 1,
+                "adversaries": 0,
+                "rewards": {
+                    "wheat": 0,
+                    "steal": 0,
+                    "fuel": 0,
+                    "randomOneResource": 0,
+                    "randomMultiResource": 0,
+                    "soldiers": 0,
+                }
+            },
+            {
+                "name": "Obsazení Tanu Tuva",
+                "consumeSoldiers": false,
+                "difficulty": 2,
+                "adversaries": 3,
+                "rewards": {
+                    "wheat": 0,
+                    "steal": 0,
+                    "fuel": 0,
+                    "randomOneResource": 4,
+                    "randomMultiResource": 2,
+                    "soldiers": 0,
+                }
+            }
         ]
     }
 }

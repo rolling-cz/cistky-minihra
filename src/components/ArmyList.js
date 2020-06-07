@@ -70,9 +70,6 @@ export default class ArmyList extends React.Component {
                     <div className="col-md-1 font-weight-bold">
                         Nábor
                     </div>
-                    <div className="col-md-1 font-weight-bold">
-                        Mise
-                    </div>
                 </div>
                 {
                     this.state.currentState.armies.map((armyState, i) => {

@@ -94,6 +94,24 @@ export default class ArmyAuditLog extends React.Component {
             case "liberationArmyLost":
                 message = `Účast na neúspěšném osvbození regionu ${log.region}. Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků`;
                 break;
+            case "operationSuccess":
+                message = `Úspěšně splněna vojenské operace ${log.operation}. `;
+                if (log.soldiersWounded > 0) {
+                    message += `Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků. `;
+                }
+                if (log.soldiersDeparted > 0) {
+                    message += `Odešlo ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků. `;
+                }
+                break;
+            case "operationFail":
+                message = `Selhání během vojenské operace ${log.operation}. `;
+                if (log.soldiersWounded > 0) {
+                    message += `Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků. `;
+                }
+                if (log.soldiersDeparted > 0) {
+                    message += `Odešlo ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků. `;
+                }
+                break;
             default:
                 return ""
         }

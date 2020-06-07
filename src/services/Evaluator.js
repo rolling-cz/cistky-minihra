@@ -8,6 +8,8 @@ module.exports.evaluateAct = (definitions, state) => {
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
 
     newState.armies.forEach(army => evaluateArmy(newState.auditLog, definitions, army));
+
+    newState.operations.forEach(operation => evaluateOperation(newState.auditLog, definitions, operation, newState.armies));
     return newState
 };
 
@@ -46,6 +48,72 @@ function finishTransport(auditLog, transport, regions) {
         "region": targetRegion.name,
         "number": transport.number
     })
+}
+
+function evaluateOperation(auditLog, defs, operation, armies) {
+    const operationDef = defs.operations.find(op => op.name === operation.operation);
+    const army = armies.find(army => army.name === operation.army);
+
+    let operationSuccessful;
+    let soldiersWounded = 0;
+    if (operationDef.adversaries > 0) {
+        const soldiersPower = operation.soldiers
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
+            * defs.coefficients.army.soldiersOverEnemies;
+        const enemyPower = operationDef.adversaries
+            * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
+
+        operationSuccessful = soldiersPower >= enemyPower;
+        const soldiersWoundedCoefficient = operationSuccessful
+            ? defs.coefficients.army.wounded.soldiers.win
+            : defs.coefficients.army.wounded.soldiers.defeat;
+        soldiersWounded = Math.ceil(soldiersWoundedCoefficient * operation.soldiers);
+        army.soldiers -= soldiersWounded;
+    } else {
+        operationSuccessful = true;
+    }
+
+    let soldiersDeparted = 0;
+    if (operationDef.consumeSoldiers) {
+        soldiersDeparted = operation.soldiers - soldiersWounded;
+        army.soldiers -= soldiersDeparted;
+    }
+
+    const rewards = {
+        "wheat": 0,
+        "steal": 0,
+        "fuel": 0,
+        "soldiers": 0
+    }
+    if (operationSuccessful) {
+        rewards.wheat = operationDef.rewards.wheat;
+        rewards.steal = operationDef.rewards.steal;
+        rewards.fuel = operationDef.rewards.fuel;
+        rewards.soldiers = operationDef.rewards.soldiers;
+
+        addRandomResource(defs, rewards, operationDef.rewards.randomOneResource);
+        for (let i = 0; i < operationDef.rewards.randomMultiResource; i++) {
+            addRandomResource(defs, rewards, 1);
+        }
+    }
+
+    auditLog.push({
+        "type": operationSuccessful ? "operationSuccess" : "operationFail",
+        "army": army.name,
+        "operation": operationDef.name,
+        "difficulty": operationDef.difficulty,
+        "rewards": rewards,
+        "soldiersWounded": soldiersWounded,
+        "soldiersDeparted": soldiersDeparted
+    })
+}
+
+function addRandomResource(defs, resources, amount) {
+    if (amount < 1) {
+        return;
+    }
+    const resourceName = defs.coefficients.resources.types[Math.floor((Math.random() * 3))];
+    resources[resourceName] += amount;
 }
 
 function evaluateArmy(auditLog, defs, army) {

@@ -50,9 +50,6 @@ export default class Army extends React.Component {
                 <div className="col-md-1 text-left">
                     <input name="recruiting" type="text" size="2" value={this.state.currentState.recruiting} onChange={this.handleChange.bind(this)} />
                 </div>
-                <div className="col-md-1 text-left">
-                    mise
-                </div>
             </div>
         )
     }

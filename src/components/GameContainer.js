@@ -19,6 +19,7 @@ import ArmyList from "./ArmyList";
 import InvasionList from "./InvasionList";
 import OccupationList from "./OccupationList";
 import CommandList from "./CommandList";
+import OperationList from "./OperationList";
 import Ranking from "../services/Ranking";
 
 export default class GameContainer extends React.Component {
@@ -118,7 +119,7 @@ export default class GameContainer extends React.Component {
 
         const army = newState.armies.find(armyState => armyState.name === armyName);
         if (army) {
-          const error = validateArmy(this.state.definitions, army, newState.commands, newState.occupations);
+          const error = validateArmy(this.state.definitions, army, newState.commands, newState.occupations, newState.operations);
           if (!error) {
               this.setState({currentState: newState, error: null})
           } else {
@@ -133,6 +134,31 @@ export default class GameContainer extends React.Component {
         const newState = JSON.parse(JSON.stringify(this.state.currentState));
         if (newState.commands.length > commandKey && commandKey >= 0 ) {
             newState.commands.splice(commandKey, 1);
+            this.setState({currentState: newState})
+        }
+    }
+
+    addOperation(armyName, operationName, soldiers) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.operations.push({army: armyName, operation: operationName, soldiers: soldiers});
+
+        const army = newState.armies.find(armyState => armyState.name === armyName);
+        if (army) {
+          const error = validateArmy(this.state.definitions, army, newState.commands, newState.occupations, newState.operations);
+          if (!error) {
+              this.setState({currentState: newState, error: null})
+          } else {
+              this.setState({error: error})
+          }
+        } else {
+          this.setState({currentState: newState, error: null})
+        }
+    }
+
+    cancelOperation(operationKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        if (newState.operations.length > operationKey && operationKey >= 0 ) {
+            newState.operations.splice(operationKey, 1);
             this.setState({currentState: newState})
         }
     }
@@ -178,6 +204,7 @@ export default class GameContainer extends React.Component {
         newState.transports = [];
         newState.commands = [];
         newState.invasions = [];
+        newState.operations = [];
 
         newState.regions.forEach(region => {
             definitions.coefficients.resources.types.forEach(resourceType => {
@@ -279,7 +306,14 @@ export default class GameContainer extends React.Component {
                               currentState={this.state.currentState}
                               commands={this.state.currentState.commands}
                               addCommand={this.addCommand.bind(this)}
-                              cancelCommand={this.cancelCommand.bind(this)}/>
+                              cancelCommand={this.cancelCommand.bind(this)}
+                />
+
+                <OperationList defs={definitions}
+                            currentState={this.state.currentState}
+                            addOperation={this.addOperation.bind(this)}
+                            cancelOperation={this.cancelOperation.bind(this)}
+                />
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">

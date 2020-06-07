@@ -121,6 +121,12 @@ export default class PolitbyroAuditLog extends React.Component {
             case "liberationArmyLost":
                 message = `Účast na neúspěšném osvbození regionu ${log.region}`;
                 break;
+            case "operationSuccess":
+                message = `Úspěšně splněna vojenské operace ${log.operation}`;
+                break;
+            case "operationFail":
+                message = `Selhání během vojenské operace ${log.operation}`;
+                break;
             default:
                 return ""
         }

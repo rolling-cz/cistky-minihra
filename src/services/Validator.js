@@ -42,16 +42,36 @@ module.exports.validateRegion = (defs, region, transports) => {
     return error;
 };
 
-module.exports.validateArmy = (defs, army, commands, occupations) => {
+module.exports.validateArmy = (defs, army, commands, occupations, operations) => {
     let error = null;
 
-    let totalSoldiers = commands
+    let soldiersCommands = commands
         .filter(command => command.army === army.name)
-        .reduce((totalSoldiers, command) => totalSoldiers + command.soldiers, 0);
+        .reduce((soldiersCommands, command) => soldiersCommands + command.soldiers, 0);
+
+    let soldiersOperations = operations
+            .filter(op => op.army === army.name)
+            .reduce((soldiersOperations, op) => soldiersOperations + op.soldiers, 0);
+
+    const totalSoldiers = soldiersCommands + soldiersOperations;
 
     if (totalSoldiers > army.soldiers) {
         return `${army.name} armáda má rozkazy pro více vojáků (${totalSoldiers}) než kolik jich má (${army.soldiers}).`
     }
+
+    operations.forEach(testedOp => {
+        const conflict = operations.find(op => op.operation === testedOp.operation && op.army !== testedOp.army);
+        if (conflict) {
+            error = `Tuto operaci již provádí ${conflict.army} armáda.`;
+        }
+    })
+
+    operations.forEach(testedOp => {
+        const conflict = operations.find(op => op.operation !== testedOp.operation && op.army === testedOp.army);
+        if (conflict) {
+            error = `${conflict.army} armáda již provádí operaci ${conflict.operation}.`;
+        }
+    })
 
     commands.forEach(command => {
         if (command.type === 'liberate' && !occupations.some(oc => oc.region === command.region)) {
