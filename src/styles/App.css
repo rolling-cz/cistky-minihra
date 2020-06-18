@@ -26,11 +26,31 @@ input[type=text] {
   .nav > .nav-link {
     display: none;
   }
+  .nav.nav-tabs {
+    border-bottom: 0px;
+  }
   @page {
     margin: 0;
   }
   #main-title {
     margin-top: 2em;
     margin-bottom: 1em;
+  }
+
+  .operation-print {
+    page-break-after: always;
+    padding: 150px 30px 50px 30px;
+    font-family: 'Special Elite', cursive;
+  }
+  .operation-print h4 {
+    font-size: 36px;
+    margin-bottom: 2em;
+  }
+  .operation-print .desc {
+    text-align: justify;
+    margin-top: 8em;
+  }
+  .operation-print > div{
+    text-align: left;
   }
 }

@@ -23,6 +23,7 @@ import OccupationList from "./OccupationList";
 import CommandList from "./CommandList";
 import OperationList from "./OperationList";
 import Ranking from "../services/Ranking";
+import OperationsPrint from "./OperationsPrint";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "armies",
+            formTab: "operationsPrint",
             error: null
         }
     }
@@ -259,6 +260,9 @@ export default class GameContainer extends React.Component {
                         defs={this.state.definitions}
                         updateHandler={this.updateConfig.bind(this)}
                         originalDefs={getDefinitions()}/>
+                </Tab>
+                <Tab eventKey="operationsPrint" title="Operace">
+                    <OperationsPrint defs={this.state.definitions}/>
                 </Tab>
             </Tabs>
 

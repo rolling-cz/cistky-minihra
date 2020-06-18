@@ -510,9 +510,23 @@ function getDefinitions() {
         "operations": [
             {
                 "name": "Vojenská přehlídka",
+                "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "code": 84539,
+                "actMin": 1,
+                "actMax": 3,
+                "isGeneral": true,
                 "consumeSoldiers": false,
+                "minSoldiers": 2,
                 "difficulty": 1,
                 "adversaries": 0,
+                "costs": {
+                    "wheat": 2,
+                    "steal": 0,
+                    "fuel": 1,
+                    "randomOneResource": 0,
+                    "randomMultiResource": 0,
+                    "soldiersAction": "movement"
+                },
                 "rewards": {
                     "wheat": 0,
                     "steal": 0,
@@ -523,16 +537,30 @@ function getDefinitions() {
                 }
             },
             {
-                "name": "Obsazení Tanu Tuva",
-                "consumeSoldiers": false,
-                "difficulty": 2,
-                "adversaries": 3,
+                "name": "Obrana jezera Chasan",
+                "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "code": 52167,
+                "actMin": 3,
+                "actMax": 4,
+                "isGeneral": true,
+                "consumeSoldiers": true,
+                "minSoldiers": 0,
+                "difficulty": 3,
+                "adversaries":  4,
+                "costs": {
+                    "wheat": 0,
+                    "steal": 2,
+                    "fuel": 0,
+                    "randomOneResource": 0,
+                    "randomMultiResource": 0,
+                    "soldiersAction": "fight"
+                },
                 "rewards": {
                     "wheat": 0,
                     "steal": 0,
                     "fuel": 0,
-                    "randomOneResource": 4,
-                    "randomMultiResource": 2,
+                    "randomOneResource": 0,
+                    "randomMultiResource": 0,
                     "soldiers": 0,
                 }
             }

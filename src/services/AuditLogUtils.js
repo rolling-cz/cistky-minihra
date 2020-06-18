@@ -34,6 +34,16 @@ module.exports.inflectResources = (number) => {
     }
 };
 
+module.exports.inflectResources1stCase = (number) => {
+    if (number === 1) {
+        return "jednotka"
+    } else if (number === 2 || number === 3 || number === 4) {
+        return "jednotky"
+    } else {
+        return "jednotek"
+    }
+};
+
 module.exports.inflectGroups = (number) => {
     if (number === 1) {
         return "skupina"
