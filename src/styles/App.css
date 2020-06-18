@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Special+Elite');
+@font-face {
+   font-family: 'remington-cz';
+      src: url('remington-cz.ttf') format('truetype');
+}
 
 .App {
   text-align: center;
@@ -18,7 +21,7 @@ input[type=text] {
 
 @media only print {
   .reports {
-    font-family: 'Special Elite', cursive;
+    font-family: 'remington-cz';
   }
   .no-print {
     display: none;
@@ -40,7 +43,7 @@ input[type=text] {
   .operation-print {
     page-break-after: always;
     padding: 150px 30px 50px 30px;
-    font-family: 'Special Elite', cursive;
+    font-family: 'remington-cz';
   }
   .operation-print h4 {
     font-size: 36px;
