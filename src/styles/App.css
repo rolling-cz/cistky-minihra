@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Special+Elite');
+
 .App {
   text-align: center;
 }
@@ -15,7 +17,13 @@ input[type=text] {
 }
 
 @media only print {
+  .reports {
+    font-family: 'Special Elite';
+  }
   .no-print {
+    display: none;
+  }
+  .nav > .nav-link {
     display: none;
   }
   @page {

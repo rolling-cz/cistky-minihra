@@ -357,7 +357,7 @@ export default class GameContainer extends React.Component {
         const disabledArmies = this.state.newState.armies.filter(army => !army.enabled).map(army => army.name);
         const ranking = new Ranking(definitions, disabledRegions, disabledArmies, this.state.newState.auditLog);
         return (
-            <div>
+            <div className="reports">
                 <h3 id="main-title">Výsledky hospodářství za {this.state.history.length + 1}. dějství</h3>
                 <Tabs
                     id="log-tabs"
