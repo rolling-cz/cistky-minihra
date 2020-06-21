@@ -82,9 +82,9 @@ function getDefinitions() {
                     "fuel": 2
                 },
                 "income": {
-                    "wheat": 2.4,
-                    "steal": 1.2,
-                    "fuel": 2.4
+                    "wheat": 2.5,
+                    "steal": 1,
+                    "fuel": 1.5
                 },
                 "minProduction": 0.2
             },
@@ -98,9 +98,9 @@ function getDefinitions() {
                 "starvation": -5,
                 "rebellion": -10,
                 "construction": {
-                    "wheat": 10,
-                    "steal": 12,
-                    "fuel": 12
+                    "wheat": 13,
+                    "steal": 16,
+                    "fuel": 16
                 },
                 "repair": {
                     "wheat": 6,
@@ -114,10 +114,10 @@ function getDefinitions() {
                     "fuel": -7
                 },
                 "transport": {
-                    "out": 3,
+                    "out": 4,
                     "in": 1
                 },
-                "monument": 20,
+                "monument": 25,
                 "recruiting": 5,
                 "plundered": -5,
                 "occupied": -10,
@@ -156,19 +156,19 @@ function getDefinitions() {
                 }
             },
             "monuments": {
-                "productivity": 5,
+                "productivity": 10,
                 "building": 1,
             },
             "fearLevels": [
                 {
                     "level": 1,
-                    "production": 90,
+                    "production": 95,
                     "rebellionRisk": 5,
                     "rebellionSize": 1
                 },
                 {
                     "level": 2,
-                    "production": 105,
+                    "production": 110,
                     "rebellionRisk": 15,
                     "rebellionSize": 1
                 },
@@ -195,7 +195,7 @@ function getDefinitions() {
             },
             "random": {
                 "production": {
-                    "min": 75,
+                    "min": 85,
                     "max": 110
                 }
             },
@@ -224,7 +224,7 @@ function getDefinitions() {
                     "types": ["patrol", "suppress", "liberate"]
                 },
                 "costs": {
-                    "wheat": 0.25,
+                    "wheat": 0.5,
                     "steal": 0.5,
                     "fuel": 0.5
                 },
@@ -232,28 +232,28 @@ function getDefinitions() {
                     "maintenance": {
                         "id": "maintenance",
                         "name": "Údržba",
-                        "wheat": 0.25,
+                        "wheat": 0.5,
                         "steal": 0,
                         "fuel": 0
                     },
                     "conscripting": {
                         "id": "conscripting",
                         "name": "Zbrojení",
-                        "wheat": 1,
-                        "steal": 2,
-                        "fuel": 0
+                        "wheat": 0.5,
+                        "steal": 0.5,
+                        "fuel": 0.5
                     },
                     "fight": {
                         "id": "fight",
                         "name": "Boj",
                         "wheat": 0.5,
                         "steal": 0.5,
-                        "fuel": 1
+                        "fuel": 0.5
                     },
                     "movement": {
                         "id": "movement",
                         "name": "Pohyb",
-                        "wheat": 0.25,
+                        "wheat": 0.5,
                         "steal": 0,
                         "fuel": 0.5
                     },
@@ -262,7 +262,7 @@ function getDefinitions() {
                         "name": "Hlídkování",
                         "wheat": 0.5,
                         "steal": 0,
-                        "fuel": 0.25
+                        "fuel": 0.5
                     }
                 }
             },
@@ -355,7 +355,7 @@ function getDefinitions() {
                 }
             },{
                 "name": "Jihozápad",
-                "priority": 1,
+                "priority": 2,
                 "start": {
                     "population": 80,
                     "wheat": 160,
@@ -365,21 +365,21 @@ function getDefinitions() {
                 "richness": {
                     "wheat": 150,
                     "steal": 0,
-                    "fuel": 100
+                    "fuel": 50
                 }
             },{
                 "name": "Jižní Kavkaz",
-                "priority": 2,
+                "priority": 1,
                 "start": {
                     "population": 50,
                     "wheat": 50,
-                    "steal": 100,
-                    "fuel": 100
+                    "steal": 80,
+                    "fuel": 150
                 },
                 "richness": {
-                    "wheat": 100,
-                    "steal": 70,
-                    "fuel": 70
+                    "wheat": 80,
+                    "steal": 100,
+                    "fuel": 100
                 }
             },{
                 "name": "Kazachstán",
@@ -453,7 +453,7 @@ function getDefinitions() {
                 }
             },{
                 "name": "Volha",
-                "priority": 2,
+                "priority": 1,
                 "start": {
                     "population": 120,
                     "wheat": 40,
@@ -467,12 +467,12 @@ function getDefinitions() {
                 }
             },{
                 "name": "Východní Sibiř",
-                "priority": 1,
+                "priority": 2,
                 "start": {
                     "population": 50,
                     "wheat": 10,
                     "steal": 100,
-                    "fuel": 100
+                    "fuel": 120
                 },
                 "richness": {
                     "wheat": 20,
