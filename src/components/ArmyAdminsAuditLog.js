@@ -22,7 +22,16 @@ export default class ArmyAdminsAuditLog extends React.Component {
         })
     }
 
-    static renderRank(rankPoints, i) {
+    renderRank(rank, i) {
+        if (!rank) {
+            return "";
+        }
+
+        const rankLevel = this.state.definitions.coefficients.ranking.points.army[rank];
+        if (!rankLevel) {
+            return "Neznámý rank " + rank;
+        }
+        const rankPoints = rankLevel.rankChange;
         if (rankPoints > 0) {
             return (
                 <div>
@@ -50,7 +59,7 @@ export default class ArmyAdminsAuditLog extends React.Component {
                                     {armyDef.name} armáda
                                 </div>
                                 <div className="col-md-6 text-left">
-                                    {ArmyAdminsAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
+                                    {this.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                                     {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
                                         return this.renderArmyLog(log, i)
                                     })}

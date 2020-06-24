@@ -17,7 +17,7 @@ export default class Ranking {
         rankList.sort((a, b) => b.points - a.points);
 
         let rankMap = this.initRegions(disabledRegions);
-        this.applyRanks(rankMap, rankList)
+        this.applyRanks(rankMap, rankList, this.defs.coefficients.ranking.points.region);
         return rankMap;
     }
 
@@ -29,18 +29,17 @@ export default class Ranking {
         rankList.sort((a, b) => b.points - a.points);
 
         let rankMap = this.initArmies(disabledArmies);
-        this.applyRanks(rankMap, rankList)
+        this.applyRanks(rankMap, rankList, this.defs.coefficients.ranking.points.army);
         return rankMap;
     }
 
-    applyRanks(rankMap, rankList) {
+    applyRanks(rankMap, rankList, pDef) {
         const length = rankList.length;
-        const pDef = this.defs.coefficients.ranking.points;
 
-        this.applyRank(rankMap, rankList, 0, pDef.best.number, pDef.best.rank);
-        this.applyRank(rankMap, rankList, 1, Math.ceil(length * pDef.good.percent), pDef.good.rank);
-        this.applyRank(rankMap, rankList, Math.floor((length  - 1) * (1 - pDef.bad.percent)), length - 1, pDef.bad.rank);
-        this.applyRank(rankMap, rankList, length - pDef.worst.number, length, pDef.worst.rank);
+        this.applyRank(rankMap, rankList, 0, pDef.best.number, "best");
+        this.applyRank(rankMap, rankList, 1, Math.ceil(length * pDef.good.percent), "good");
+        this.applyRank(rankMap, rankList, Math.floor((length  - 1) * (1 - pDef.bad.percent)), length - 1, "bad");
+        this.applyRank(rankMap, rankList, length - pDef.worst.number, length, "worst");
 
         return rankMap
     }

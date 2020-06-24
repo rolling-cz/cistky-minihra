@@ -24,7 +24,16 @@ export default class RegionsAdminsAuditLog extends React.Component {
         })
     }
 
-    static renderRank(rankPoints, i) {
+    renderRank(rank, i) {
+        if (!rank) {
+            return "";
+        }
+
+        const rankLevel = this.state.definitions.coefficients.ranking.points.region[rank];
+        if (!rankLevel) {
+            return "Neznámý rank " + rank;
+        }
+        const rankPoints = rankLevel.rankChange;
         if (rankPoints > 0) {
             return (
                 <div>
@@ -97,7 +106,7 @@ export default class RegionsAdminsAuditLog extends React.Component {
                             Region {regionDef.name}
                         </div>
                         <div className="col-md-6 text-left">
-                            {RegionsAdminsAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
+                            {this.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                             {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                                 return RegionsAdminsAuditLog.renderOneLog(log, i)
                             })}

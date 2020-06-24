@@ -88,15 +88,15 @@ module.exports.effectivnessToWord = (number) => {
     }
 };
 
-module.exports.rankingToWord = (number) => {
-    switch (number) {
-        case 2:
+module.exports.rankingToWord = (rank) => {
+    switch (rank) {
+        case "best":
             return "Excelentní vedení";
-        case 1:
+        case "good":
             return "Dobré vedení";
-        case -1:
+        case "bad":
             return "Špatné vedení";
-        case -2:
+        case "worst":
             return "Otřesné vedení";
         default:
             return "Standardní vedení";

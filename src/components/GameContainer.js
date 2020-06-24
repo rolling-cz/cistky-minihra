@@ -35,7 +35,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "operationsPrint",
+            formTab: "armies",
             error: null
         }
     }

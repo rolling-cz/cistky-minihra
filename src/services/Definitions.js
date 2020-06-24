@@ -122,21 +122,41 @@ function getDefinitions() {
                 "plundered": -5,
                 "occupied": -10,
                 "points": {
-                    "best": {
-                        "rank": 2,
-                        "number": 1
+                    "region": {
+                        "best": {
+                            "rankChange": 2,
+                            "number": 1
+                        },
+                        "good": {
+                            "rankChange": 1,
+                            "percent": 0.4
+                        },
+                        "bad": {
+                            "rankChange": -1,
+                            "percent": 0.1
+                        },
+                        "worst": {
+                            "rankChange": -2,
+                            "number": 1
+                        },
                     },
-                    "good": {
-                        "rank": 1,
-                        "percent": 0.4
-                    },
-                    "bad": {
-                        "rank": -1,
-                        "percent": 0.1
-                    },
-                    "worst": {
-                        "rank": -2,
-                        "number": 1
+                    "army": {
+                        "best": {
+                            "rankChange": 1,
+                            "number": 1
+                        },
+                        "good": {
+                            "rankChange": 1,
+                            "percent": 0.4
+                        },
+                        "bad": {
+                            "rankChange": -1,
+                            "percent": 0.1
+                        },
+                        "worst": {
+                            "rankChange": -1,
+                            "number": 1
+                        },
                     },
                 },
                 "army": {
