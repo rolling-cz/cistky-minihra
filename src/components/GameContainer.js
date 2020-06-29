@@ -369,24 +369,28 @@ export default class GameContainer extends React.Component {
                     onSelect={key => this.setState({ logTab: key })}
                 >
                     <Tab eventKey="regionsComplete" title="Regiony kompletní">
+                        <h3 class="tab-print-title">Jednotlivé regiony za {this.state.history.length + 1}. dějství</h3>
                         <DetailedAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="regionsSummary" title="Regiony shrnutí">
+                        <h3 class="tab-print-title">Shrnutí regionů za {this.state.history.length + 1}. dějství</h3>
                         <RegionsSummaryAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="regionsAdmins" title="Regiony orgové">
+                        <h3 class="tab-print-title">Regiony pro sekretáře za {this.state.history.length + 1}. dějství</h3>
                         <RegionsAdminsAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="politbyro" title="Politbyro">
+                        <h3 class="tab-print-title">Zpráva pro Politbyro za {this.state.history.length + 1}. dějství</h3>
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
                                            disabledRegions={disabledRegions}
@@ -394,18 +398,21 @@ export default class GameContainer extends React.Component {
                                            ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="armyDetail" title="Armáda kompletní">
+                        <h3 class="tab-print-title">Jednotlivé armády za {this.state.history.length + 1}. dějství</h3>
                         <ArmyDetailedAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
                                       ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="armySummary" title="Armáda shrnutí">
+                        <h3 class="tab-print-title">Shrnutí armády za {this.state.history.length + 1}. dějství</h3>
                         <ArmyAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
                                       ranking={ranking}/>
                     </Tab>
                     <Tab eventKey="armyAdmins" title="Armáda orgové">
+                        <h3 class="tab-print-title">Armády pro sekretáře za {this.state.history.length + 1}. dějství</h3>
                         <ArmyAdminsAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
