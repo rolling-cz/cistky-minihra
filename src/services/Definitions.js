@@ -515,7 +515,7 @@ function getDefinitions() {
                 "soldiers": 6
             },
             {
-                "name": "Černá",
+                "name": "Zelená",
                 "soldiers": 6
             },
             {
@@ -523,7 +523,7 @@ function getDefinitions() {
                 "soldiers": 6
             },
             {
-                "name": "Šedivá",
+                "name": "Stříbrná",
                 "soldiers": 6
             },
         ],
