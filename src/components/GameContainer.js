@@ -16,6 +16,7 @@ import {validateRegion, validateArmy, validateEnemy} from "../services/Validator
 import Alert from "react-bootstrap/Alert";
 import ArmyCosts from "./ArmyCosts";
 import ConfigTab from "./ConfigTab";
+import GameStateTab from "./GameStateTab";
 import ArmyAuditLog from "./ArmyAuditLog";
 import ArmyList from "./ArmyList";
 import InvasionList from "./InvasionList";
@@ -35,7 +36,7 @@ export default class GameContainer extends React.Component {
             newState: null,
             history: [],
             logTab: "regionsComplete",
-            formTab: "armies",
+            formTab: "regions",
             error: null
         }
     }
@@ -85,6 +86,10 @@ export default class GameContainer extends React.Component {
 
     updateConfig(newDef) {
         this.setState({definitions: newDef})
+    }
+
+    updateGameState(newGameState) {
+       this.setState({currentState: newGameState})
     }
 
     cancelTransport(transportKey) {
@@ -260,6 +265,11 @@ export default class GameContainer extends React.Component {
                         defs={this.state.definitions}
                         updateHandler={this.updateConfig.bind(this)}
                         originalDefs={getDefinitions()}/>
+                </Tab>
+                <Tab eventKey="gameState" title="Stav hry">
+                    <GameStateTab
+                        gameState={this.state.currentState}
+                        updateHandler={this.updateGameState.bind(this)}/>
                 </Tab>
                 <Tab eventKey="operationsPrint" title="Operace">
                     <OperationsPrint defs={this.state.definitions}/>
