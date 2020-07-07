@@ -10,6 +10,10 @@ export default class OccupationList extends React.Component {
         }
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({currentState: props.currentState})
+    }
+
     render() {
         return (
             <div className="mt-3">

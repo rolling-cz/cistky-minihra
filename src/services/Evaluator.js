@@ -92,6 +92,10 @@ function evaluateOperation(auditLog, defs, operation, armies) {
         rewards.soldiers = operationDef.rewards.soldiers;
 
         army.soldiers += rewards.soldiers;
+        if (rewards.soldiers > 0) {
+            // new soldiers have their own food
+            army.food += rewards.soldiers * defs.coefficients.army.costs.wheat;
+        }
 
         addRandomResource(defs, rewards, operationDef.rewards.randomOneResource);
         for (let i = 0; i < operationDef.rewards.randomMultiResource; i++) {
@@ -435,6 +439,7 @@ function processPatrolSuppress(auditLog, defs, region, armies, commands) {
         army.soldiers -= soldiersWounded;
 
         activeRebels -= rebelsWounded;
+        region.rebels -= rebelsWounded;
         auditLog.push({
             "type": soldiersWon ? "victory" : "defeat",
             "region": region.name,

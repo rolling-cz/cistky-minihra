@@ -744,7 +744,7 @@ function getDefinitions() {
                     "soldiersAction": "movement"
                 },
                 "rewards": {
-                    "wheat": 1,
+                    "wheat": 0,
                     "steal": 0,
                     "fuel": 0,
                     "randomOneResource": 0,
