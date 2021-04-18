@@ -29,7 +29,7 @@ export default class DetailedAuditLog extends React.Component {
         })
     }
 
-    static renderRank(rankPoints, i) {
+    static renderRank(rankPoints) {
         return (
             <div className="row justify-content-md-center">
                 <div className="col-md-4 font-weight-bold">

@@ -269,7 +269,10 @@ function processLiberationAttempt(auditLog, defs, region, armies, commands, occu
 
     let withdraw = 0;
     if (soldiersWon) {
-        occupations = occupations.filter(oc => oc.region !== region.name);
+        const occupationIndex = occupations.indexOf(occupation);
+        if (occupationIndex !== -1) {
+            occupations.splice(occupationIndex, 1);
+        }
         withdraw = occupation.soldiers - enemiesWounded;
     } else {
         occupation.soldiers -= enemiesWounded;
@@ -424,8 +427,8 @@ function processPatrolSuppress(auditLog, defs, region, armies, commands) {
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
 
         const soldiersWon = soldiersPower >= rebelsPower;
-        let soldiersWounded = 0;
-        let rebelsWounded = 0;
+        let soldiersWounded;
+        let rebelsWounded;
         if (soldiersWon) {
             soldiersWounded = Math.ceil(attacking * defs.coefficients.army.wounded.soldiers.win);
             rebelsWounded = Math.ceil(activeRebels * defs.coefficients.army.wounded.rebels.defeat);
@@ -451,7 +454,7 @@ function processPatrolSuppress(auditLog, defs, region, armies, commands) {
 
     // patrolling
     const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
-    let blocked = 0;
+    let blocked;
     if (patrolling > activeRebels) {
         blocked = activeRebels;
         activeRebels = 0;

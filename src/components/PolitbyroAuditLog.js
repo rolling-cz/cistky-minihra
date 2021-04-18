@@ -30,7 +30,7 @@ export default class PolitbyroAuditLog extends React.Component {
         })
     }
 
-    static renderRank(rankPoints, i) {
+    static renderRank(rankPoints) {
         if (rankPoints !== 0) {
             return (
                 <div>

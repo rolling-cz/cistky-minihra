@@ -22,7 +22,7 @@ export default class ArmyAuditLog extends React.Component {
         })
     }
 
-    static renderRank(rankPoints, i) {
+    static renderRank(rankPoints) {
         return (
             <div>
                 {rankingToWord(rankPoints)}

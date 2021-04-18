@@ -24,7 +24,7 @@ export default class RegionsAdminsAuditLog extends React.Component {
         })
     }
 
-    renderRank(rank, i) {
+    renderRank(rank) {
         if (!rank) {
             return "";
         }

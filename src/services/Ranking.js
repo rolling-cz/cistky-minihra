@@ -159,10 +159,6 @@ export default class Ranking {
         }
     }
 
-    getRegionPoints(regionName) {
-        return this.regionPoints[regionName];
-    }
-
     getRegionRank(regionName) {
         return this.regionRanking[regionName];
     }
