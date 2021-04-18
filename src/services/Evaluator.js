@@ -168,8 +168,11 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
     const activeRebels = processPatrolSuppress(auditLog, defs, region, armies, commands);
 
     // rebels from previous act
-    let rebelNegativeBonus = 1 - (activeRebels * defs.coefficients.rebellion.effectPerRebel) / 100;
     damageProductionSites(auditLog, defs, region, activeRebels);
+    let rebelNegativeBonus = 1 - (activeRebels * defs.coefficients.rebellion.effectPerRebel) / 100;
+    if (rebelNegativeBonus < 0) {
+        rebelNegativeBonus = 0;
+    }
 
     // production coef
     const fearLevel = defs.coefficients.fearLevels.find(fear => fear.level === region.fearLevel);
@@ -465,14 +468,14 @@ function processPatrolSuppress(auditLog, defs, region, armies, commands) {
 
     if (blocked > 0) {
         const percent = blocked/patrolling;
-        return commands
-                .filter(command => command.region === region.name && command.type === 'patrol')
-                .forEach(command => auditLog.push({
-                    "type": "patrol",
-                    "region": region.name,
-                    "army": command.army,
-                    "number": Math.ceil(command.soldiers * percent)
-                }));
+        commands
+            .filter(command => command.region === region.name && command.type === 'patrol')
+            .forEach(command => auditLog.push({
+                "type": "patrol",
+                "region": region.name,
+                "army": command.army,
+                "number": Math.ceil(command.soldiers * percent)
+            }));
     }
 
     return activeRebels;
