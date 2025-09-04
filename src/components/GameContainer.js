@@ -25,6 +25,7 @@ import CommandList from "./CommandList";
 import OperationList from "./OperationList";
 import Ranking from "../services/Ranking";
 import OperationsPrint from "./OperationsPrint";
+import { t } from "../localization";
 
 export default class GameContainer extends React.Component {
     constructor(props) {
@@ -248,30 +249,30 @@ export default class GameContainer extends React.Component {
                 activeKey={this.state.formTab}
                 onSelect={key => this.setState({ formTab: key })}
             >
-                <Tab eventKey="regions" title="Regiony plán">
+                <Tab eventKey="regions" title={t("Regiony plán")}>
                     {this.renderRegions(this.state.definitions)}
                 </Tab>
-                <Tab eventKey="armies" title="Armáda plán">
+                <Tab eventKey="armies" title={t("Armáda plán")}>
                     {this.renderArmies(this.state.definitions)}
                 </Tab>
-                <Tab eventKey="armyCosts" title="Armáda náklady">
+                <Tab eventKey="armyCosts" title={t("Armáda náklady")}>
                     <ArmyCosts defs={this.state.definitions}/>
                 </Tab>
-                <Tab eventKey="foreignArmies" title="Cizí armády">
+                <Tab eventKey="foreignArmies" title={t("Cizí armády")}>
                     {this.renderForeignArmies(this.state.definitions)}
                 </Tab>
-                <Tab eventKey="config" title="Konfigurace">
+                <Tab eventKey="config" title={t("Konfigurace")}>
                     <ConfigTab
                         defs={this.state.definitions}
                         updateHandler={this.updateConfig.bind(this)}
                         originalDefs={getDefinitions()}/>
                 </Tab>
-                <Tab eventKey="gameState" title="Stav hry">
+                <Tab eventKey="gameState" title={t("Stav hry")}>
                     <GameStateTab
                         gameState={this.state.currentState}
                         updateHandler={this.updateGameState.bind(this)}/>
                 </Tab>
-                <Tab eventKey="operationsPrint" title="Operace">
+                <Tab eventKey="operationsPrint" title={t("Operace")}>
                     <OperationsPrint defs={this.state.definitions}/>
                 </Tab>
             </Tabs>
@@ -282,7 +283,7 @@ export default class GameContainer extends React.Component {
     renderRegions(definitions) {
         return (
             <div className="mt-4">
-                <h3 id="main-title">Plán hospodářství pro {this.state.history.length + 1}. dějství</h3>
+                <h3 id="main-title">{t("Plán hospodářství pro")} {this.state.history.length + 1}. {t("dějství")}</h3>
                 {this.renderError()}
 
                 <RegionList definitions={definitions}
@@ -299,7 +300,7 @@ export default class GameContainer extends React.Component {
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
-                        Vyhodnotit dějství
+                        {t("Vyhodnotit dějství")}
                     </Button>
                 </div>
             </div>
@@ -309,7 +310,7 @@ export default class GameContainer extends React.Component {
     renderArmies(definitions) {
         return (
             <div className="mt-4">
-                <h3 id="main-title">Plán armád pro {this.state.history.length + 1}. dějství</h3>
+                <h3 id="main-title">{t("Plán armád pro")} {this.state.history.length + 1}. {t("dějství")}</h3>
                 {this.renderError()}
 
                 <ArmyList definitions={definitions}
@@ -333,7 +334,7 @@ export default class GameContainer extends React.Component {
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
-                        Vyhodnotit dějství
+                        {t("Vyhodnotit dějství")}
                     </Button>
                 </div>
             </div>
@@ -343,7 +344,7 @@ export default class GameContainer extends React.Component {
     renderForeignArmies(definitions) {
         return (
             <div className="mt-4">
-                <h3 id="main-title">Plán cizích armád pro {this.state.history.length + 1}. dějství</h3>
+                <h3 id="main-title">{t("Plán cizích armád pro")} {this.state.history.length + 1}. {t("dějství")}</h3>
                 {this.renderError()}
 
                 <OccupationList defs={definitions}
@@ -358,7 +359,7 @@ export default class GameContainer extends React.Component {
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
-                        Vyhodnotit dějství
+                        {t("Vyhodnotit dějství")}
                     </Button>
                 </div>
             </div>
@@ -372,57 +373,57 @@ export default class GameContainer extends React.Component {
         const ranking = new Ranking(definitions, disabledRegions, disabledArmies, this.state.newState.auditLog);
         return (
             <div className="reports">
-                <h3 id="main-title">Výsledky hospodářství za {this.state.history.length + 1}. dějství</h3>
+                <h3 id="main-title">{t("Výsledky hospodářství za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                 <Tabs
                     id="log-tabs"
                     activeKey={this.state.logTab}
                     onSelect={key => this.setState({ logTab: key })}
                 >
-                    <Tab eventKey="regionsComplete" title="Regiony kompletní">
-                        <h3 className="tab-print-title">Jednotlivé regiony za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="regionsComplete" title={t("Regiony kompletní")}>
+                        <h3 className="tab-print-title">{t("Jednotlivé regiony za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <DetailedAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="regionsSummary" title="Regiony shrnutí">
-                        <h3 className="tab-print-title">Shrnutí regionů za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="regionsSummary" title={t("Regiony shrnutí")}>
+                        <h3 className="tab-print-title">{t("Shrnutí regionů za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <RegionsSummaryAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="regionsAdmins" title="Regiony orgové">
-                        <h3 className="tab-print-title">Regiony pro sekretáře za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="regionsAdmins" title={t("Regiony orgové")}>
+                        <h3 className="tab-print-title">{t("Regiony pro sekretáře za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <RegionsAdminsAuditLog definitions={definitions}
                                           auditLog={this.state.newState.auditLog}
                                           disabledRegions={disabledRegions}
                                           ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="politbyro" title="Politbyro">
-                        <h3 className="tab-print-title">Zpráva pro Politbyro za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="politbyro" title={t("Politbyro")}>
+                        <h3 className="tab-print-title">{t("Zpráva pro Politbyro za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <PolitbyroAuditLog definitions={definitions}
                                            auditLog={this.state.newState.auditLog}
                                            disabledRegions={disabledRegions}
                                            disabledArmies={disabledArmies}
                                            ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="armyDetail" title="Armáda kompletní">
-                        <h3 className="tab-print-title">Jednotlivé armády za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="armyDetail" title={t("Armáda kompletní")}>
+                        <h3 className="tab-print-title">{t("Jednotlivé armády za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <ArmyDetailedAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
                                       ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="armySummary" title="Armáda shrnutí">
-                        <h3 className="tab-print-title">Shrnutí armády za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="armySummary" title={t("Armáda shrnutí")}>
+                        <h3 className="tab-print-title">{t("Shrnutí armády za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <ArmyAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
                                       ranking={ranking}/>
                     </Tab>
-                    <Tab eventKey="armyAdmins" title="Armáda orgové">
-                        <h3 className="tab-print-title">Armády pro sekretáře za {this.state.history.length + 1}. dějství</h3>
+                    <Tab eventKey="armyAdmins" title={t("Armáda orgové")}>
+                        <h3 className="tab-print-title">{t("Armády pro sekretáře za")} {this.state.history.length + 1}. {t("dějství")}</h3>
                         <ArmyAdminsAuditLog definitions={definitions}
                                       auditLog={this.state.newState.auditLog}
                                       disabledArmies={disabledArmies}
@@ -432,10 +433,10 @@ export default class GameContainer extends React.Component {
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.applyEvaluation.bind(this)} className="mr-2">
-                        Potvrdit vyhodnocení
+                        {t("Potvrdit vyhodnocení")}
                     </Button>
                     <Button variant="secondary" onClick={() => this.setState({"newState": null})} className="mr-2">
-                        Zpět na zadávání
+                        {t("Zpět na zadávání")}
                     </Button>
                 </div>
             </div>

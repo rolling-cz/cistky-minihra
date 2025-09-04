@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import { t } from "../localization";
 
 export default class Army extends React.Component {
     constructor(props) {
@@ -36,9 +37,9 @@ export default class Army extends React.Component {
         return (
             <div className={`row mt-2 justify-content-md-center ${rowClass}`}>
                 <div className="col-md-2 font-weight-bold">
-                    {this.state.definition.name} <br />
+                    {t(this.state.definition.name)} <br />
                     <Button variant="dark" onClick={() => this.props.toggleArmy(this.state.definition.name)} className="mr-1">
-                        Deaktivovat
+                        {t("Deaktivovat")}
                     </Button>
                 </div>
                 <div className="col-md-1 text-left">

@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "../localization";
 
 export default class GameStateTab extends React.Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export default class GameStateTab extends React.Component {
     render() {
         return (
             <div className="mt-4">
-                <h3>Stav minihry</h3>
+                <h3>{t("Stav minihry")}</h3>
                 <textarea value={JSON.stringify(this.state.gameState, undefined, 4)} cols="120" rows="25" onChange={this.handleChange.bind(this)} />
             </div>
         )

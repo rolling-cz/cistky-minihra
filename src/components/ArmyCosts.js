@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "../localization";
 
 export default class ArmyCosts extends React.Component {
     constructor(props) {
@@ -46,7 +47,7 @@ export default class ArmyCosts extends React.Component {
         return (
             <div className="row justify-content-md-center mt-2">
                 <div className="col-md-2 font-weight-bold">
-                    {action.name}
+                    {t(action.name)}
                 </div>
                 <div className="col-md-2">
                     <input id={action.id} type="text" size="2" value={this.state.actions[action.id]} onChange={this.updateActionNumber.bind(this)} />
@@ -89,7 +90,7 @@ export default class ArmyCosts extends React.Component {
         return (
             <div className="row justify-content-md-center mt-2">
                 <div className="col-md-2 font-weight-bold">
-                    Celkem
+                    {t("Celkem")}
                 </div>
                 <div className="col-md-2 font-weight-bold">
                     {units}
@@ -110,22 +111,22 @@ export default class ArmyCosts extends React.Component {
     render() {
         return (
             <div className="mt-4">
-                <h3>Počítadlo nákladů armády</h3>
+                <h3>{t("Počítadlo nákladů armády")}</h3>
                 <div className="row justify-content-md-center">
                     <div className="col-md-2 font-weight-bold">
-                        Akce
+                        {t("Akce")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Počet jednotek
+                        {t("Počet jednotek")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Pšenice
+                        {t("Pšenice")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Ocel
+                        {t("Ocel")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Palivo
+                        {t("Palivo")}
                     </div>
                 </div>
                 {this.renderAction(this.state.defs.coefficients.army.actions.maintenance)}

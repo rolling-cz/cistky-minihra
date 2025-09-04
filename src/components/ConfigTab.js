@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "../localization";
 
 export default class ConfigTab extends React.Component {
     constructor(props) {
@@ -33,10 +34,10 @@ export default class ConfigTab extends React.Component {
     render() {
         return (
             <div className="mt-4">
-                <h3>Konfigurace minihry</h3>
+                <h3>{t("Konfigurace minihry")}</h3>
                 <textarea value={JSON.stringify(this.state.defs, undefined, 4)} cols="120" rows="25" onChange={this.handleChange.bind(this)} />
                 <br />
-                <button onClick={this.resetConfig.bind(this)}>Resetovat na výchozí nastavení</button>
+                <button onClick={this.resetConfig.bind(this)}>{t("Resetovat na výchozí nastavení")}</button>
             </div>
         )
     }

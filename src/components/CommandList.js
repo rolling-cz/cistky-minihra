@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import { commandTypeToWord } from "../services/AuditLogUtils"
+import { t } from "../localization";
 
 export default class CommandList extends React.Component {
     constructor(props) {
@@ -39,22 +40,22 @@ export default class CommandList extends React.Component {
         });
         return (
             <div className="mt-3">
-                <h3>Rozkazy jednotkám</h3>
+                <h3>{t("Rozkazy jednotkám")}</h3>
                 <div className="row justify-content-md-center">
                     <div className="col-md-3 font-weight-bold">
-                        Armáda
+                        {t("Armáda")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Region
+                        {t("Region")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Úkon
+                        {t("Úkon")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Počet vojáků
+                        {t("Počet vojáků")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Akce
+                        {t("Akce")}
                     </div>
                 </div>
 
@@ -64,7 +65,7 @@ export default class CommandList extends React.Component {
                                 value={this.state.commandedArmy}
                                 onChange={(e) => this.setState({commandedArmy: e.target.value})}>
                             {armyNames.map((army, i) => {
-                                return (<option value={army} key={i}>{army}</option>)
+                                return (<option value={army} key={i}>{t(army)}</option>)
                             })}
                         </select>
                     </div>
@@ -73,7 +74,7 @@ export default class CommandList extends React.Component {
                                 value={this.state.commandedRegion}
                                 onChange={(e) => this.setState({commandedRegion: e.target.value})}>
                             {regionNames.map((region, i) => {
-                                return (<option value={region} key={i}>{region}</option>)
+                                return (<option value={region} key={i}>{t(region)}</option>)
                             })}
                         </select>
                     </div>
@@ -82,7 +83,7 @@ export default class CommandList extends React.Component {
                                 value={this.state.commandType}
                                 onChange={(e) => this.setState({commandType: e.target.value})}>
                             {this.state.defs.coefficients.army.commands.types.map((type, i) => {
-                                return (<option value={type} key={i}>{commandTypeToWord(type)}</option>)
+                                return (<option value={type} key={i}>{t(commandTypeToWord(type))}</option>)
                             })}
                         </select>
                     </div>
@@ -95,7 +96,7 @@ export default class CommandList extends React.Component {
                     <div className="col-md-1">
                         <Button variant="primary"
                                 onClick={() => this.props.addCommand(this.state.commandedArmy, this.state.commandedRegion, this.state.commandType, this.state.commandedSoldiers)}>
-                            Naplánovat
+                            {t("Naplánovat")}
                         </Button>
                     </div>
                 </div>
@@ -104,20 +105,20 @@ export default class CommandList extends React.Component {
                     return (
                         <div className="row mt-1 justify-content-md-center" key={i}>
                             <div className="col-md-3">
-                                {command.army}
+                                {t(command.army)}
                             </div>
                             <div className="col-md-3">
-                                {command.region}
+                                {t(command.region)}
                             </div>
                             <div className="col-md-3">
-                                {commandTypeToWord(command.type)}
+                                {t(commandTypeToWord(command.type))}
                             </div>
                             <div className="col-md-2">
                                 {command.soldiers}
                             </div>
                             <div className="col-md-1">
                                 <Button variant="primary" onClick={() => this.props.cancelCommand(i)}>
-                                    Zrušit
+                                    {t("Zrušit")}
                                 </Button>
                             </div>
                         </div>

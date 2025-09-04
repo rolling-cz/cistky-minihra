@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import { t } from "../localization";
 
 export default class TransportList extends React.Component {
     constructor(props) {
@@ -31,19 +32,19 @@ export default class TransportList extends React.Component {
         });
         return (
             <div className="mt-3">
-                <h3>Seznam transportů mezi regiony</h3>
+                <h3>{t("Seznam transportů mezi regiony")}</h3>
                 <div className="row justify-content-md-center">
                     <div className="col-md-3 font-weight-bold">
-                        Zdrojový region
+                        {t("Zdrojový region")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Cílový region
+                        {t("Cílový region")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Počet skupin k přesunutí
+                        {t("Počet skupin k přesunutí")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Akce
+                        {t("Akce")}
                     </div>
                 </div>
 
@@ -52,9 +53,9 @@ export default class TransportList extends React.Component {
                         <select className="browser-default custom-select"
                                 value={this.state.newTransportSource}
                                 onChange={(e) => this.setState({newTransportSource: e.target.value})}>
-                            <option value="Zahraničí" >Zahraničí</option>
+                            <option value="Zahraničí" >{t("Zahraničí")}</option>
                             {regionNames.map((region, i) => {
-                                return (<option value={region} key={i}>{region}</option>)
+                                return (<option value={region} key={i}>{t(region)}</option>)
                             })}
                         </select>
                     </div>
@@ -63,7 +64,7 @@ export default class TransportList extends React.Component {
                                 value={this.state.newTransportTarget}
                                 onChange={(e) => this.setState({newTransportTarget: e.target.value})}>
                             {regionNames.map((region, i) => {
-                                return (<option value={region} key={i}>{region}</option>)
+                                return (<option value={region} key={i}>{t(region)}</option>)
                             })}
                         </select>
                     </div>
@@ -76,7 +77,7 @@ export default class TransportList extends React.Component {
                     <div className="col-md-1">
                         <Button variant="primary"
                                 onClick={() => this.state.addTransport(this.state.newTransportSource, this.state.newTransportTarget, this.state.newTransportNumber)}>
-                            Naplánovat
+                            {t("Naplánovat")}
                         </Button>
                     </div>
                 </div>
@@ -85,17 +86,17 @@ export default class TransportList extends React.Component {
                     return (
                         <div className="row mt-1 justify-content-md-center" key={i}>
                             <div className="col-md-3">
-                                {transport.sourceRegion}
+                                {t(transport.sourceRegion)}
                             </div>
                             <div className="col-md-3">
-                                {transport.targetRegion}
+                                {t(transport.targetRegion)}
                             </div>
                             <div className="col-md-3">
-                                {transport.number}
+                                {t(transport.number)}
                             </div>
                             <div className="col-md-1">
                                 <Button variant="primary" onClick={() => this.state.cancelTransport(i)}>
-                                    Zrušit
+                                    {t("Zrušit")}
                                 </Button>
                             </div>
                         </div>

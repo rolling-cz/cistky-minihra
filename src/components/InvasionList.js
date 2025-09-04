@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import { invasionTypeToWord } from "../services/AuditLogUtils"
+import { t } from "../localization";
 
 export default class InvasionList extends React.Component {
     constructor(props) {
@@ -30,22 +31,22 @@ export default class InvasionList extends React.Component {
         });
         return (
             <div className="mt-3">
-                <h3>Pohyby cizích vojsk</h3>
+                <h3>{t("Pohyby cizích vojsk")}</h3>
                 <div className="row justify-content-md-center">
                     <div className="col-md-3 font-weight-bold">
-                        Nepřítel
+                        {t("Nepřítel")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Region
+                        {t("Region")}
                     </div>
                     <div className="col-md-3 font-weight-bold">
-                        Úkon
+                        {t("Úkon")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Počet vojáků
+                        {t("Počet vojáků")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Akce
+                        {t("Akce")}
                     </div>
                 </div>
 
@@ -55,7 +56,7 @@ export default class InvasionList extends React.Component {
                                 value={this.state.invasionEnemy}
                                 onChange={(e) => this.setState({invasionEnemy: e.target.value})}>
                             {this.state.defs.coefficients.enemy.names.map((army, i) => {
-                                return (<option value={army.countryName} key={i}>{army.countryName}</option>)
+                                return (<option value={army.countryName} key={i}>{t(army.countryName)}</option>)
                             })}
                         </select>
                     </div>
@@ -64,7 +65,7 @@ export default class InvasionList extends React.Component {
                                 value={this.state.invasionRegion}
                                 onChange={(e) => this.setState({invasionRegion: e.target.value})}>
                             {regionNames.map((region, i) => {
-                                return (<option value={region} key={i}>{region}</option>)
+                                return (<option value={region} key={i}>{t(region)}</option>)
                             })}
                         </select>
                     </div>
@@ -73,7 +74,7 @@ export default class InvasionList extends React.Component {
                                 value={this.state.invasionType}
                                 onChange={(e) => this.setState({invasionType: e.target.value})}>
                             {this.state.defs.coefficients.enemy.invasion.types.map((type, i) => {
-                                return (<option value={type} key={i}>{invasionTypeToWord(type)}</option>)
+                                return (<option value={type} key={i}>{t(invasionTypeToWord(type))}</option>)
                             })}
                         </select>
                     </div>
@@ -86,7 +87,7 @@ export default class InvasionList extends React.Component {
                     <div className="col-md-1">
                         <Button variant="primary"
                                 onClick={() => this.props.addInvasion(this.state.invasionEnemy, this.state.invasionRegion, this.state.invasionType, this.state.invasionSoldiers)}>
-                            Naplánovat
+                            {t("Naplánovat")}
                         </Button>
                     </div>
                 </div>
@@ -95,20 +96,20 @@ export default class InvasionList extends React.Component {
                     return (
                         <div className="row mt-1 justify-content-md-center" key={i}>
                             <div className="col-md-3">
-                                {invasion.enemy}
+                                {t(invasion.enemy)}
                             </div>
                             <div className="col-md-3">
-                                {invasion.region}
+                                {t(invasion.region)}
                             </div>
                             <div className="col-md-3">
-                                {invasionTypeToWord(invasion.type)}
+                                {t(invasionTypeToWord(invasion.type))}
                             </div>
                             <div className="col-md-2">
                                 {invasion.soldiers}
                             </div>
                             <div className="col-md-1">
                                 <Button variant="primary" onClick={() => this.props.cancelInvasion(i)}>
-                                    Zrušit
+                                    {t("Zrušit")}
                                 </Button>
                             </div>
                         </div>

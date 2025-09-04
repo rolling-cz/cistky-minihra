@@ -1,6 +1,7 @@
 import React from "react";
 import Region from "./Region";
 import Button from "react-bootstrap/Button";
+import { t } from "../localization";
 
 export default class RegionList extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class RegionList extends React.Component {
                                 onChange={(e) => this.setState({regionToEnabled: e.target.value})}>
                             {disabledRegions.map((region, i) => {
                                 if (!region.enabled) {
-                                    return (<option value={region} key={i}>{region}</option>)
+                                    return (<option value={region} key={i}>{t(region)}</option>)
                                 } else {
                                     return ""
                                 }
@@ -45,7 +46,7 @@ export default class RegionList extends React.Component {
                     </div>
                     <div className="col-md-2">
                         <Button variant="success" onClick={() => this.state.toggleRegion(this.state.regionToEnabled || disabledRegions[0])}>
-                            Aktivovat region
+                            {t("Aktivovat region")}
                         </Button>
                     </div>
                 </div>
@@ -61,22 +62,22 @@ export default class RegionList extends React.Component {
             <div className="mt-3">
                 <div className="row justify-content-md-center">
                     <div className="col-md-2 font-weight-bold">
-                        Název
+                        {t("Název")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Populace
+                        {t("Populace")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Alokace pracovníků
+                        {t("Alokace pracovníků")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Produkcní zařízení
+                        {t("Produkcní zařízení")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Monumenty
+                        {t("Monumenty")}
                     </div>
                     <div className="col-md-2 font-weight-bold">
-                        Jednotky
+                        {t("Jednotky")}
                     </div>
                 </div>
                 {

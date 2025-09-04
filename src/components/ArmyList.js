@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Army from "./Army"
+import { t } from "../localization";
 
 export default class ArmyList extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class ArmyList extends React.Component {
                                 onChange={(e) => this.setState({armyToEnabled: e.target.value})}>
                             {disabledArmies.map((army, i) => {
                                 if (!army.enabled) {
-                                    return (<option value={army} key={i}>{army}</option>)
+                                    return (<option value={army} key={i}>{t(army)}</option>)
                                 } else {
                                     return ""
                                 }
@@ -43,7 +44,7 @@ export default class ArmyList extends React.Component {
                     </div>
                     <div className="col-md-2">
                         <Button variant="success" onClick={() => this.props.toggleArmy(this.state.armyToEnabled || disabledArmies[0])}>
-                            Aktivovat armádu
+                            {t("Aktivovat armádu")}
                         </Button>
                     </div>
                 </div>
@@ -59,16 +60,16 @@ export default class ArmyList extends React.Component {
             <div className="mt-3">
                 <div className="row justify-content-md-center">
                     <div className="col-md-2 font-weight-bold">
-                        Název
+                        {t("Název")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Velikost
+                        {t("Velikost")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Jídlo
+                        {t("Jídlo")}
                     </div>
                     <div className="col-md-1 font-weight-bold">
-                        Nábor
+                        {t("Nábor")}
                     </div>
                 </div>
                 {
