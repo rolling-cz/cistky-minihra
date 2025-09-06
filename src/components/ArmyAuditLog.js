@@ -2,6 +2,7 @@ import React from "react";
 import {
     aggregateByRegion, aggregateByArmy, rankingToWord, findEnemyNameObject
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class ArmyAuditLog extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class ArmyAuditLog extends React.Component {
     static renderRank(rankPoints) {
         return (
             <div>
-                {rankingToWord(rankPoints)}
+                {t(rankingToWord(rankPoints))}
             </div>
         )
     }
@@ -37,7 +38,7 @@ export default class ArmyAuditLog extends React.Component {
                         return (
                             <div key={i} className="row row mt-2 justify-content-md-center">
                                 <div className="col-md-3 font-weight-bold">
-                                    {armyDef.name} armáda
+                                    {t(armyDef.name)} ${t("armáda")}
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {ArmyAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
@@ -57,7 +58,7 @@ export default class ArmyAuditLog extends React.Component {
                         return (
                             <div key={i} className="row row mt-2 justify-content-md-center">
                                 <div className="col-md-3 font-weight-bold">
-                                    Region {regionDef.name}
+                                    {t("Region")} {t(regionDef.name)}
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
@@ -77,28 +78,28 @@ export default class ArmyAuditLog extends React.Component {
 
         switch(log.type) {
             case "armyStarvation":
-                message = `Hladomor.`;
+                message = `${t("Hladomor")}.`;
                 break;
             case "armyRecruiting":
-                message = `Výcvik nových vojáků.`;
+                message = `${t("Výcvik nových vojáků")}.`;
                 break;
             case "victory":
-                message = `Úspěšně potlačené povstání v regionu ${log.region}.`;
+                message = `${t("Úspěšně potlačené povstání v regionu")} ${t(log.region)}.`;
                 break;
             case "defeat":
-                message = `Neúspěšně potlačené povstání v regionu ${log.region}.`;
+                message = `${t("Neúspěšně potlačené povstání v regionu")} ${t(log.region)}.`;
                 break;
             case "liberationArmySuccess":
-                message = `Účast na osvobození regionu ${log.region}.`;
+                message = `${t("Účast na osvobození regionu")} ${t(log.region)}.`;
                 break;
             case "liberationArmyLost":
-                message = `Účast na neúspěšném osvbození regionu ${log.region}.`;
+                message = `${t("Účast na neúspěšném osvbození regionu")} ${t(log.region)}.`;
                 break;
             case "operationSuccess":
-                message = `Úspěšně splněna vojenské operace ${log.operation}. `;
+                message = `${t("Úspěšně splněna vojenské operace")} ${t(log.operation)}. `;
                 break;
             case "operationFail":
-                message = `Selhání během vojenské operace ${log.operation}. `;
+                message = `${t("Selhání během vojenské operace")} ${t(log.operation)}. `;
                 break;
             default:
                 return ""
@@ -129,28 +130,28 @@ export default class ArmyAuditLog extends React.Component {
 
         switch(log.type) {
             case "rebellion":
-                message = `Nepokoje`;
+                message = `${t("Nepokoje")}`;
                 break;
             case "recruiting":
-                message = `Poskytli soudruhy pro nábor do armády.`;
+                message = `${t("Poskytli soudruhy pro nábor do armády")}.`;
                 break;
             case "plunderAttemptFailed":
-                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění`;
+                message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}`;
                 break;
             case "plunderAttemptSuccess":
-                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region`;
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("vyplenili region")}`;
                 break;
             case "occupyAttemptFailed":
-                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení`;
+                message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o obsazení")}`;
                 break;
             case "occupyAttemptSuccess":
-                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region.`;
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region")}.`;
                 break;
             case "liberationSuccess":
-                message = `Úspěšně osvobozen z područí ${findEnemyNameObject(log.enemy, this.state.definitions).countryName2nd}.`;
+                message = `${t("Úspěšně osvobozen z područí")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).countryName2nd)}.`;
                 break;
             case "liberationFail":
-                message = `Nezdařený pokus o osvobození.`;
+                message = `${t("Nezdařený pokus o osvobození")}.`;
                 break;
             default:
                 return ""
@@ -166,9 +167,9 @@ export default class ArmyAuditLog extends React.Component {
     render() {
         return (
             <div className="mt-4">
-                <h3>Vojenské shrnutí</h3>
+                <h3>{t("Vojenské shrnutí")}</h3>
                 {this.renderArmyLogs()}
-                <h3 className="mt-4">Regionální shrnutí</h3>
+                <h3 className="mt-4">{t("Regionální shrnutí")}</h3>
                 {this.renderRegionLogs()}
             </div>
         )

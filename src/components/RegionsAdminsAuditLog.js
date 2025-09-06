@@ -5,6 +5,7 @@ import {
     aggregateByRegion,
     inflectGroups4thCase
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class RegionsAdminsAuditLog extends React.Component {
     constructor(props) {
@@ -37,13 +38,13 @@ export default class RegionsAdminsAuditLog extends React.Component {
         if (rankPoints > 0) {
             return (
                 <div>
-                    Přidat {rankPoints} bod(y) ocenění.
+                    {t("Přidat")} {rankPoints} {t("bod(y) ocenění")}.
                 </div>
             )
         } else if (rankPoints < 0) {
            return (
                <div>
-                   Odebrat {Math.abs(rankPoints)} bod(y) ocenění.
+                   {t("Odebrat")} {Math.abs(rankPoints)} {t("bod(y) ocenění")}.
                </div>
            )
         } else {
@@ -56,34 +57,34 @@ export default class RegionsAdminsAuditLog extends React.Component {
 
         switch(log.type) {
             case "starvation":
-                message = `Odebrat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů kvůli hladomoru.`;
+                message = `${t("Odebrat")} ${log.number} ${t(inflectGroups4thCase(log.number))} ${t("soudruhů")} ${t("kvůli hladomoru")}.`;
                 break;
             case "rebellion":
-                message = `Odebrat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů kvůlu rebélii.`;
+                message = `${t("Odebrat")} ${log.number} ${t(inflectGroups4thCase(log.number))} ${t("soudruhů")} ${t("kvůlu rebélii")}.`;
                 break;
             case "construction":
-                message = `Postavit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                message = `${t("Postavit")} ${log.number} ${t(inflectProductionSites(log.number))} ${t("na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "repair":
-                message = `Opravit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                message = `${t("Opravit")} ${log.number} ${t(inflectProductionSites(log.number))} ${t("na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "natality":
-                message = `Přidat ${log.number} ${inflectGroups4thCase(log.number)} soudruhů.`;
+                message = `${t("Přidat")} ${log.number} ${t(inflectGroups4thCase(log.number))} ${t("soudruhů")}.`;
                 break;
             case "damage":
-                message = `Poškodit ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                message = `${t("Poškodit")} ${log.number} ${t(inflectProductionSites(log.number))} na ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "monuments":
-                message = `Postavit ${log.number} monument.`;
+                message = `${t("Postavit")} ${log.number} ${t("monument")}.`;
                 break;
             case "occupyAttemptSuccess":
-                message = `Deaktivovat obsazený region.`;
+                message = `${t("Deaktivovat obsazený region")}`;
                 break;
             case "liberationSuccess":
-                message = `Informovat o osvobození regionu.`;
+                message = `${t("Informovat o osvobození regionu")}`;
                 break;
             case "liberationFail":
-                message = `Informovat o nepodařeném pokusu osvobodit region.`;
+                message = `${t("Informovat o nepodařeném pokusu osvobodit region.")}`;
                 break;
             default:
                 return ""
@@ -103,7 +104,7 @@ export default class RegionsAdminsAuditLog extends React.Component {
                 return (
                     <div key={i} className="row row mt-2 justify-content-md-center">
                         <div className="col-md-3 font-weight-bold">
-                            Region {regionDef.name}
+                            {t("Region")} {t(regionDef.name)}
                         </div>
                         <div className="col-md-6 text-left">
                             {this.renderRank(this.props.ranking.getRegionRank(regionDef.name))}

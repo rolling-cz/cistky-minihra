@@ -10,6 +10,7 @@ import {
     rankingToWord,
     findEnemyNameObject
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class DetailedAuditLog extends React.Component {
     constructor(props) {
@@ -33,10 +34,10 @@ export default class DetailedAuditLog extends React.Component {
         return (
             <div className="row justify-content-md-center">
                 <div className="col-md-4 font-weight-bold">
-                    Hodnocení
+                    {t("Hodnocení")}
                 </div>
                 <div className="col-md-8 text-left">
-                    {rankingToWord(rankPoints)}
+                    {t(rankingToWord(rankPoints))}
                 </div>
             </div>
         )
@@ -48,72 +49,72 @@ export default class DetailedAuditLog extends React.Component {
 
         switch(log.type) {
             case "production":
-                logType = "Produkce";
-                logDescription = `Vyprodukovali jsme ${log.number} ${inflectResources(log.number)} ${resourceToWord2ndCase(log.resource)}. Efektivita byla ${effectivnessToWord(log.effectiveness)}.`;
+                logType = t("Produkce");
+                logDescription = `${t("Vyprodukovali jsme")} ${log.number} ${t(inflectResources(log.number))} ${t(resourceToWord2ndCase(log.resource))}. ${t("Efektivita byla")} ${t(effectivnessToWord(log.effectiveness))}.`;
                 break;
             case "starvation":
-                logType = "Hladomor";
-                logDescription = `Zemřelo ${log.number} ${inflectGroups(log.number)} soudruhů.`;
+                logType = t("Hladomor");
+                logDescription = `${t("Zemřelo")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů")}.`;
                 break;
             case "rebellion":
-                logType = "Nepokoje";
-                logDescription = `Zaznamenali jsme ${log.number} ${inflectGroups(log.number)} zrádců.`;
+                logType = t("Nepokoje");
+                logDescription = `${t("Zaznamenali jsme")} ${log.number} ${t(inflectGroups(log.number))} ${t("zrádců")}.`;
                 break;
             case "construction":
-                logType = "Výstavba výrobních zařízení";
-                logDescription = `Dokončili jsme ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                logType = t("Výstavba výrobních zařízení");
+                logDescription = `${t("Dokončili jsme")} ${log.number} ${t(inflectProductionSites(log.number))} ${t("na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "repair":
-                logType = "Oprava výrobních zařízení";
-                logDescription = `Opravili jsme ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                logType = t("Oprava výrobních zařízení");
+                logDescription = `${t("Opravili jsme")} ${log.number} ${t(inflectProductionSites(log.number))} ${t("na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "natality":
-                logType = "Noví pracovníci";
-                logDescription = `Máme navíc ${log.number} ${inflectGroups(log.number)} soudruhů schopných práce.`;
+                logType = t("Noví pracovníci");
+                logDescription = `${t("Máme navíc")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů schopných práce")}.`;
                 break;
             case "damage":
-                logType = "Poškozené výrobní zařízení";
-                logDescription = `Povstalci poškodili ${log.number} ${inflectProductionSites(log.number)} na ${resourceToWord4thCase(log.resource)}.`;
+                logType = t("Poškozené výrobní zařízení");
+                logDescription = `${t("Povstalci poškodili")} ${log.number} ${t(inflectProductionSites(log.number))} ${t("na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "transportOut":
-                logType = "Odchozí transport";
-                logDescription = `Odešel transport čítající ${log.number} ${inflectGroups(log.number)} soudruhů.`;
+                logType = t("Odchozí transport");
+                logDescription = `${t("Odešel transport čítající")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů")}.`;
                 break;
             case "transportIn":
-                logType = "Příchozí transport";
-                logDescription = `Dorazil transport čítající ${log.number} ${inflectGroups(log.number)} soudruhů.`;
+                logType = t("Příchozí transport");
+                logDescription = `${t("Dorazil transport čítající")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů")}.`;
                 break;
             case "victory":
-                logType = "Potlačení povstání";
-                logDescription = `Úspěšné potlačení vzpoury, naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
+                logType = t("Potlačení povstání");
+                logDescription = `${t("Úspěšné potlačení vzpoury, naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}, ${t("ztráty nepřátel")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`;
                 break;
             case "defeat":
-                logType = "Potlačení povstání";
-                logDescription = `Ostudná porážka od rebelů, naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků, ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
+                logType = t("Potlačení povstání");
+                logDescription = `${t("Ostudná porážka od rebelů, naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}, ${t("ztráty nepřátel")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`;
                 break;
             case "monuments":
-                logType = "Výstavba monumentu";
-                logDescription = `Dokončili jsme stavbu ${log.number} monumentu.`;
+                logType = t("Výstavba monumentu");
+                logDescription = `${t("Dokončili jsme stavbu")} ${log.number} ${t("monumentu")}.`;
                 break;
             case "recruiting":
-                logType = "Nábor armády";
-                logDescription = `Poskytli jsme ${log.number} ${inflectGroups(log.number)} soudruhů pro nábor do armády.`;
+                logType = t("Nábor armády");
+                logDescription = `${t("Poskytli jsme")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů pro nábor do armády")}.`;
                 break;
             case "plunderAttemptFailed":
-                logType = "Neúspěšný pokus o vyplenění";
-                logDescription = `Naše armáda úspěšně odrazila ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění.`;
+                logType = t("Neúspěšný pokus o vyplenění");
+                logDescription = `${t("Naše armáda úspěšně odrazila")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}.`;
                 break;
             case "plunderAttemptSuccess":
-                logType = "Vyplenění nepřítelem";
-                logDescription = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region, přišli jsme o většinu produkce.`;
+                logType = t("Vyplenění nepřítelem");
+                logDescription = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("vyplenili region, přišli jsme o většinu produkce")}.`;
                 break;
             case "occupyAttemptFailed":
-                logType = "Neúspěšný pokus o obsazení";
-                logDescription = `Naše armáda úspěšně odrazila ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení.`;
+                logType = t("Neúspěšný pokus o obsazení");
+                logDescription = `${t("Naše armáda úspěšně odrazila")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o obsazení")}.`;
                 break;
             case "occupyAttemptSuccess":
-                logType = "Obsazení nepřítelem";
-                logDescription = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region, přišli jsme o veškerou kontrolu.`;
+                logType = t("Obsazení nepřítelem");
+                logDescription = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region, přišli jsme o veškerou kontrolu")}.`;
                 break;
             default:
                 return ""
@@ -137,7 +138,7 @@ export default class DetailedAuditLog extends React.Component {
             .map((regionDef, i) => {
                 return (
                     <div key={i} className="mt-2">
-                        <h3>Region {regionDef.name}</h3>
+                        <h3>{t("Region")} {t(regionDef.name)}</h3>
                         {DetailedAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
                         {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
                             return this.renderOneLog(log, i)

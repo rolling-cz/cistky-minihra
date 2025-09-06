@@ -6,6 +6,7 @@ import {
     inflectResources,
     resourceToWord2ndCase,
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class ArmyDetailedAuditLog extends React.Component {
     constructor(props) {
@@ -22,10 +23,10 @@ export default class ArmyDetailedAuditLog extends React.Component {
         return (
             <div className="row justify-content-md-center">
                 <div className="col-md-4 font-weight-bold">
-                    Hodnocení
+                    {t("Hodnocení")}
                 </div>
                 <div className="col-md-8 text-left">
-                    {rankingToWord(rankPoints)}
+                    {t(rankingToWord(rankPoints))}
                 </div>
             </div>
         )
@@ -37,62 +38,62 @@ export default class ArmyDetailedAuditLog extends React.Component {
 
         switch(log.type) {
             case "armyStarvation":
-                type = "Hladomor";
-                messages.push(`Hlady zemřelo ${log.number} ${inflectGroups(log.number)} vojáků.`);
+                type = t("Hladomor");
+                messages.push(`${t("Hlady zemřelo")} ${log.number} ${t(inflectGroups(log.number))} ${t("vojáků")}.`);
                 break;
             case "armyRecruiting":
-                type = "Nábor";
-                messages.push(`Vycvičeno ${log.number} ${inflectGroups(log.number)} vojáků.`);
+                type = t("Nábor");
+                messages.push(`${t("Vycvičeno")} ${log.number} ${t(inflectGroups(log.number))} ${t("vojáků")}.`);
                 break;
             case "victory":
-                type = "Potlačení povstání";
-                messages.push(`Úspěšně potlačené povstání v regionu ${log.region}.`);
-                messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
-                messages.push(`Ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`);
+                type = t("Potlačení povstání");
+                messages.push(`${t("Úspěšně potlačené povstání v regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                messages.push(`${t("Ztráty nepřátel")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`);
                 break;
             case "defeat":
-                type = "Prohra s rebely";
-                messages.push(`Neúspěšně potlačené povstání v regionu ${log.region}.`);
-                messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
-                messages.push(`Ztráty nepřátel ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`);
+                type = t("Prohra s rebely");
+                messages.push(`${t("Neúspěšně potlačené povstání v regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                messages.push(`${t("Ztráty nepřátel")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`);
                 break;
             case "liberationArmySuccess":
-                type = "Osvbození regionu";
-                messages.push(`Účast na osvobození regionu ${log.region}.`);
-                messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
+                type = t("Osvobození regionu");
+                messages.push(`${t("Účast na osvobození regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 break;
             case "liberationArmyLost":
-                type = "Selhání při osvobození";
-                messages.push(`Účast na neúspěšném osvbození regionu ${log.region}.`);
-                messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
+                type = t("Selhání při osvobození");
+                messages.push(`${t("Účast na neúspěšném osvbození regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 break;
             case "operationSuccess":
-                type = "Úpěšná operace"
-                messages.push(`Úspěšně splněna vojenské operace ${log.operation}. `);
+                type = t("Úspěšná operace")
+                messages.push(`${t("Úspěšně splněna vojenské operace")} ${log.operation}. `);
                 if (log.soldiersWounded > 0) {
-                    messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
+                    messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 }
                 if (log.soldiersDeparted > 0) {
-                    messages.push(`Odešlo ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků.`);
+                    messages.push(`${t("Odešlo")} ${log.soldiersDeparted} ${t(inflectGroups(log.soldiersDeparted))} ${t("vojáků")}.`);
                 }
                 this.state.definitions.coefficients.resources.types.forEach(resourceName => {
                     if (log.rewards[resourceName] > 0) {
-                        messages.push(`Získali jsme ${log.rewards[resourceName]} ${inflectResources(log.rewards[resourceName])} ${resourceToWord2ndCase(resourceName)}.`);
+                        messages.push(`${t("Získali jsme")} ${log.rewards[resourceName]} ${inflectResources(log.rewards[resourceName])} ${resourceToWord2ndCase(resourceName)}.`);
                     }
                 })
 
                 if (log.rewards.soldiers > 0) {
-                    messages.push(`Získali jsme ${log.rewards.soldiers} ${inflectGroups(log.rewards.soldiers)} vojáků.`);
+                    messages.push(`${t("Získali jsme")} ${log.rewards.soldiers} ${t(inflectGroups(log.rewards.soldiers))} ${t("vojáků")}.`);
                 }
                 break;
             case "operationFail":
-                type = "Neúspěšná operace"
-                messages.push(`Selhání během vojenské operace ${log.operation}.`);
+                type = t("Neúspěšná operace")
+                messages.push(`${t("Selhání během vojenské operace")} ${log.operation}.`);
                 if (log.soldiersWounded > 0) {
-                    messages.push(`Naše ztráty ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků.`);
+                    messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 }
                 if (log.soldiersDeparted > 0) {
-                    messages.push(`\nOdešlo ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků.`);
+                    messages.push(`\n${t("Odešlo")} ${log.soldiersDeparted} ${t(inflectGroups(log.soldiersDeparted))} ${t("vojáků")}.`);
                 }
                 break;
             default:
@@ -119,7 +120,7 @@ export default class ArmyDetailedAuditLog extends React.Component {
             .map((armyDef, i) => {
                 return (
                     <div key={i} className="mt-2">
-                        <h3>Armáda {armyDef.name}</h3>
+                        <h3>{t("Armáda")} {t(armyDef.name)}</h3>
                         {ArmyDetailedAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
                         {this.state.auditLogPerArmy[armyDef.name].map((log, i) => {
                             return this.renderArmyLog(log, i)

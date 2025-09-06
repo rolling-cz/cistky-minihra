@@ -2,6 +2,7 @@ import React from "react";
 import {
     aggregateByRegion, aggregateByArmy, inflectGroups, findEnemyNameObject
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class ArmyAdminsAuditLog extends React.Component {
     constructor(props) {
@@ -29,19 +30,19 @@ export default class ArmyAdminsAuditLog extends React.Component {
 
         const rankLevel = this.state.definitions.coefficients.ranking.points.army[rank];
         if (!rankLevel) {
-            return "Neznámý rank " + rank;
+            return t("Neznámý rank") + " " + rank;
         }
         const rankPoints = rankLevel.rankChange;
         if (rankPoints > 0) {
             return (
                 <div>
-                    Přidat {rankPoints} bod(y) ocenění.
+                    {t("Přidat")} {rankPoints} {t("bod(y) ocenění")}.
                 </div>
             )
         } else if (rankPoints < 0) {
            return (
                <div>
-                   Odebrat {Math.abs(rankPoints)} bod(y) ocenění.
+                   {t("Odebrat")} {Math.abs(rankPoints)} {t("bod(y) ocenění")}.
                </div>
            )
         } else {
@@ -56,7 +57,7 @@ export default class ArmyAdminsAuditLog extends React.Component {
                         return (
                             <div key={i} className="row row mt-2 justify-content-md-center">
                                 <div className="col-md-3 font-weight-bold">
-                                    {armyDef.name} armáda
+                                    {t(armyDef.name)}  {t("armáda")}
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {this.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
@@ -76,7 +77,7 @@ export default class ArmyAdminsAuditLog extends React.Component {
                         return (
                             <div key={i} className="row row mt-2 justify-content-md-center">
                                 <div className="col-md-3 font-weight-bold">
-                                    Region {regionDef.name}
+                                    {t("Region")} {t(regionDef.name)}
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {this.state.auditLogPerRegion[regionDef.name].map((log, i) => {
@@ -96,42 +97,42 @@ export default class ArmyAdminsAuditLog extends React.Component {
 
         switch(log.type) {
             case "armyStarvation":
-                message = `Odebrat ${log.number} ${inflectGroups(log.number)} vojáků kvůli hladomoru.`;
+                message = `${t("Odebrat")} ${log.number} ${t(inflectGroups(log.number))} ${t("vojáků")} ${t("kvůli hladomoru")}.`;
                 break;
             case "armyRecruiting":
-                message = `Přidat ${log.number} ${inflectGroups(log.number)} vojáků kvůli verbování.`;
+                message = `${t("Přidat")} ${log.number} ${t(inflectGroups(log.number))} ${t("vojáků")} ${t("kvůli verbování")}.`;
                 break;
             case "victory":
-                message = `V regionu ${log.region} odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků a ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
+                message = `${t("V regionu")} ${t(log.region)} ${t("odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} ${t("a")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`;
                 break;
             case "defeat":
-                message = `V regionu ${log.region} odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků a ${log.rebelsWounded} ${inflectGroups(log.rebelsWounded)} povstalců.`;
+                message = `${t("V regionu")} ${t(log.region)} ${t("odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} ${t("a")} ${log.rebelsWounded} ${t(inflectGroups(log.rebelsWounded))} ${t("povstalců")}.`;
                 break;
             case "liberationArmySuccess":
-                message = `Odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků kvůli osvobození`;
+                message = `${t("Odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} ${t("kvůli osvobození")}`;
                 break;
             case "liberationArmyLost":
-                message = `Odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků kvůli osvobození`;
+                message = `${t("Odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} ${t("kvůli osvobození")}`;
                 break;
             case "operationSuccess":
                 message = '';
                 if (log.soldiersWounded > 0) {
-                    message += `Odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků - ztráty z úspěšné operace.`;
+                    message += `${t("Odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} - ${t("ztráty z úspěšné operace")}.`;
                 }
                 if (log.soldiersDeparted > 0) {
-                    message += `Odebrat ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků - odešlo v rámci z úspěšné operace. `;
+                    message += `${t("Odebrat")} ${log.soldiersDeparted} ${t(inflectGroups(log.soldiersDeparted))} ${t("vojáků")} - ${t("odešlo v rámci z úspěšné operace")}. `;
                 }
                 if (log.rewards.soldiers > 0) {
-                    message += `Přidat ${log.rewards.soldiers} ${inflectGroups(log.rewards.soldiers)} vojáků - odměna za operaci. `;
+                    message += `${t("Přidat")} ${log.rewards.soldiers} ${t(inflectGroups(log.rewards.soldiers))} ${t("vojáků")} - ${t("odměna za operaci")}. `;
                 }
                 break;
             case "operationFail":
                 message = '';
                 if (log.soldiersWounded > 0) {
-                    message += `Odebrat ${log.soldiersWounded} ${inflectGroups(log.soldiersWounded)} vojáků - ztráty z neúspěšné operace. `;
+                    message += `${t("Odebrat")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")} - ${t("ztráty z neúspěšné operace")}. `;
                 }
                 if (log.soldiersDeparted > 0) {
-                    message += `Odebrat ${log.soldiersDeparted} ${inflectGroups(log.soldiersDeparted)} vojáků - odešlo v rámci z neúspěšné operace. `;
+                    message += `${t("Odebrat")} ${log.soldiersDeparted} ${t(inflectGroups(log.soldiersDeparted))} ${t("vojáků")} - ${t("odešlo v rámci z neúspěšné operace")}. `;
                 }
                 break;
             default:
@@ -159,16 +160,16 @@ export default class ArmyAdminsAuditLog extends React.Component {
 
         switch(log.type) {
             case "rebellion":
-                message = `Přidat ${log.number} ${inflectGroups(log.number)} povstalců`;
+                message = `${t("Přidat")} ${log.number} ${t(inflectGroups(log.number))} ${t("povstalců")}`;
                 break;
             case "occupyAttemptSuccess":
-                message = `Přidat ${log.soldiers} ${inflectGroups(log.soldiers)} nepřátel.`;
+                message = `${t("Přidat")} ${log.soldiers} ${t(inflectGroups(log.soldiers))} ${t("nepřátel")}.`;
                 break;
             case "liberationSuccess":
-                message = `Úspěšně osvobozen - přesunout ${log.withdraw} ${inflectGroups(log.soldiers)} nepřátel zpět do ${findEnemyNameObject(log.enemy, this.state.definitions).countryName}, zbytek odebrat.`;
+                message = `${t("Úspěšně osvobozen")} - ${t("přesunout")} ${log.withdraw} ${t(inflectGroups(log.soldiers))} ${t("nepřátel")} ${t("zpět do")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).countryName)}, ${t("zbytek odebrat")}.`;
                 break;
             case "liberationFail":
-                message = `Odebrat ${log.enemiesWounded} ${inflectGroups(log.enemiesWounded)} nepřátelských vojáků.`;
+                message = `${t("Odebrat")} ${log.enemiesWounded} ${t(inflectGroups(log.enemiesWounded))} ${t("nepřátelských vojáků")}.`;
                 break;
             default:
                 return ""
@@ -184,9 +185,9 @@ export default class ArmyAdminsAuditLog extends React.Component {
     render() {
         return (
             <div className="mt-4">
-                <h3>Vojenské shrnutí</h3>
+                <h3>{t("Vojenské shrnutí")}</h3>
                 {this.renderArmyLogs()}
-                <h3 className="mt-4">Regionální shrnutí</h3>
+                <h3 className="mt-4">{t("Regionální shrnutí")}</h3>
                 {this.renderRegionLogs()}
             </div>
         )

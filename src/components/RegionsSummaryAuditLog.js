@@ -8,6 +8,7 @@ import {
     findEnemyNameObject,
     capitalize
 } from "../services/AuditLogUtils";
+import {t} from "../localization";
 
 export default class RegionsSummaryAuditLog extends React.Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class RegionsSummaryAuditLog extends React.Component {
     static renderRank(rankPoints, i) {
         return (
             <div>
-                {rankingToWord(rankPoints)}
+                {t(rankingToWord(rankPoints))}
             </div>
         )
     }
@@ -40,46 +41,46 @@ export default class RegionsSummaryAuditLog extends React.Component {
 
         switch(log.type) {
             case "production":
-                message = `${capitalize(effectivnessToWord(log.effectiveness))} produkce ${resourceToWord2ndCase(log.resource)}`;
+                message = `${capitalize(t(effectivnessToWord(log.effectiveness)))} produkce ${t(resourceToWord2ndCase(log.resource))}`;
                 break;
             case "starvation":
-                message = "Hladomor";
+                message = t("Hladomor");
                 break;
             case "rebellion":
-                message = "Nepokoje";
+                message = t("Nepokoje");
                 break;
             case "construction":
-                message = `Výstavba výrobních zařízení na ${resourceToWord4thCase(log.resource)}`;
+                message = `${t("Výstavba výrobních zařízení na")} ${t(resourceToWord4thCase(log.resource))}`;
                 break;
             case "repair":
-                message = `Oprava výrobních zařízení na ${resourceToWord4thCase(log.resource)}.`;
+                message = `${t("Oprava výrobních zařízení na")} ${t(resourceToWord4thCase(log.resource))}.`;
                 break;
             case "damage":
-                message = `Poškozené výrobní zařízení na ${resourceToWord4thCase(log.resource)} povstalci`;
+                message = `${t("Poškozené výrobní zařízení na")} ${t(resourceToWord4thCase(log.resource))} ${t("povstalci")}`;
                 break;
             case "victory":
-                message = "Úspěšně potlačené povstání";
+                message = t("Úspěšně potlačené povstání");
                 break;
             case "defeat":
-                message = "Neúspěšně potlačené povstání";
+                message = t("Neúspěšně potlačené povstání");
                 break;
             case "monuments":
-                message = "Výstavba monumentu";
+                message = t("Výstavba monumentu");
                 break;
             case "recruiting":
-                message = "Poskytnutí soudruhů pro armádu";
+                message = t("Poskytnutí soudruhů pro armádu");
                 break;
             case "plunderAttemptFailed":
-                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o vyplenění`;
+                message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}`;
                 break;
             case "plunderAttemptSuccess":
-                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} vyplenili region`;
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("vyplenili region")}`;
                 break;
             case "occupyAttemptFailed":
-                message = `Odražen ${findEnemyNameObject(log.enemy, this.state.definitions).attr} pokus o obsazení`;
+                message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o obsazení")}`;
                 break;
             case "occupyAttemptSuccess":
-                message = `${findEnemyNameObject(log.enemy, this.state.definitions).people} obsadili region`;
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region")}`;
                 break;
             default:
                 return ""
@@ -99,7 +100,7 @@ export default class RegionsSummaryAuditLog extends React.Component {
                 return (
                     <div key={i} className="row row mt-2 justify-content-md-center">
                         <div className="col-md-3 font-weight-bold">
-                            Region {regionDef.name}
+                            {t("Region")} {t(regionDef.name)}
                         </div>
                         <div className="col-md-6 text-left">
                             {RegionsSummaryAuditLog.renderRank(this.props.ranking.getRegionRank(regionDef.name))}
