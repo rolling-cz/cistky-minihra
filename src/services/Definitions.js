@@ -62,7 +62,8 @@ module.exports.getInitialState = () => {
         invasions: [],
         occupations: [],
         operations: [],
-        auditLog: []
+        auditLog: [],
+        eventRegion: null
     }
 };
 
@@ -178,6 +179,11 @@ function getDefinitions() {
             "monuments": {
                 "productivity": 10,
                 "building": 1,
+            },
+            "culturalEvents": {
+                "productionBoostMultiplier": 20,
+                "numberOfBirthed": 2,
+                "removedRebels": 2,
             },
             "fearLevels": [
                 {

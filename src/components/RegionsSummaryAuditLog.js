@@ -70,6 +70,9 @@ export default class RegionsSummaryAuditLog extends React.Component {
             case "recruiting":
                 message = t("Poskytnutí soudruhů pro armádu");
                 break;
+            case "culturalEventRebelsRemoved":
+                message = `${t("Zklidnění rebélie díky kulturní události")}.`;
+                break;
             case "plunderAttemptFailed":
                 message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}`;
                 break;

@@ -5,6 +5,7 @@ import {evaluateAct} from "../services/Evaluator";
 import DetailedAuditLog from "./DetailedAuditLog";
 import TransportList from "./Transports";
 import RegionList from "./RegionList";
+import CulturalEvent from "./CulturalEvent";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import PolitbyroAuditLog from "./PolitbyroAuditLog";
@@ -99,6 +100,12 @@ export default class GameContainer extends React.Component {
             newState.transports.splice(transportKey, 1);
             this.setState({currentState: newState})
         }
+    }
+
+    selectCulturalRegion(regionKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.eventRegion = regionKey === "" ? null : regionKey;
+        this.setState({currentState: newState})
     }
 
     updateArmy(name, id, value) {
@@ -297,6 +304,12 @@ export default class GameContainer extends React.Component {
                                transports={this.state.currentState.transports}
                                addTransport={this.addTransport.bind(this)}
                                cancelTransport={this.cancelTransport.bind(this)}/>
+
+                <CulturalEvent defs={definitions}
+                               currentState={this.state.currentState}
+                               transports={this.state.currentState.transports}
+                               selectCulturalRegion={this.selectCulturalRegion.bind(this)}/>
+
 
                 <div className="mt-3 no-print">
                     <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">

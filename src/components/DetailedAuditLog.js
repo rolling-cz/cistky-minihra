@@ -100,6 +100,10 @@ export default class DetailedAuditLog extends React.Component {
                 logType = t("Nábor armády");
                 logDescription = `${t("Poskytli jsme")} ${log.number} ${t(inflectGroups(log.number))} ${t("soudruhů pro nábor do armády")}.`;
                 break;
+            case "culturalEventRebelsRemoved":
+                logType = t("Zklidnění rebélie díky kulturní události");
+                logDescription = `${log.rebelsRemoved} ${t(inflectGroups(log.rebelsRemoved))} ${t("rebelů se vlivem kulturní události zařadilo zpět do populace")}.`;
+                break;
             case "plunderAttemptFailed":
                 logType = t("Neúspěšný pokus o vyplenění");
                 logDescription = `${t("Naše armáda úspěšně odrazila")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}.`;

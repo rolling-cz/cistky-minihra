@@ -116,6 +116,7 @@ export default class ArmyAuditLog extends React.Component {
         return logs.filter(
             log => log.type === "rebellion" ||
             log.type === "recruiting" ||
+            log.type === "culturalEventRebelsRemoved" ||
             log.type === "plunderAttemptFailed" ||
             log.type === "plunderAttemptSuccess" ||
             log.type === "occupyAttemptFailed" ||
@@ -134,6 +135,9 @@ export default class ArmyAuditLog extends React.Component {
                 break;
             case "recruiting":
                 message = `${t("Poskytli soudruhy pro nábor do armády")}.`;
+                break;
+            case "culturalEventRebelsRemoved":
+                message = `${t("Zklidnění rebélie díky kulturní události")}.`;
                 break;
             case "plunderAttemptFailed":
                 message = `${t("Odražen")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).attr)} ${t("pokus o vyplenění")}`;

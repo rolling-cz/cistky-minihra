@@ -3,13 +3,14 @@ module.exports.evaluateAct = (definitions, state) => {
 
     newState.transports.forEach(transport => startTransport(newState.auditLog, transport, newState.regions));
 
-    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands, newState.invasions, newState.occupations));
+    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands, newState.invasions, newState.occupations, region.name === newState.eventRegion));
 
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
 
     newState.operations.forEach(operation => evaluateOperation(newState.auditLog, definitions, operation, newState.armies));
 
     newState.armies.forEach(army => evaluateArmy(newState.auditLog, definitions, army));
+
     return newState
 };
 
@@ -148,7 +149,7 @@ function evaluateArmy(auditLog, defs, army) {
     }
 }
 
-function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations) {
+function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations, hasCulturalEvent) {
     processLiberationAttempt(auditLog, defs, region, armies, commands, occupations);
 
     if (!region.enabled) {
@@ -165,7 +166,7 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
 
     processRecruiting(auditLog, region);
 
-    const activeRebels = processPatrolSuppress(auditLog, defs, region, armies, commands);
+    const activeRebels = processPatrolSuppress(auditLog, defs, region, armies, commands, hasCulturalEvent);
 
     // rebels from previous act
     damageProductionSites(auditLog, defs, region, activeRebels);
@@ -179,6 +180,11 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
     let productionCoef = fearLevel.production / 100;
     productionCoef *= rebelNegativeBonus;
     productionCoef *= 1 + (defs.coefficients.monuments.productivity * region.monuments.finished) / 100;
+
+    if (hasCulturalEvent) {
+        productionCoef *= 1 + (defs.coefficients.culturalEvents.productionBoostMultiplier) / 100;
+    }
+
     if (productionCoef < defs.coefficients.resources.minProduction) {
         productionCoef = defs.coefficients.resources.minProduction
     }
@@ -204,7 +210,12 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
     if (starved === 0) {
         const probability = region.population.total * defs.coefficients.population.bornProbabilityPerPop;
         if (getRandom(0, 100) < probability) {
-            const newPop = defs.coefficients.population.numberOfBirthed;
+            let newPop = defs.coefficients.population.numberOfBirthed;
+
+            if (hasCulturalEvent) {
+                newPop += defs.coefficients.culturalEvents.numberOfBirthed;
+            }
+
             region.population.total += newPop;
             auditLog.push({
                 "type": "natality",
@@ -417,9 +428,24 @@ function processRecruiting(auditLog, region) {
     }
 }
 
-function processPatrolSuppress(auditLog, defs, region, armies, commands) {
+function processPatrolSuppress(auditLog, defs, region, armies, commands, hasCulturalEvent) {
     let activeRebels = region.rebels;
     const attacking = sumSoldiersInRegion(region.name, 'suppress', commands);
+
+    // Cultural event removes some from active rebels
+    if (hasCulturalEvent) {
+        const rebelsToRemove = Math.min(defs.coefficients.culturalEvents.removedRebels, activeRebels);
+        activeRebels -= rebelsToRemove;
+        region.rebels -= rebelsToRemove;
+        // Returning back to the population
+        region.population.total += rebelsToRemove;
+
+        auditLog.push({
+            "type": "culturalEventRebelsRemoved",
+            "region": region.name,
+            "rebelsRemoved": defs.coefficients.culturalEvents.removedRebels,
+        })
+    }
 
     // attack
     if (attacking > 0 && activeRebels > 0) {
