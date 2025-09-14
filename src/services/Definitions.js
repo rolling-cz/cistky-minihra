@@ -4,7 +4,7 @@ module.exports.getInitialState = () => {
     defs.regions.forEach(region => {
         regionsDto.push({
             "name": region.name,
-            "enabled": region.priority < 3,
+            "enabled": region.priority !== 0,
             "population": {
                 "total": calculateAbsoluteValue(defs.coefficients.population.start, region.start.population),
                 "wheat": 0,
@@ -83,7 +83,7 @@ function getDefinitions() {
                     "fuel": 2
                 },
                 "income": {
-                    "wheat": 2.5,
+                    "wheat": 2.7,
                     "steal": 1,
                     "fuel": 1.5
                 },
@@ -338,20 +338,6 @@ function getDefinitions() {
         },
         "regions": [
             {
-                "name": "Bělorusko",
-                "priority": 2,
-                "start": {
-                    "population": 100,
-                    "wheat": 170,
-                    "steal": 0,
-                    "fuel": 50
-                },
-                "richness": {
-                    "wheat": 150,
-                    "steal": 25,
-                    "fuel": 50
-                }
-            },{
                 "name": "Dálný východ",
                 "priority": 3,
                 "start": {
@@ -366,35 +352,7 @@ function getDefinitions() {
                     "fuel": 100
                 }
             },{
-                "name": "Jih",
-                "priority": 3,
-                "start": {
-                    "population": 100,
-                    "wheat": 120,
-                    "steal": 80,
-                    "fuel": 0
-                },
-                "richness": {
-                    "wheat": 150,
-                    "steal": 100,
-                    "fuel": 0
-                }
-            },{
-                "name": "Jihozápad",
-                "priority": 2,
-                "start": {
-                    "population": 80,
-                    "wheat": 160,
-                    "steal": 0,
-                    "fuel": 100
-                },
-                "richness": {
-                    "wheat": 150,
-                    "steal": 0,
-                    "fuel": 50
-                }
-            },{
-                "name": "Jižní Kavkaz",
+                "name": "Kavkaz",
                 "priority": 1,
                 "start": {
                     "population": 50,
@@ -408,21 +366,7 @@ function getDefinitions() {
                     "fuel": 100
                 }
             },{
-                "name": "Kazachstán",
-                "priority": 3,
-                "start": {
-                    "population": 80,
-                    "wheat": 70,
-                    "steal": 50,
-                    "fuel": 0
-                },
-                "richness": {
-                    "wheat": 100,
-                    "steal": 100,
-                    "fuel": 0
-                }
-            },{
-                "name": "Severozápad",
+                "name": "Leningradská oblast",
                 "priority": 2,
                 "start": {
                     "population": 120,
@@ -436,8 +380,8 @@ function getDefinitions() {
                     "fuel": 0
                 }
             },{
-                "name": "Střed",
-                "priority": 1,
+                "name": "Moskevská oblast",
+                "priority": 0,
                 "start": {
                     "population": 150,
                     "wheat": 80,
@@ -450,18 +394,46 @@ function getDefinitions() {
                     "fuel": 70
                 }
             },{
-                "name": "Střední černozem",
+                "name": "Stalingradská oblast",
+                "priority": 2,
+                "start": {
+                    "population": 110,
+                    "wheat": 50,
+                    "steal": 70,
+                    "fuel": 70
+                },
+                "richness": {
+                    "wheat": 50,
+                    "steal": 70,
+                    "fuel": 70
+                }
+            },{
+                "name": "Středoasijské státy",
                 "priority": 3,
                 "start": {
-                    "population": 100,
-                    "wheat": 100,
-                    "steal": 100,
+                    "population": 80,
+                    "wheat": 80,
+                    "steal": 50,
                     "fuel": 0
                 },
                 "richness": {
-                    "wheat": 120,
+                    "wheat": 100,
                     "steal": 100,
                     "fuel": 0
+                }
+            },{
+                "name": "Ukrajina a Bělorusko",
+                "priority": 1,
+                "start": {
+                    "population": 100,
+                    "wheat": 170,
+                    "steal": 0,
+                    "fuel": 75
+                },
+                "richness": {
+                    "wheat": 150,
+                    "steal": 25,
+                    "fuel": 50
                 }
             },{
                 "name": "Ural",
@@ -476,20 +448,6 @@ function getDefinitions() {
                     "wheat": 50,
                     "steal": 200,
                     "fuel": 0
-                }
-            },{
-                "name": "Volha",
-                "priority": 1,
-                "start": {
-                    "population": 120,
-                    "wheat": 40,
-                    "steal": 100,
-                    "fuel": 50
-                },
-                "richness": {
-                    "wheat": 100,
-                    "steal": 100,
-                    "fuel": 70
                 }
             },{
                 "name": "Východní Sibiř",
