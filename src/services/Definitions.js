@@ -294,7 +294,7 @@ function getDefinitions() {
             },
             "enemy": {
                 "invasion": {
-                    "types": ["plunder", "occupy"]
+                    "types": ["plunder", "occupy", "reinforce", "withdraw"]
                 },
                 "names": [{
                         "countryName": "Polsko",

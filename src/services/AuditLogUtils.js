@@ -122,6 +122,10 @@ module.exports.invasionTypeToWord = (type) => {
             return "Vyplenit";
         case "occupy":
             return "Obsadit";
+        case "reinforce":
+            return "Posílit";
+        case "withdraw":
+            return "Stáhnout se";
         default:
             return "Neznámý typ rozkazu: " + type;
     }

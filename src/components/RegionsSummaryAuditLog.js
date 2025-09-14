@@ -85,6 +85,9 @@ export default class RegionsSummaryAuditLog extends React.Component {
             case "occupyAttemptSuccess":
                 message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region")}`;
                 break;
+            case "occupationFullWithdraw":
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("opustili region")}`;
+                break;
             default:
                 return ""
         }

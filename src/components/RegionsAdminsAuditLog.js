@@ -80,6 +80,7 @@ export default class RegionsAdminsAuditLog extends React.Component {
             case "occupyAttemptSuccess":
                 message = `${t("Deaktivovat obsazený region")}`;
                 break;
+            case "occupationFullWithdraw":
             case "liberationSuccess":
                 message = `${t("Informovat o osvobození regionu")}`;
                 break;

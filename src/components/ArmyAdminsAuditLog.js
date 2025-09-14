@@ -151,7 +151,10 @@ export default class ArmyAdminsAuditLog extends React.Component {
             log => log.type === "rebellion" ||
             log.type === "occupyAttemptSuccess" ||
             log.type === "liberationSuccess" ||
-            log.type === "liberationFail"
+            log.type === "liberationFail" ||
+            log.type === "occupationReinforcement" ||
+            log.type === "occupationFullWithdraw" ||
+            log.type === "occupationWithdraw"
         ).length > 0
     }
 
@@ -163,7 +166,12 @@ export default class ArmyAdminsAuditLog extends React.Component {
                 message = `${t("Přidat")} ${log.number} ${t(inflectGroups(log.number))} ${t("povstalců")}`;
                 break;
             case "occupyAttemptSuccess":
+            case "occupationReinforcement":
                 message = `${t("Přidat")} ${log.soldiers} ${t(inflectGroups(log.soldiers))} ${t("nepřátel")}.`;
+                break;
+            case "occupationWithdraw":
+            case "occupationFullWithdraw":
+                message = `${t("Odebrat")} ${log.soldiers} ${t(inflectGroups(log.soldiers))} ${t("nepřátel")}.`;
                 break;
             case "liberationSuccess":
                 message = `${t("Úspěšně osvobozen")} - ${t("přesunout")} ${log.withdraw} ${t(inflectGroups(log.soldiers))} ${t("nepřátel")} ${t("zpět do")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).countryName)}, ${t("zbytek odebrat")}.`;

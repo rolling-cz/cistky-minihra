@@ -83,6 +83,7 @@
   "Obsadit": "ENObsadit",
   "Obsazené regiony": "ENObsazené regiony",
   "Obsazení nepřítelem": "ENObsazení nepřítelem",
+  "Osvobození od nepřátel": "ENOsvobození od nepřátel",
   "Obtížnost": "ENObtížnost",
   "Ocel": "ENOcel",
   "Odchozí transport": "ENOdchozí transport",
@@ -238,7 +239,9 @@
   "nepřátel": "ENnepřátel",
   "nepřátelských vojáků": "ENnepřátelských vojáků",
   "obsadili region": "ENobsadili region",
+  "opustili region": "ENopustili region",
   "obsadili region, přišli jsme o veškerou kontrolu": "ENobsadili region, přišli jsme o veškerou kontrolu",
+  "opustili region, máme jej zpět pod kontrolou": "ENopustili region, máme jej zpět pod kontrolou",
   "ocel": "ENsteel (accusative)",
   "ocele": "ENocele",
   "odebrat": "ENodebrat",
@@ -298,5 +301,7 @@
   "Špatné vedení": "ENBad leadership",
   "špatná": "ENbad",
   "Žlutá": "ENŽlutá",
-  "žádné": "ENžádné"
+  "žádné": "ENžádné",
+  "Posílit": "Reinforce",
+  "Stáhnout se": "Withdraw"
 }

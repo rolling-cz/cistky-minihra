@@ -120,6 +120,11 @@ export default class DetailedAuditLog extends React.Component {
                 logType = t("Obsazení nepřítelem");
                 logDescription = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region, přišli jsme o veškerou kontrolu")}.`;
                 break;
+            case "occupationFullWithdraw":
+            case "liberationSuccess":
+                logType = t("Osvobození od nepřátel");
+                logDescription = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("opustili region, máme jej zpět pod kontrolou")}.`;
+                break;
             default:
                 return ""
         }

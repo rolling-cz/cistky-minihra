@@ -121,6 +121,7 @@ export default class ArmyAuditLog extends React.Component {
             log.type === "plunderAttemptSuccess" ||
             log.type === "occupyAttemptFailed" ||
             log.type === "occupyAttemptSuccess" ||
+            log.type === "occupationFullWithdraw" ||
             log.type === "liberationSuccess" ||
             log.type === "liberationFail"
         ).length > 0
@@ -150,6 +151,9 @@ export default class ArmyAuditLog extends React.Component {
                 break;
             case "occupyAttemptSuccess":
                 message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("obsadili region")}.`;
+                break;
+            case "occupationFullWithdraw":
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("opustili region")}.`;
                 break;
             case "liberationSuccess":
                 message = `${t("Úspěšně osvobozen z područí")} ${t(findEnemyNameObject(log.enemy, this.state.definitions).countryName2nd)}.`;

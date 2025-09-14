@@ -92,6 +92,9 @@ export default class PolitbyroAuditLog extends React.Component {
             case "liberationFail":
                 message = t("Nezdařený pokus o osvobození");
                 break;
+            case "occupationFullWithdraw":
+                message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("opustili region")}`;
+                break;
             default:
                 return ""
         }

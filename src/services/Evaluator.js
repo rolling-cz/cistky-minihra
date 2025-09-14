@@ -150,6 +150,8 @@ function evaluateArmy(auditLog, defs, army) {
 }
 
 function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations, hasCulturalEvent) {
+    processAttackerMoves(auditLog, defs, region, armies, commands, invasions, occupations)
+
     processLiberationAttempt(auditLog, defs, region, armies, commands, occupations);
 
     if (!region.enabled) {
@@ -319,6 +321,50 @@ function processLiberationAttempt(auditLog, defs, region, armies, commands, occu
                 "enemiesWounded": enemiesWoundedForThisArmy
             })
         });
+}
+
+function processAttackerMoves(auditLog, defs, region, armies, commands, invasions, occupations) {
+    const reinforceEvent = invasions.find(invasion => invasion.region === region.name && invasion.type === 'reinforce');
+    if (reinforceEvent) {
+        let occupation = occupations.find(occupation => occupation.region === reinforceEvent.region && occupation.enemy === reinforceEvent.enemy)
+        if (occupation) {
+            occupation.soldiers += reinforceEvent.soldiers
+
+            auditLog.push({
+                "type": "occupationReinforcement",
+                "region": region.name,
+                "enemy": reinforceEvent.enemy,
+                "soldiers": reinforceEvent.soldiers
+            })
+        }
+    }
+
+    const withdrawEvent = invasions.find(invasion => invasion.region === region.name && invasion.type === 'withdraw');
+    if (withdrawEvent) {
+        let occupation = occupations.find(occupation => occupation.region === withdrawEvent.region && occupation.enemy === withdrawEvent.enemy)
+        if (occupation) {
+            occupation.soldiers = Math.max(0, occupation.soldiers - withdrawEvent.soldiers)
+            if (occupation.soldiers === 0) {
+                const occupationIndex = occupations.indexOf(occupation);
+                if (occupationIndex !== -1) {
+                    occupations.splice(occupationIndex, 1);
+                }
+                auditLog.push({
+                    "type": "occupationFullWithdraw",
+                    "region": region.name,
+                    "enemy": withdrawEvent.enemy,
+                    "soldiers": withdrawEvent.soldiers
+                })
+            } else {
+                auditLog.push({
+                    "type": "occupationWithdraw",
+                    "region": region.name,
+                    "enemy": withdrawEvent.enemy,
+                    "soldiers": withdrawEvent.soldiers
+                })
+            }
+        }
+    }
 }
 
 function processOccupationAttempt(auditLog, defs, region, armies, commands, invasions, occupations) {
