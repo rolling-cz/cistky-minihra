@@ -394,6 +394,20 @@ function getDefinitions() {
                     "fuel": 70
                 }
             },{
+                "name": "Sibiř",
+                "priority": 2,
+                "start": {
+                    "population": 50,
+                    "wheat": 10,
+                    "steal": 100,
+                    "fuel": 120
+                },
+                "richness": {
+                    "wheat": 20,
+                    "steal": 120,
+                    "fuel": 125
+                }
+            },{
                 "name": "Stalingradská oblast",
                 "priority": 2,
                 "start": {
@@ -448,20 +462,6 @@ function getDefinitions() {
                     "wheat": 50,
                     "steal": 200,
                     "fuel": 0
-                }
-            },{
-                "name": "Východní Sibiř",
-                "priority": 2,
-                "start": {
-                    "population": 50,
-                    "wheat": 10,
-                    "steal": 100,
-                    "fuel": 120
-                },
-                "richness": {
-                    "wheat": 20,
-                    "steal": 120,
-                    "fuel": 125
                 }
             }
         ],
