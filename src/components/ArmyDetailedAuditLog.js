@@ -67,6 +67,28 @@ export default class ArmyDetailedAuditLog extends React.Component {
                 messages.push(`${t("Účast na neúspěšném osvbození regionu")} ${t(log.region)}.`);
                 messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 break;
+            case "occupyPatrolLost":
+                type = t("Selhání obrany regionu");
+                messages.push(`${t("Účast na obraně před obsazením regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                messages.push(`${t("Ztráty nepřátel")} ${log.enemiesWounded} ${t(inflectGroups(log.enemiesWounded))} ${t("vojáků")}.`);
+                break;
+            case "occupyPatrolDefended":
+                type = t("Úspěšná obrana regionu");
+                messages.push(`${t("Účast na obraně před obsazením regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                messages.push(`${t("Ztráty nepřátel")} ${log.enemiesWounded} ${t(inflectGroups(log.enemiesWounded))} ${t("vojáků")}.`);
+                break;
+            case "plunderPatrolLost":
+                type = t("Selhání obrany regionu");
+                messages.push(`${t("Účast na obraně před vypleněním regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                break;
+            case "plunderPatrolDefended":
+                type = t("Úspěšná obrana regionu");
+                messages.push(`${t("Účast na obraně před vypleněním regionu")} ${t(log.region)}.`);
+                messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
+                break;
             case "operationSuccess":
                 type = t("Úspěšná operace")
                 messages.push(`${t("Úspěšně splněna vojenské operace")} ${log.operation}. `);
@@ -95,6 +117,18 @@ export default class ArmyDetailedAuditLog extends React.Component {
                 if (log.soldiersDeparted > 0) {
                     messages.push(`\n${t("Odešlo")} ${log.soldiersDeparted} ${t(inflectGroups(log.soldiersDeparted))} ${t("vojáků")}.`);
                 }
+                break;
+            case "fortificationSuccess":
+                type = t("Opevnění");
+                messages.push(`${t("Úspěšně opevněn")} ${t("region")} ${t(log.region)}`);
+                break;
+            case "fortificationOccupied":
+                type = t("Opevnění");
+                messages.push(`${t("Neúspěšný pokus o opevnění regionu")} ${t(log.region)}, ${t("je obsazen nepřítelem")}.`);
+                break;
+            case "fortificationUnnecessary":
+                type = t("Opevnění");
+                messages.push(`${t("Neúspěšný pokus o opevnění regionu")} ${t(log.region)}, ${t("již je opevněn")}.`);
                 break;
             default:
                 return ""

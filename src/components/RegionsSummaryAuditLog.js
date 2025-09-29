@@ -88,6 +88,9 @@ export default class RegionsSummaryAuditLog extends React.Component {
             case "occupationFullWithdraw":
                 message = `${t(findEnemyNameObject(log.enemy, this.state.definitions).people)} ${t("opustili region")}`;
                 break;
+            case "fortificationSuccess":
+                message = `${t("Úspěšně opevněn")}.`;
+                break;
             default:
                 return ""
         }

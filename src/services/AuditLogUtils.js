@@ -111,6 +111,8 @@ module.exports.commandTypeToWord = (type) => {
             return "Potlačit povstání";
         case "liberate":
             return "Osvobodit";
+        case "fortify":
+            return "Opevnit";
         default:
             return "Neznámý typ rozkazu: " + type;
     }

@@ -160,6 +160,8 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
 
     const regionDef = defs.regions.find(regionDef => regionDef.name === region.name);
 
+    processFortification(auditLog, region, commands, occupations);
+
     if (processOccupationAttempt(auditLog, defs, region, armies, commands, invasions, occupations)) {
         return;
     }
@@ -255,6 +257,38 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
     defs.coefficients.resources.types.forEach(resourceType => {
         repairProductionSite(auditLog, region, resourceType);
     });
+}
+
+function processFortification(auditLog, region, commands, occupations) {
+   commands
+       .filter(command => command.region === region.name && command.type === 'fortify')
+       .forEach(command => {
+           if (region.fortified) {
+               auditLog.push({
+                   "type": "fortificationUnnecessary",
+                   "region": region.name,
+                   "army": command.army,
+               })
+               return
+           }
+
+           const occupation = occupations.find(oc => oc.region === region.name);
+           if (occupation) {
+               auditLog.push({
+                   "type": "fortificationOccupied",
+                   "region": region.name,
+                   "army": command.army,
+               })
+               return;
+           }
+
+           region.fortified = true
+           auditLog.push({
+               "type": "fortificationSuccess",
+               "region": region.name,
+               "army": command.army,
+           })
+       });
 }
 
 function processLiberationAttempt(auditLog, defs, region, armies, commands, occupations) {
@@ -372,18 +406,31 @@ function processOccupationAttempt(auditLog, defs, region, armies, commands, inva
     const occupyAttempt = invasions.find(invasion => invasion.region === region.name && invasion.type === 'occupy');
     if (occupyAttempt) {
         const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
-        const soldiersPower = patrolling
+        let soldiersPower = patrolling
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
             * defs.coefficients.army.soldiersOverEnemies;
         const enemyPower = occupyAttempt.soldiers
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
 
-        let defended;
-        if (enemyPower > soldiersPower) {
-            defended = false;
-            occupations.push({enemy: occupyAttempt.enemy, region: occupyAttempt.region, soldiers: occupyAttempt.soldiers});
-        } else {
-            defended = true;
+        if (region.fortified) {
+            soldiersPower *= defs.coefficients.army.fortification.defensePower;
+        }
+
+        const defended = soldiersPower >= enemyPower;
+        let soldiersWoundedCoefficient = defended
+            ? defs.coefficients.army.wounded.soldiers.win
+            : defs.coefficients.army.wounded.soldiers.defeat;
+        const enemiesWoundedCoefficient = defended
+            ? defs.coefficients.army.wounded.enemies.defeat
+            : defs.coefficients.army.wounded.enemies.win;
+        const enemiesWounded = Math.ceil(occupyAttempt.soldiers * enemiesWoundedCoefficient);
+
+        if (region.fortified) {
+            soldiersWoundedCoefficient *= defs.coefficients.army.fortification.lessWounded;
+        }
+
+        if (!defended) {
+            occupations.push({enemy: occupyAttempt.enemy, region: occupyAttempt.region, soldiers: occupyAttempt.soldiers - enemiesWounded});
         }
 
         auditLog.push({
@@ -395,16 +442,24 @@ function processOccupationAttempt(auditLog, defs, region, armies, commands, inva
 
         commands
             .filter(command => command.region === region.name && command.type === 'patrol')
-            .forEach(command =>
+            .forEach(command => {
+                const share = command.soldiers / patrolling;
+                const soldiersWoundedForThisArmy = Math.ceil(command.soldiers * soldiersWoundedCoefficient * share);
+                const enemiesWoundedForThisArmy = Math.ceil(enemiesWounded * share);
+
+                const army = armies.find(army => army.name === command.army);
+                army.soldiers -= soldiersWoundedForThisArmy;
 
                 auditLog.push({
                     "type": defended ? "occupyPatrolDefended" : "occupyPatrolLost",
                     "region": region.name,
                     "army": command.army,
                     "enemy": occupyAttempt.enemy,
-                    "contribution": command.soldiers / patrolling
-                }
-            ));
+                    "contribution": share,
+                    "soldiersWounded": soldiersWoundedForThisArmy,
+                    "enemiesWounded": enemiesWoundedForThisArmy
+                })
+            });
         return !defended;
     } else {
         return false;
@@ -418,18 +473,26 @@ function processPlunderAttempt(auditLog, defs, region, armies, commands, invasio
     const plunderAttempt = invasions.find(invasion => invasion.region === region.name && invasion.type === 'plunder');
     if (plunderAttempt) {
         const patrolling = sumSoldiersInRegion(region.name, 'patrol', commands);
-        const soldiersPower = patrolling
+        let soldiersPower = patrolling
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100)
             * defs.coefficients.army.soldiersOverEnemies;
         const enemyPower = plunderAttempt.soldiers
             * (getRandom(defs.coefficients.army.attackPower.min, defs.coefficients.army.attackPower.max) / 100);
 
-        let defended;
-        if (enemyPower > soldiersPower) {
+        if (region.fortified) {
+            soldiersPower *= defs.coefficients.army.fortification.defensePower;
+        }
+
+        const defended = soldiersPower >= enemyPower;
+        let soldiersWoundedCoefficient = defended
+            ? defs.coefficients.army.wounded.soldiers.win
+            : defs.coefficients.army.wounded.soldiers.defeat;
+
+        if (region.fortified) {
+            soldiersWoundedCoefficient *= defs.coefficients.army.fortification.lessWounded;
+        }
+        if (!defended) {
             plunderProductionEffect = defs.coefficients.enemy.plunderEffect;
-            defended = false;
-        } else {
-            defended = true;
         }
 
         auditLog.push({
@@ -440,13 +503,21 @@ function processPlunderAttempt(auditLog, defs, region, armies, commands, invasio
 
         commands
             .filter(command => command.region === region.name && command.type === 'patrol')
-            .forEach(command => auditLog.push({
-                "type": defended ? "plunderPatrolDefended" : "plunderPatrolLost",
-                "region": region.name,
-                "army": command.army,
-                "enemy": plunderAttempt.enemy,
-                "contribution": command.soldiers / patrolling
-            }));
+            .forEach(command => {
+                const share = command.soldiers / patrolling;
+                const soldiersWoundedForThisArmy = Math.ceil(command.soldiers * soldiersWoundedCoefficient * share);
+
+                const army = armies.find(army => army.name === command.army);
+                army.soldiers -= soldiersWoundedForThisArmy;
+                auditLog.push({
+                    "type": defended ? "plunderPatrolDefended" : "plunderPatrolLost",
+                    "region": region.name,
+                    "army": command.army,
+                    "enemy": plunderAttempt.enemy,
+                    "contribution": command.soldiers / patrolling,
+                    "soldiersWounded": soldiersWoundedForThisArmy
+                })
+            });
     }
 
     return plunderProductionEffect;

@@ -134,6 +134,25 @@ export default class PolitbyroAuditLog extends React.Component {
             case "operationFail":
                 message = `${t("Selhání během vojenské operace")} ${t(log.operation)}`;
                 break;
+            case "occupyPatrolDefended":
+                message = `${t("Účast na úspěšné obraně obsazení regionu")} ${t(log.region)}`;
+                break;
+            case "occupyPatrolLost":
+                message = `${t("Účast na neúspěšné obraně obsazení regionu")} ${t(log.region)}`;
+                break;
+            case "plunderPatrolDefended":
+                message = `${t("Účast na úspěšné obraně vyplenění regionu")} ${t(log.region)}`;
+                break;
+            case "plunderPatrolLost":
+                message = `${t("Účast na neúspěšné obraně vyplenění regionu")} ${t(log.region)}`;
+                break;
+            case "fortificationSuccess":
+                message = `${t("Úspěšně opevněn region")} ${t(log.region)}.`;
+                break;
+            case "fortificationOccupied":
+            case "fortificationUnnecessary":
+                message = `${t("Neúspěšný pokus o opevnění regionu")} ${t(log.region)}.`;
+                break;
             default:
                 return ""
         }

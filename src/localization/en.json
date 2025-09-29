@@ -143,6 +143,7 @@
   "Pšenice": "ENPšenice",
   "Rebelové": "ENRebelové",
   "Region": "ENRegion",
+  "region": "ENregion",
   "Regiony plán": "Plan of regions",
   "Regionální shrnutí": "ENRegionální shrnutí",
   "Resetovat na výchozí nastavení": "ENResetovat na výchozí nastavení",
@@ -300,5 +301,19 @@
   "Středoasijské stány": "ENStředoasijské stány",
   "Ukrajina a Bělorusko": "ENUkrajina a Bělorusko",
   "Ural": "ENUral",
-  "Sibiř": "ENSibiř"
+  "Sibiř": "ENSibiř",
+  "Opevněno": "ENOpevněno",
+  "Opevnit": "ENOpevnit",
+  "Úspěšně opevněn": "ENÚspěšně opevněn",
+  "Neúspěšný pokus o opevnění regionu": "Neúspěšný pokus o opevnění regionu",
+  "již je opevněn": "ENjiž je opevněn",
+  "je obsazen nepřítelem": "ENje obsazen nepřítelem",
+  "Selhání obrany regionu": "ENSelhání obrany regionu",
+  "Úspěšná obrana regionu": "ENÚspěšná obrana regionu",
+  "Účast na obraně regionu": "ENÚčast na obraně regionu před obsazením",
+  "Účast na úspěšné obraně obsazení regionu": "ENÚčast na úspěšné obraně obsazení regionu",
+  "Účast na neúspěšné obraně obsazení regionu": "ENÚčast na neúspěšné obraně obsazení regionu",
+  "Účast na úspěšné obraně vyplenění regionu": "ENÚčast na úspěšné obraně vyplenění regionu",
+  "Účast na neúspěšné obraně vyplenění regionu": "ENÚčast na neúspěšné obraně vyplenění regionu",
+  "Účast na obraně před vypleněním regionu": "ENÚčast na obraně před vypleněním regionu"
 }

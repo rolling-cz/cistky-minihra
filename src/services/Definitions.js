@@ -38,7 +38,8 @@ module.exports.getInitialState = () => {
                 "wheat": 0,
                 "steal": 0,
                 "fuel": 0
-            }
+            },
+            "fortified": false
         })
     });
 
@@ -247,7 +248,11 @@ function getDefinitions() {
                 "soldiersOverRebels": 1.2,
                 "soldiersOverEnemies": 1,
                 "commands": {
-                    "types": ["patrol", "suppress", "liberate"]
+                    "types": ["patrol", "suppress", "liberate", "fortify"]
+                },
+                "fortification": {
+                    "defensePower": 1.2,
+                    "lessWounded": 0.8,
                 },
                 "costs": {
                     "wheat": 0.5,
@@ -422,7 +427,7 @@ function getDefinitions() {
                     "fuel": 70
                 }
             },{
-                "name": "Středoasijské státy",
+                "name": "Středoasijské stány",
                 "priority": 3,
                 "start": {
                     "population": 80,

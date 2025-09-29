@@ -23,13 +23,18 @@ export default class Region extends React.Component {
     }
 
     handleChange(event) {
-        let value = parseInt(event.target.value);
-        if (isNaN(value)) {
-            value = 0;
-        }
+        let value
+        if (event.target.type === 'checkbox') {
+            value = event.target.checked
+        } else {
+            value = parseInt(event.target.value);
+            if (isNaN(value)) {
+                value = 0;
+            }
 
-        if (value < 0) {
-            value = 0;
+            if (value < 0) {
+                value = 0;
+            }
         }
 
         const id = event.target.name;
@@ -85,7 +90,8 @@ export default class Region extends React.Component {
                 <div className="col-md-2 text-left">
                     {t("Rebelové")}: {this.state.currentState.rebels} <br />
                     {t("Patrolující jed.")}: {sumSoldiersInRegion(this.state.definition.name, 'patrol', this.state.commands)} <br />
-                    {t("Potlačující jed")}: {sumSoldiersInRegion(this.state.definition.name, 'suppress', this.state.commands)}
+                    {t("Potlačující jed")}: {sumSoldiersInRegion(this.state.definition.name, 'suppress', this.state.commands)} <br />
+                    {t("Opevněno")}: <input name="fortified" type="checkbox" role="switch" checked={this.state.currentState.fortified} onChange={this.handleChange.bind(this)} />
                 </div>
             </div>
         )

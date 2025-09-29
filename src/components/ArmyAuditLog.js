@@ -38,7 +38,7 @@ export default class ArmyAuditLog extends React.Component {
                         return (
                             <div key={i} className="row row mt-2 justify-content-md-center">
                                 <div className="col-md-3 font-weight-bold">
-                                    {t(armyDef.name)} ${t("armáda")}
+                                    {t(armyDef.name)} {t("armáda")}
                                 </div>
                                 <div className="col-md-6 text-left">
                                     {ArmyAuditLog.renderRank(this.props.ranking.getArmyRank(armyDef.name))}
@@ -100,6 +100,25 @@ export default class ArmyAuditLog extends React.Component {
                 break;
             case "operationFail":
                 message = `${t("Selhání během vojenské operace")} ${t(log.operation)}. `;
+                break;
+            case "occupyPatrolDefended":
+                message = `${t("Účast na úspěšné obraně regionu")} ${t(log.region)}`;
+                break;
+            case "occupyPatrolLost":
+                message = `${t("Účast na neúspěšné obraně regionu")} ${t(log.region)}`;
+                break;
+            case "plunderPatrolDefended":
+                message = `${t("Účast na úspěšné obraně vyplenění regionu")} ${t(log.region)}`;
+                break;
+            case "plunderPatrolLost":
+                message = `${t("Účast na neúspěšné obraně vyplenění regionu")} ${t(log.region)}`;
+                break;
+            case "fortificationSuccess":
+                message = `${t("Úspěšně opevněn region")} ${t(log.region)}.`;
+                break;
+            case "fortificationOccupied":
+            case "fortificationUnnecessary":
+                message = `${t("Neúspěšný pokus o opevnění regionu")} ${t(log.region)}.`;
                 break;
             default:
                 return ""

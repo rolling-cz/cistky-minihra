@@ -154,6 +154,8 @@ export default class Ranking {
                 return rDef.army.operationSuccess * log.difficulty + log.soldiersWounded * rDef.army.lost;
             case "operationFail":
                 return rDef.army.operationFail * log.difficulty + log.soldiersWounded * rDef.army.lost;
+
+
             default:
                 return 0
         }
