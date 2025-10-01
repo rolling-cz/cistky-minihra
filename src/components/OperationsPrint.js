@@ -7,11 +7,9 @@ import { t } from "../localization";
 export default class OperationsPrint extends React.Component {
     difficultyToWord(difficulty) {
         switch (difficulty) {
-            case 1: return  t("Velice jednoduché");
-            case 2: return  t("Jednoduché");
-            case 3: return  t("Střední");
-            case 4: return  t("Těžké");
-            case 5: return  t("Velmi těžké");
+            case 1: return  t("Jednoduché");
+            case 2: return  t("Střední");
+            case 3: return  t("Těžké");
             default: return t("ERROR: neznámá obtížnost ") + difficulty;
         }
     }
