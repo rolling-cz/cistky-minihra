@@ -24,6 +24,7 @@ import InvasionList from "./InvasionList";
 import OccupationList from "./OccupationList";
 import CommandList from "./CommandList";
 import OperationList from "./OperationList";
+import RebellionList from "./RebellionList";
 import Ranking from "../services/Ranking";
 import OperationsPrint from "./OperationsPrint";
 import { t } from "../localization";
@@ -198,6 +199,20 @@ export default class GameContainer extends React.Component {
         }
     }
 
+    addRebellion(rebellionSource, rebellionTarget, rebelsCreated, rebelsMoved, rebelsRecruited) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        newState.rebellions.push({rebellionSource: rebellionSource, rebellionTarget: rebellionTarget,  rebelsCreated: rebelsCreated, rebelsMoved: rebelsMoved, rebelsRecruited: rebelsRecruited});
+        this.setState({currentState: newState, error: null})
+    }
+
+    cancelRebellion(rebellionKey) {
+        const newState = JSON.parse(JSON.stringify(this.state.currentState));
+        if (newState.rebellions.length > rebellionKey && rebellionKey >= 0 ) {
+            newState.rebellions.splice(rebellionKey, 1);
+            this.setState({currentState: newState})
+        }
+    }
+
     evaluate() {
         const newState = evaluateAct(this.state.definitions, this.state.currentState);
         this.setState({newState: newState});
@@ -221,6 +236,7 @@ export default class GameContainer extends React.Component {
         newState.commands = [];
         newState.invasions = [];
         newState.operations = [];
+        newState.rebellions = [];
 
         newState.regions.forEach(region => {
             definitions.coefficients.resources.types.forEach(resourceType => {
@@ -258,6 +274,9 @@ export default class GameContainer extends React.Component {
             >
                 <Tab eventKey="regions" title={t("Regiony plán")}>
                     {this.renderRegions(this.state.definitions)}
+                </Tab>
+                <Tab eventKey="rebellions" title={t("Povstání")}>
+                    {this.renderRebellions(this.state.definitions)}
                 </Tab>
                 <Tab eventKey="armies" title={t("Armáda plán")}>
                     {this.renderArmies(this.state.definitions)}
@@ -343,6 +362,27 @@ export default class GameContainer extends React.Component {
                             currentState={this.state.currentState}
                             addOperation={this.addOperation.bind(this)}
                             cancelOperation={this.cancelOperation.bind(this)}
+                />
+
+                <div className="mt-3 no-print">
+                    <Button variant="primary" onClick={this.evaluate.bind(this)} className="mr-2">
+                        {t("Vyhodnotit dějství")}
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    renderRebellions(definitions) {
+        return (
+            <div className="mt-4">
+                <h3 id="main-title">{t("Plán povstání pro")} {this.state.history.length + 1}. {t("dějství")}</h3>
+                {this.renderError()}
+
+                <RebellionList defs={definitions}
+                              currentState={this.state.currentState}
+                              addRebellion={this.addRebellion.bind(this)}
+                              cancelRebellion={this.cancelRebellion.bind(this)}
                 />
 
                 <div className="mt-3 no-print">

@@ -58,7 +58,11 @@ export default class DetailedAuditLog extends React.Component {
                 break;
             case "rebellion":
                 logType = t("Nepokoje");
-                logDescription = `${t("Zaznamenali jsme")} ${log.number} ${t(inflectGroups(log.number))} ${t("zrádců")}.`;
+                const totalRebels = log.number + log.numberMoved + log.numberCreated
+                logDescription = `${t("Zaznamenali jsme")} ${totalRebels} ${t(inflectGroups(totalRebels))} ${t("zrádců")}.`;
+                if (log.rebellionType === "region") {
+                    logDescription += `${t("Přišli z regionu")} ${t(log.rebellionSource)}.`;
+                }
                 break;
             case "construction":
                 logType = t("Výstavba výrobních zařízení");

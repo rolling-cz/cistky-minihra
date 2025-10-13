@@ -63,6 +63,7 @@ module.exports.getInitialState = () => {
         invasions: [],
         occupations: [],
         operations: [],
+        rebellions: [],
         auditLog: [],
         eventRegion: null
     }

@@ -163,7 +163,11 @@ export default class ArmyAdminsAuditLog extends React.Component {
 
         switch(log.type) {
             case "rebellion":
-                message = `${t("Přidat")} ${log.number} ${t(inflectGroups(log.number))} ${t("povstalců")}`;
+                const totalRebels = log.number + log.numberMoved + log.numberCreated
+                message = `${t("Přidat")} ${totalRebels} ${t(inflectGroups(totalRebels))} ${t("povstalců")}.`;
+                if (log.rebellionType === "region") {
+                    message += `${t("Odebrat z regionu")} ${t(log.rebellionSource)} ${log.numberMoved} ${t(inflectGroups(log.numberMoved))} ${t("povstalců")}.`;
+                }
                 break;
             case "occupyAttemptSuccess":
             case "occupationReinforcement":

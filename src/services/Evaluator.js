@@ -3,7 +3,7 @@ module.exports.evaluateAct = (definitions, state) => {
 
     newState.transports.forEach(transport => startTransport(newState.auditLog, transport, newState.regions));
 
-    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands, newState.invasions, newState.occupations, region.name === newState.eventRegion));
+    newState.regions.forEach(region => evaluateRegion(newState.auditLog, definitions, region, newState.armies, newState.commands, newState.invasions, newState.occupations, region.name === newState.eventRegion, newState.rebellions));
 
     newState.transports.forEach(transport => finishTransport(newState.auditLog, transport, newState.regions));
 
@@ -149,8 +149,10 @@ function evaluateArmy(auditLog, defs, army) {
     }
 }
 
-function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations, hasCulturalEvent) {
+function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occupations, hasCulturalEvent, rebellions) {
     processAttackerMoves(auditLog, defs, region, armies, commands, invasions, occupations)
+
+    processRebelsLeaving(auditLog, defs, region, rebellions);
 
     processLiberationAttempt(auditLog, defs, region, armies, commands, occupations);
 
@@ -231,20 +233,40 @@ function evaluateRegion(auditLog, defs, region, armies, commands, invasions, occ
 
     // new rebellion
     const rebellionRisk = fearLevel.rebellionRisk + starved * defs.coefficients.rebellion.riskPerStarvedPop;
+    let rebelsRecruited = 0;
     if (region.population.total > defs.coefficients.rebellion.minPopulation && getRandom(0, 100) <= rebellionRisk) {
-        let numberOfRebels = fearLevel.rebellionSize + Math.ceil(starved * defs.coefficients.rebellion.rebelPerStarvedPop);
+        rebelsRecruited = fearLevel.rebellionSize + Math.ceil(starved * defs.coefficients.rebellion.rebelPerStarvedPop);
 
-        if (region.population.total - defs.coefficients.rebellion.minPopulation < numberOfRebels) {
-            numberOfRebels = region.population.total - defs.coefficients.rebellion.minPopulation
+        if (region.population.total - defs.coefficients.rebellion.minPopulation < rebelsRecruited) {
+            rebelsRecruited = region.population.total - defs.coefficients.rebellion.minPopulation
         }
+    }
 
-        region.population.total -= numberOfRebels;
-        region.rebels += numberOfRebels;
+    const rebellion = rebellions.find(it => it.rebellionTarget === region.name)
+    if (rebelsRecruited > 0 || rebellion) {
+        let rebelsNewTotal = rebelsRecruited
+        if (rebellion) {
+            rebelsRecruited += rebellion.rebelsRecruited;
+            rebelsNewTotal += rebellion.rebelsRecruited + rebellion.rebelsMoved + rebellion.rebelsCreated;
+        }
+        region.population.total = Math.max(defs.coefficients.rebellion.minPopulation, region.population.total - rebelsRecruited);
+        region.rebels += rebelsNewTotal;
+
+        let rebellionType = ""
+        let rebellionSource = ""
+        if (rebellion.rebellionSource !== "none") {
+            rebellionType = "region"
+            rebellionSource = rebellion.rebellionSource
+        }
 
         auditLog.push({
             "type": "rebellion",
             "region": regionDef.name,
-            "number": numberOfRebels
+            "number": rebelsRecruited,
+            "numberMoved": rebellion.rebelsMoved,
+            "numberCreated":  rebellion.rebelsCreated,
+            "rebellionType": rebellionType,
+            "rebellionSource": rebellionSource,
         })
     }
 
@@ -289,6 +311,14 @@ function processFortification(auditLog, region, commands, occupations) {
                "army": command.army,
            })
        });
+}
+
+function processRebelsLeaving(auditLog, defs, region, rebellions) {
+    rebellions
+        .filter(it => it.rebelsMoved > 0 && it.rebellionSource === region.name)
+        .forEach(rebellion => {
+            region.rebels = Math.max(0, region.rebels - rebellion.rebelsMoved)
+        });
 }
 
 function processLiberationAttempt(auditLog, defs, region, armies, commands, occupations) {
