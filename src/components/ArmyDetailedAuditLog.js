@@ -91,7 +91,7 @@ export default class ArmyDetailedAuditLog extends React.Component {
                 break;
             case "operationSuccess":
                 type = t("Úspěšná operace")
-                messages.push(`${t("Úspěšně splněna vojenské operace")} ${log.operation}. `);
+                messages.push(`${t("Úspěšně splněna vojenské operace")} ${t(log.operation)}. `);
                 if (log.soldiersWounded > 0) {
                     messages.push(`${t("Naše ztráty")} ${log.soldiersWounded} ${t(inflectGroups(log.soldiersWounded))} ${t("vojáků")}.`);
                 }

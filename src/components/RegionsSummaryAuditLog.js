@@ -41,7 +41,7 @@ export default class RegionsSummaryAuditLog extends React.Component {
 
         switch(log.type) {
             case "production":
-                message = `${capitalize(t(effectivnessToWord(log.effectiveness)))} produkce ${t(resourceToWord2ndCase(log.resource))}`;
+                message = `${capitalize(t(effectivnessToWord(log.effectiveness)))} ${t("produkce")} ${t(resourceToWord2ndCase(log.resource))}`;
                 break;
             case "starvation":
                 message = t("Hladomor");
