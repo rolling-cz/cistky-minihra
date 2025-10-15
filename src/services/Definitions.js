@@ -528,7 +528,7 @@ function getDefinitions() {
             },
             {
                 "name": "Grandiózní přehlídka",
-                "desc": "Existují vojenské přehlídky a vojenské přehlídky, na které se nezapomíná. Takové přehlídky, které představí neporazitelné vojsko, nové zbraně, zkušené generály. Takové přehlídky, při kterých davy jásají a jedno oko nezůstane suché. Takové přehlídky, které vykouzlí úsměv na tváří Vůdce, mraky se rozestoupí a slunce rozzáří oblohu. ",
+                "desc": "Existují vojenské přehlídky a vojenské přehlídky, na které se nezapomíná. Takové přehlídky, které představí neporazitelné vojsko, nové zbraně, zkušené generály. Takové přehlídky, při kterých davy jásají a jedno oko nezůstane suché. Takové přehlídky, které vykouzlí úsměv na tváří Vůdce, mraky se rozestoupí a slunce rozzáří oblohu.",
                 "code": 5349,
                 "actMin": 2,
                 "actMax": 4,
